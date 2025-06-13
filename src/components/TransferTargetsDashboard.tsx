@@ -172,7 +172,7 @@ export function TransferTargetsDashboard() {
               </p>
             </div>
           </CardContent>
-        </div>
+        </Card>
       </div>
 
       {/* Quick Actions */}
