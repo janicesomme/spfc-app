@@ -56,64 +56,57 @@ export function TransferTargetsList() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="bg-red-600 text-white p-4 text-center">
-          <h1 className="text-lg font-semibold">Transfer Targets</h1>
-        </div>
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Red header bar - exact match to image */}
-      <div className="bg-red-600 text-white p-4 text-center relative">
-        <h1 className="text-lg font-semibold">Transfer Targets</h1>
+    <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-sm">
+      {/* Header */}
+      <div className="bg-red-600 text-white text-center py-3">
+        <h1 className="text-lg font-medium">Transfer Targets</h1>
       </div>
 
-      {/* Player cards list - exact spacing and layout */}
-      <div className="bg-white">
-        {targets.map((target, index) => (
-          <div key={target.id} className="border-b border-gray-100">
-            <div className="flex items-center p-4 space-x-3">
-              {/* Player circle - matching the image exactly */}
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-red-600 font-semibold text-sm">
-                  {getPlayerInitials(target.player_name)}
-                </span>
-              </div>
-              
-              {/* Player info - exact layout from image */}
-              <div className="flex-1 min-w-0">
-                <div className="text-base font-medium text-gray-900 truncate">
-                  {target.player_name || 'Unknown Player'}
-                </div>
-                <div className="text-sm text-gray-600">
-                  Market Value {getMarketValue()}
-                </div>
-              </div>
-              
-              {/* Stats section - matching image layout */}
-              <div className="text-right mr-3">
-                <div className="text-sm font-medium text-gray-900">
-                  {target.confidence}% likely
-                </div>
-                <div className="text-xs text-gray-500">
-                  {target.transfer_likelihood || 'Possible'}
-                </div>
-              </div>
-              
-              {/* Red + button - exact match to image */}
-              <button className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <Plus className="w-4 h-4 text-white" />
-              </button>
+      {/* Player list */}
+      <div className="divide-y divide-gray-100">
+        {targets.map((target) => (
+          <div key={target.id} className="flex items-center p-4 hover:bg-gray-50">
+            {/* Player avatar */}
+            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <span className="text-red-600 font-semibold text-sm">
+                {getPlayerInitials(target.player_name)}
+              </span>
             </div>
+
+            {/* Player info */}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base font-medium text-gray-900 truncate">
+                {target.player_name || 'Unknown Player'}
+              </h3>
+              <p className="text-sm text-gray-500">
+                Market Value {getMarketValue()}
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="text-right mr-3">
+              <div className="text-sm font-medium text-gray-900">
+                {target.confidence}% likely
+              </div>
+              <div className="text-xs text-gray-500">
+                {target.transfer_likelihood || 'Possible'}
+              </div>
+            </div>
+
+            {/* Add button */}
+            <button className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+              <Plus className="w-4 h-4 text-white" />
+            </button>
           </div>
         ))}
-        
+
         {targets.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             No transfer targets available
