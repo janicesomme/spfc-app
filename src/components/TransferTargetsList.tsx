@@ -63,18 +63,18 @@ export function TransferTargetsList() {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-sm">
+    <div className="max-w-sm mx-auto bg-white rounded-xl shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="bg-red-600 text-white text-center py-3">
-        <h1 className="text-lg font-medium">Transfer Targets</h1>
+      <div className="bg-red-600 text-white text-center py-4 px-6">
+        <h1 className="text-lg font-semibold">Transfer Targets</h1>
       </div>
 
       {/* Player list */}
       <div className="divide-y divide-gray-100">
         {targets.map((target) => (
-          <div key={target.id} className="flex items-center p-4 hover:bg-gray-50">
+          <div key={target.id} className="flex items-center p-4 hover:bg-gray-50 transition-colors">
             {/* Player avatar */}
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
               <span className="text-red-600 font-semibold text-sm">
                 {getPlayerInitials(target.player_name)}
               </span>
@@ -82,26 +82,26 @@ export function TransferTargetsList() {
 
             {/* Player info */}
             <div className="flex-1 min-w-0">
-              <h3 className="text-base font-medium text-gray-900 truncate">
+              <h3 className="text-base font-semibold text-gray-900 truncate">
                 {target.player_name || 'Unknown Player'}
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 mt-0.5">
                 Market Value {getMarketValue()}
               </p>
             </div>
 
             {/* Stats */}
-            <div className="text-right mr-3">
-              <div className="text-sm font-medium text-gray-900">
+            <div className="text-right mr-4">
+              <div className="text-sm font-semibold text-gray-900">
                 {target.confidence}% likely
               </div>
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-gray-500 mt-0.5">
                 {target.transfer_likelihood || 'Possible'}
               </div>
             </div>
 
             {/* Add button */}
-            <button className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+            <button className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors flex-shrink-0">
               <Plus className="w-4 h-4 text-white" />
             </button>
           </div>
