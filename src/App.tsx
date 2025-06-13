@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import Dashboard from "./pages/Dashboard";
 import TransferReports from "./pages/TransferReports";
+import TransferTargets from "./pages/TransferTargets";
 import News from "./pages/News";
 import YouTube from "./pages/YouTube";
 import Players from "./pages/Players";
@@ -34,6 +35,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/transfer-reports" element={<TransferReports />} />
+              <Route path="/transfer-targets" element={<TransferTargets />} />
               <Route path="/news" element={<News />} />
               <Route path="/youtube" element={<YouTube />} />
               <Route path="/players" element={<Players />} />

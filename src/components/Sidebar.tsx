@@ -17,7 +17,8 @@ import {
   TrendingUp, 
   Users, 
   Settings,
-  Youtube
+  Youtube,
+  Target
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -31,6 +32,11 @@ const menuItems = [
     title: "Transfer Reports",
     url: "/transfer-reports",
     icon: FileText,
+  },
+  {
+    title: "Transfer Targets",
+    url: "/transfer-targets",
+    icon: Target,
   },
   {
     title: "News Intelligence",
