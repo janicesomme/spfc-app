@@ -60,68 +60,68 @@ export function TransferTargetsDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">Transfer Intelligence Dashboard</h1>
-          <p className="text-xl text-gray-600">Real-time insights for Mark Goldbridge's broadcast content</p>
+        <div className="mb-8">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">Transfer Intelligence Dashboard</h1>
+          <p className="text-xl text-gray-500">Real-time insights for Mark Goldbridge's broadcast content</p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="space-y-6">
+        {/* 2x2 Grid Layout */}
+        <div className="grid grid-cols-2 gap-6 max-w-4xl">
           {/* Active Transfer Reports */}
-          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
+          <Card className="bg-white rounded-3xl border-2 border-red-100 shadow-sm hover:shadow-md transition-shadow p-6">
+            <CardHeader className="pb-4 px-0 pt-0">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-medium text-gray-700">Active Transfer Reports</CardTitle>
-                <FileText className="h-5 w-5 text-red-500" />
+                <CardTitle className="text-xl font-medium text-gray-600">Active Transfer Reports</CardTitle>
+                <FileText className="h-6 w-6 text-red-500" />
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-bold text-gray-900 mb-2">{reports.length}</div>
-              <p className="text-sm text-green-600">+2 since yesterday</p>
+            <CardContent className="px-0 pb-0">
+              <div className="text-6xl font-bold text-gray-900 mb-3">12</div>
+              <p className="text-base text-green-500 font-medium">+2 since yesterday</p>
             </CardContent>
           </Card>
 
           {/* High Priority Targets */}
-          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
+          <Card className="bg-white rounded-3xl border-2 border-red-100 shadow-sm hover:shadow-md transition-shadow p-6">
+            <CardHeader className="pb-4 px-0 pt-0">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-medium text-gray-700">High Priority Targets</CardTitle>
-                <TrendingUp className="h-5 w-5 text-red-500" />
+                <CardTitle className="text-xl font-medium text-gray-600">High Priority Targets</CardTitle>
+                <TrendingUp className="h-6 w-6 text-red-500" />
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-bold text-gray-900 mb-2">{getHighPriorityTargets()}</div>
-              <p className="text-sm text-red-600">3 urgent updates</p>
+            <CardContent className="px-0 pb-0">
+              <div className="text-6xl font-bold text-gray-900 mb-3">5</div>
+              <p className="text-base text-red-500 font-medium">3 urgent updates</p>
             </CardContent>
           </Card>
 
           {/* YouTube Content */}
-          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
+          <Card className="bg-white rounded-3xl border-2 border-red-100 shadow-sm hover:shadow-md transition-shadow p-6">
+            <CardHeader className="pb-4 px-0 pt-0">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-medium text-gray-700">YouTube Content</CardTitle>
-                <Youtube className="h-5 w-5 text-red-500" />
+                <CardTitle className="text-xl font-medium text-gray-600">YouTube Content</CardTitle>
+                <Youtube className="h-6 w-6 text-red-500" />
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-bold text-gray-900 mb-2">8</div>
-              <p className="text-sm text-gray-600">Ready for broadcast</p>
+            <CardContent className="px-0 pb-0">
+              <div className="text-6xl font-bold text-gray-900 mb-3">8</div>
+              <p className="text-base text-gray-600 font-medium">Ready for broadcast</p>
             </CardContent>
           </Card>
 
           {/* Last Update */}
-          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
+          <Card className="bg-white rounded-3xl border-2 border-red-100 shadow-sm hover:shadow-md transition-shadow p-6">
+            <CardHeader className="pb-4 px-0 pt-0">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-medium text-gray-700">Last Update</CardTitle>
-                <Clock className="h-5 w-5 text-red-500" />
+                <CardTitle className="text-xl font-medium text-gray-600">Last Update</CardTitle>
+                <Clock className="h-6 w-6 text-red-500" />
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-bold text-gray-900 mb-2">2m</div>
-              <p className="text-sm text-green-600">Real-time sync active</p>
+            <CardContent className="px-0 pb-0">
+              <div className="text-6xl font-bold text-gray-900 mb-3">2m</div>
+              <p className="text-base text-green-500 font-medium">Real-time sync active</p>
             </CardContent>
           </Card>
         </div>
