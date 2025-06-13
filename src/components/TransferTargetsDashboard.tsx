@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Target, TrendingUp, Users, Clock } from "lucide-react";
+import { FileText, TrendingUp, Youtube, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -50,24 +50,6 @@ export function TransferTargetsDashboard() {
     ).length;
   };
 
-  const getAverageConfidence = () => {
-    if (reports.length === 0) return 0;
-    const total = reports.reduce((sum, report) => sum + (report.confidence || 0), 0);
-    return Math.round(total / reports.length);
-  };
-
-  const getActiveTargets = () => {
-    return reports.filter(report => 
-      report.transfer_likelihood?.toLowerCase() !== 'unlikely'
-    ).length;
-  };
-
-  const getRecentUpdates = () => {
-    // For demo purposes, showing a static number
-    // In real implementation, this would check timestamp
-    return 3;
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -77,114 +59,71 @@ export function TransferTargetsDashboard() {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Transfer Targets Dashboard</h1>
-        <p className="text-gray-600">Real-time intelligence on Manchester United transfer activity</p>
-      </div>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">Transfer Intelligence Dashboard</h1>
+          <p className="text-xl text-gray-600">Real-time insights for Mark Goldbridge's broadcast content</p>
+        </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        {/* Active Targets */}
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-red-600">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                Active Targets
-              </CardTitle>
-              <Target className="h-5 w-5 text-red-600" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-gray-900">
-                {getActiveTargets()}
+        {/* Stats Cards */}
+        <div className="space-y-6">
+          {/* Active Transfer Reports */}
+          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium text-gray-700">Active Transfer Reports</CardTitle>
+                <FileText className="h-5 w-5 text-red-500" />
               </div>
-              <p className="text-sm text-gray-500">
-                Players under consideration
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold text-gray-900 mb-2">{reports.length}</div>
+              <p className="text-sm text-green-600">+2 since yesterday</p>
+            </CardContent>
+          </Card>
 
-        {/* High Priority */}
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-orange-500">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                High Priority
-              </CardTitle>
-              <TrendingUp className="h-5 w-5 text-orange-500" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-gray-900">
-                {getHighPriorityTargets()}
+          {/* High Priority Targets */}
+          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium text-gray-700">High Priority Targets</CardTitle>
+                <TrendingUp className="h-5 w-5 text-red-500" />
               </div>
-              <p className="text-sm text-gray-500">
-                Urgent transfer opportunities
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold text-gray-900 mb-2">{getHighPriorityTargets()}</div>
+              <p className="text-sm text-red-600">3 urgent updates</p>
+            </CardContent>
+          </Card>
 
-        {/* Average Confidence */}
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-green-500">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                Avg Confidence
-              </CardTitle>
-              <Users className="h-5 w-5 text-green-500" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-gray-900">
-                {getAverageConfidence()}%
+          {/* YouTube Content */}
+          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium text-gray-700">YouTube Content</CardTitle>
+                <Youtube className="h-5 w-5 text-red-500" />
               </div>
-              <p className="text-sm text-gray-500">
-                Success probability
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold text-gray-900 mb-2">8</div>
+              <p className="text-sm text-gray-600">Ready for broadcast</p>
+            </CardContent>
+          </Card>
 
-        {/* Recent Updates */}
-        <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-blue-500">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                Recent Updates
-              </CardTitle>
-              <Clock className="h-5 w-5 text-blue-500" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-gray-900">
-                {getRecentUpdates()}
+          {/* Last Update */}
+          <Card className="bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium text-gray-700">Last Update</CardTitle>
+                <Clock className="h-5 w-5 text-red-500" />
               </div>
-              <p className="text-sm text-gray-500">
-                New reports today
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="text-center space-y-4">
-        <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors font-medium">
-            View All Reports
-          </button>
-          <button className="bg-white text-red-600 border border-red-600 px-6 py-3 rounded-lg hover:bg-red-50 transition-colors font-medium">
-            Add New Target
-          </button>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold text-gray-900 mb-2">2m</div>
+              <p className="text-sm text-green-600">Real-time sync active</p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
