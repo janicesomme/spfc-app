@@ -12,53 +12,32 @@ export type Database = {
       news_items: {
         Row: {
           category: string | null
-          content_preview: string | null
-          created_at: string | null
-          firecrawl_used: boolean | null
-          full_text: string | null
           id: string
-          quote: string | null
-          sentiment: string | null
+          image_url: string | null
+          published_at: string | null
           source: string | null
           summary: string | null
-          timestamp: string | null
           title: string | null
-          tone: string | null
-          topic: string | null
           url: string | null
         }
         Insert: {
           category?: string | null
-          content_preview?: string | null
-          created_at?: string | null
-          firecrawl_used?: boolean | null
-          full_text?: string | null
           id?: string
-          quote?: string | null
-          sentiment?: string | null
+          image_url?: string | null
+          published_at?: string | null
           source?: string | null
           summary?: string | null
-          timestamp?: string | null
           title?: string | null
-          tone?: string | null
-          topic?: string | null
           url?: string | null
         }
         Update: {
           category?: string | null
-          content_preview?: string | null
-          created_at?: string | null
-          firecrawl_used?: boolean | null
-          full_text?: string | null
           id?: string
-          quote?: string | null
-          sentiment?: string | null
+          image_url?: string | null
+          published_at?: string | null
           source?: string | null
           summary?: string | null
-          timestamp?: string | null
           title?: string | null
-          tone?: string | null
-          topic?: string | null
           url?: string | null
         }
         Relationships: []
