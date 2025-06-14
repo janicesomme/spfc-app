@@ -1,28 +1,28 @@
 
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Newspaper, Repeat, Video } from "lucide-react";
+import { youtube } from "lucide-react";
 
 const tabs = [
   {
     label: "Home",
     path: "/",
-    icon: Home,
+    icon: youtube,
   },
   {
     label: "News",
     path: "/news",
-    icon: Newspaper,
+    icon: youtube,
   },
   {
     label: "Transfers",
     path: "/transfer-reports",
-    icon: Repeat,
+    icon: youtube,
   },
   {
     label: "TUS Videos",
     path: "/youtube",
-    icon: Video,
+    icon: youtube,
   },
 ];
 
