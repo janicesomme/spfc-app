@@ -160,9 +160,9 @@ function NewsPreviewBlock() {
                   </div>
                 </div>
               </a>
-              {/* Divider line between featured and secondary stories - exactly 75% width */}
-              <div className="w-[75%] mx-auto">
-                <div className="h-[1.7px] bg-[#e4e4e7] rounded-full my-[6px]" />
+              {/* Divider line under first/featured story, now matches ALL OTHERS */}
+              <div className="px-1">
+                <div className="w-full h-[1.7px] bg-[#e4e4e7] rounded-full mx-2 my-[2px]" />
               </div>
             </>
           )}
