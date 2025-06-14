@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { PageTabsNav } from "./PageTabsNav";
+import BottomNavBar from "./BottomNavBar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,14 +8,12 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col">
-      {/* Red tab navigation now appears on every page, above the other content */}
-      <div className="pt-6 px-6">
-        <PageTabsNav />
-      </div>
-      <main className="flex-1 p-6">
+    <div className="min-h-screen flex flex-col bg-[#0D0D0D] w-full relative">
+      {/* Remove PageTabsNav (top nav) */}
+      <main className="flex-1 pb-16 px-0 w-full">
         {children}
       </main>
+      <BottomNavBar />
     </div>
   );
 }
