@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Play, Youtube } from "lucide-react";
@@ -215,7 +214,7 @@ export function YouTubeTable() {
                   )}
                 </div>
                 <div className="flex flex-col justify-center items-center px-1">
-                  <div className="text-sm sm:text-base font-semibold text-gray-900 text-center break-words leading-tight line-clamp-2">
+                  <div className="text-sm sm:text-base font-semibold text-white text-center break-words leading-tight line-clamp-2">
                     {video.title}
                   </div>
                 </div>
@@ -232,4 +231,3 @@ export function YouTubeTable() {
     </div>
   );
 }
-
