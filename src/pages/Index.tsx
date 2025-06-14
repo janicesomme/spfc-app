@@ -160,6 +160,10 @@ function NewsPreviewBlock() {
               </div>
             </a>
           )}
+          {/* Divider line between featured and secondary stories */}
+          <div className="w-[75%] mx-auto">
+            <div className="h-[1.7px] bg-[#e4e4e7] rounded-full my-[6px]" />
+          </div>
           {/* --- Secondary Stories --- */}
           <div className="flex flex-col mt-2 gap-0">
             {articles.slice(1).map((item, idx, arr) => (
