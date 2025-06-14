@@ -71,6 +71,8 @@ export default function News() {
 
   return (
     <div className="w-full max-w-md mx-auto py-4 bg-white min-h-screen">
+      {/* Reduce top spacing after nav: */}
+      <div className="h-2" aria-hidden="true" />
       {/* Top Story */}
       <a
         href={topStory?.url || "#"}
@@ -91,10 +93,17 @@ export default function News() {
           />
         )}
         <div className="px-4 pt-4 pb-2">
-          <div className="text-xl font-bold leading-snug text-gray-900 mb-2" style={{ lineClamp: 3, display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden", WebkitLineClamp: 3 }}>
+          <div
+            className="text-xl font-bold leading-snug text-gray-900 mb-2"
+            style={{
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              WebkitLineClamp: 3
+            }}>
             {topStory?.title}
           </div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+          <div className="flex items-center gap-2 text-xs mt-1" style={{ color: "#A0A0A0" }}>
             <span className="truncate max-w-[130px]">{topStory?.source || "News"}</span>
             <span>&middot;</span>
             <span>{getRelativeTime(topStory?.published_at)}</span>
@@ -127,18 +136,18 @@ export default function News() {
             )}
             <div className="flex-1 min-w-0 flex flex-col justify-center">
               <div
-                className="font-medium text-sm text-gray-900 mb-1 leading-tight line-clamp-2"
+                className="font-medium text-sm text-gray-900 mb-1 leading-tight"
                 style={{
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
+                  display: '-webkit-box',
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
                   WebkitLineClamp: 2,
-                  fontSize: "0.95rem"
+                  fontSize: "0.97rem"
                 }}
               >
                 {item.title}
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 text-xs mt-0.5" style={{ color: "#A0A0A0" }}>
                 <span className="truncate max-w-[90px]">{item.source || "News"}</span>
                 <span>&middot;</span>
                 <span>{getRelativeTime(item.published_at)}</span>

@@ -13,28 +13,26 @@ export function PageTabsNav() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="flex justify-center gap-2 mt-1 mb-8">
+    <nav className="flex justify-center gap-2 mt-1 mb-1"> {/* Decreased mb-1 for less bottom spacing */}
       {tabs.map((tab) => {
         const isActive =
-          tab.path === "/"
-            ? pathname === "/"
-            : pathname.startsWith(tab.path);
+          tab.path === "/" ? pathname === "/" : pathname.startsWith(tab.path);
         return (
           <Link
             key={tab.path}
             to={tab.path}
             className={[
-              "px-6 py-2 rounded-full font-semibold text-base transition",
+              "px-5 py-1.5 rounded-[12px] font-semibold text-base transition select-none",
               isActive
-                ? "bg-red-600 text-white shadow"
-                : "bg-red-400/85 text-white hover:bg-red-500",
-              "hover:scale-[1.05] active:scale-95",
+                ? "bg-[#C8102E] text-white shadow"
+                : "bg-[#F0F0F0] text-[#333333] hover:bg-[#E0E0E0]",
+              "hover:scale-[1.04] active:scale-95",
             ].join(" ")}
             aria-current={isActive ? "page" : undefined}
             tabIndex={0}
             style={{
               marginRight: "4px",
-              letterSpacing: "0.02em",
+              letterSpacing: "0.01em",
               minWidth: 0,
               whiteSpace: "nowrap",
             }}
