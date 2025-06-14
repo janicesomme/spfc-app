@@ -42,6 +42,7 @@ export type Database = {
       transfer_reports: {
         Row: {
           ai_reasoning: string | null
+          club: string | null
           club_willingness: string | null
           confidence: number | null
           executive_summary: string | null
@@ -65,6 +66,7 @@ export type Database = {
         }
         Insert: {
           ai_reasoning?: string | null
+          club?: string | null
           club_willingness?: string | null
           confidence?: number | null
           executive_summary?: string | null
@@ -88,6 +90,7 @@ export type Database = {
         }
         Update: {
           ai_reasoning?: string | null
+          club?: string | null
           club_willingness?: string | null
           confidence?: number | null
           executive_summary?: string | null
