@@ -2,9 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { ExternalLink, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Play } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface YouTubeVideo {
@@ -23,16 +22,14 @@ export function YouTubeTable() {
 
   useEffect(() => {
     fetchVideos();
-    
+
     // Set up real-time subscription
     const channel = supabase
       .channel('youtube-changes')
-      .on('postgres_changes', 
+      .on('postgres_changes',
         { event: '*', schema: 'public', table: 'youtube_videos' },
         (payload) => {
-          console.log('YouTube change:', payload);
           fetchVideos();
-          
           if (payload.eventType === 'INSERT') {
             toast({
               title: "New YouTube Content",
@@ -59,7 +56,6 @@ export function YouTubeTable() {
       if (error) throw error;
       setVideos(data || []);
     } catch (error) {
-      console.error('Error fetching YouTube videos:', error);
       toast({
         title: "Error",
         description: "Failed to fetch YouTube videos",
@@ -94,11 +90,8 @@ export function YouTubeTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-1/2">Video</TableHead>
-              <TableHead className="w-1/2">Title</TableHead>
-              <TableHead className="hidden md:table-cell">Clickbait Blurb</TableHead>
-              <TableHead className="hidden md:table-cell">Published</TableHead>
-              <TableHead className="hidden md:table-cell">Actions</TableHead>
+              <TableHead className="w-3/5">Video</TableHead>
+              <TableHead className="w-2/5">Title</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -106,68 +99,49 @@ export function YouTubeTable() {
               <TableRow
                 key={video.id}
                 className="hover:bg-red-50"
-                style={{ height: '160px' /* About double the usual row height */ }}
+                style={{ height: '192px' /* Make row even taller */ }}
               >
-                {/* Video thumbnail: half the row, extra tall */}
-                <TableCell className="align-top p-4 w-1/2">
+                {/* Video thumbnail, bigger with 16:9 ratio */}
+                <TableCell className="align-middle p-4 w-3/5">
                   <div className="flex items-center h-full">
-                    {video.thumbnail_url ? (
-                      <img 
-                        src={video.thumbnail_url} 
-                        alt={video.title}
-                        className="w-full max-w-[320px] h-[120px] rounded-lg object-cover shadow-lg"
-                        style={{
-                          // Ensures it takes up half the row, visually
-                          minWidth: '160px',
-                          maxWidth: '320px',
-                          minHeight: '120px',
-                          aspectRatio: '16/7', // Custom wide aspect
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full max-w-[320px] h-[120px] bg-gray-200 rounded-lg flex items-center justify-center">
-                        <Play className="h-8 w-8 text-gray-400" />
-                      </div>
-                    )}
+                    <div
+                      className="relative w-full max-w-[480px] mx-auto rounded-lg shadow-lg overflow-hidden bg-gray-200"
+                      style={{
+                        aspectRatio: '16/9',
+                        minWidth: '280px',
+                        maxWidth: '480px',
+                        minHeight: '160px',
+                        backgroundColor: '#e5e7eb', // tailwind gray-200
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {video.thumbnail_url ? (
+                        <img
+                          src={video.thumbnail_url}
+                          alt={video.title}
+                          className="w-full h-full object-cover"
+                          style={{ aspectRatio: '16/9', minHeight: 0, minWidth: 0 }}
+                          onClick={() => window.open(video.video_url, '_blank')}
+                          tabIndex={0}
+                          role="button"
+                          aria-label={`Play video: ${video.title}`}
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full">
+                          <Play className="h-12 w-12 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </TableCell>
-                {/* Title, wrap in other half */}
-                <TableCell className="align-top p-4 w-1/2">
-                  <div className="flex flex-col h-full justify-between">
-                    <div className="text-lg font-semibold text-gray-900 mb-2 break-words leading-snug">
+                {/* Title, in the right half */}
+                <TableCell className="align-middle p-4 w-2/5">
+                  <div className="flex flex-col h-full justify-center">
+                    <div className="text-xl font-semibold text-gray-900 mb-2 break-words leading-tight">
                       {video.title}
                     </div>
-                    <div className="md:hidden text-xs text-gray-500 mt-2 truncate">{video.clickbait_blurb}</div>
-                    <div className="md:hidden text-xs text-gray-400 mt-1">{video.publish_date ? new Date(video.publish_date).toLocaleDateString() : 'Not published'}</div>
-                    <div className="md:hidden mt-3">
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
-                        onClick={() => window.open(video.video_url, '_blank')}
-                      >
-                        <ExternalLink className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </div>
-                </TableCell>
-                {/* Desktop columns */}
-                <TableCell className="hidden md:table-cell align-top p-4 max-w-xs">
-                  <div className="text-sm text-gray-600 break-words">
-                    {video.clickbait_blurb}
-                  </div>
-                </TableCell>
-                <TableCell className="hidden md:table-cell align-top p-4">
-                  {video.publish_date ? new Date(video.publish_date).toLocaleDateString() : 'Not published'}
-                </TableCell>
-                <TableCell className="hidden md:table-cell align-top p-4">
-                  <div className="flex space-x-2">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={() => window.open(video.video_url, '_blank')}
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
