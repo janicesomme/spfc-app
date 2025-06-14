@@ -172,7 +172,7 @@ export function YouTubeTable() {
             tabIndex={0}
             aria-label={`Play video: ${video.title}`}
             style={{
-              marginBottom: "2px",
+              marginBottom: "0", // Reduce the vertical gap to be as close as possible
             }}
           >
             <Card
