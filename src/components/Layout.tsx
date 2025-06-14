@@ -1,6 +1,6 @@
 
 import React from 'react';
-import BottomNavBar from "./BottomNavBar";
+import TopNavTabs from "./TopNavTabs";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,11 +9,11 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-[#0D0D0D] w-full relative">
-      {/* Remove PageTabsNav (top nav) */}
-      <main className="flex-1 pb-16 px-0 w-full">
+      <TopNavTabs />
+      <main className="flex-1 pb-0 px-0 w-full">
         {children}
       </main>
-      <BottomNavBar />
+      {/* Removed BottomNavBar, replaced by TopNavTabs */}
     </div>
   );
 }

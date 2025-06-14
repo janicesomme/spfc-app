@@ -83,17 +83,26 @@ export default function News() {
         tabIndex={0}
         aria-label={topStory?.title ?? "Top story"}
       >
-        <div className="rounded-[12px] overflow-hidden bg-[#1A1A1A] shadow-sm mb-2">
+        <div className="rounded-[12px] overflow-hidden bg-[#1A1A1A] shadow-md mb-3 relative transition-all">
           {topStory?.image_url && (
-            <img
-              src={topStory.image_url}
-              alt={topStory.title || "Top story"}
-              className="w-full h-56 sm:h-64 object-cover bg-[#111]"
+            <div
+              className="w-full flex justify-center items-center bg-[#111]"
               style={{
                 borderBottom: "1px solid #181818",
-                aspectRatio: "16/9",
+                aspectRatio: "1 / 1",
+                minHeight: 220,
+                maxHeight: 340,
+                overflow: "hidden",
+                display: "flex",
               }}
-            />
+            >
+              <img
+                src={topStory.image_url}
+                alt={topStory.title || "Top story"}
+                className="object-cover w-full h-full min-h-[220px] max-h-[340px] rounded-[8px]"
+                style={{ borderRadius: 8, objectFit: "cover", aspectRatio: "1/1" }}
+              />
+            </div>
           )}
           <div className="px-4 pt-3 pb-3">
             <div
@@ -113,11 +122,15 @@ export default function News() {
               <span>{getRelativeTime(topStory?.published_at)}</span>
             </div>
           </div>
+          {/* Soft Divider/Drop Shadow below feature */}
+          <div className="absolute left-0 right-0 -bottom-3 h-6 flex justify-center pointer-events-none">
+            <div className="w-[68%] h-2 rounded-full blur-md opacity-65 bg-[#07070C]" style={{ filter: "blur(12px)", boxShadow: "0 6px 32px 2px #15131A" }} />
+          </div>
         </div>
       </a>
 
       {/* Article list */}
-      <div className="mt-2 space-y-2 px-3 pb-24"> {/* Bottom padding for bottom bar */}
+      <div className="mt-2 space-y-2 px-3 pb-24">
         {otherArticles.map((item) => (
           <a
             href={item.url || "#"}
@@ -130,17 +143,26 @@ export default function News() {
             style={{
               boxShadow: "0 1px 4px 0 rgba(0,0,0,.065)",
               alignItems: "flex-start",
+              paddingTop: 8, // Reduce padding: original was ~12
+              paddingBottom: 8, // Reduce padding: original was ~12
             }}
           >
             {item.image_url ? (
               <img
                 src={item.image_url}
                 alt={item.title || "Article"}
-                className="w-16 h-16 object-cover rounded-lg bg-[#111] flex-shrink-0"
+                className="object-cover w-16 h-16 rounded-[8px] bg-[#111] flex-shrink-0"
+                style={{
+                  width: 64,
+                  height: 64,
+                  aspectRatio: "1/1",
+                  borderRadius: 8,
+                  objectFit: "cover",
+                }}
               />
             ) : (
-              <div className="w-16 h-16 flex items-center justify-center bg-[#161616] rounded-lg text-gray-700">
-                <ExternalLink className="w-8 h-8" />
+              <div className="w-16 h-16 flex items-center justify-center bg-[#161616] rounded-[8px] text-gray-700">
+                <ExternalLink className="w-7 h-7" />
               </div>
             )}
             <div className="flex-1 min-w-0 flex flex-col justify-center">
@@ -161,7 +183,14 @@ export default function News() {
                 <span>{getRelativeTime(item.published_at)}</span>
               </div>
             </div>
-            <ExternalLink className="w-4 h-4 text-[#444] group-hover:text-[#EAEAEA] ml-2 flex-shrink-0" />
+            <ExternalLink
+              className="w-3.5 h-3.5 text-[#444] group-hover:text-[#EAEAEA] ml-2 flex-shrink-0"
+              style={{
+                verticalAlign: "middle",
+                marginTop: 3,
+                marginLeft: 8,
+              }}
+            />
           </a>
         ))}
       </div>
