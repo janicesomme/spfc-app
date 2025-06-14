@@ -17,7 +17,7 @@ function HomeHeader() {
       <span className="pl-4 pr-1 flex items-center">
         <OfficialTUSLogo size={58} />
       </span>
-      <div className="flex flex-col justify-center flex-1 min-w-0 items-center ml-[-40px]">
+      <div className="flex flex-col justify-center flex-1 min-w-0 items-center ml-[-80px]">
         <span
           className="font-semibold tracking-tight"
           style={{
