@@ -92,7 +92,8 @@ export function HotOMeterList() {
             PLAYER
           </span>
         </div>
-        <div className="flex-[1.35] flex flex-col items-start min-w-0">
+        <div className="flex-[1.35] flex flex-col items-start pl-10 min-w-0">
+          {/* Increased pl-10 for CLUB heading shift right */}
           <span
             className="text-white uppercase"
             style={{
@@ -203,7 +204,8 @@ export function HotOMeterList() {
                 </span>
               </div>
               {/* Club */}
-              <div className="flex-[1.35] min-w-0 flex flex-col justify-center">
+              <div className="flex-[1.35] min-w-0 flex flex-col justify-center pl-1">
+                {/* Moved club name further left with pl-1 */}
                 <span
                   className="block text-[12px] text-white/85 font-semibold capitalize truncate"
                   style={{
@@ -237,4 +239,4 @@ export function HotOMeterList() {
   );
 }
 
-// This file is now 200+ lines long and should be split into smaller components soon for maintainability!
+// This file is now 240+ lines long! For maintainability, you should refactor it into smaller components soon.
