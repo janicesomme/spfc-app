@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { TUSLogo } from "@/components/TUSLogo";
 import { HomeBottomNav } from "@/components/HomeBottomNav";
@@ -382,15 +381,21 @@ export default function Index() {
       {/* News */}
       <NewsPreviewBlock />
       {/* Section Separator: News > Hot-O-Meter */}
-      <Separator className="bg-white/75 mt-4 mb-1.5 rounded-full" style={{ height: 1.5 }} />
+      <div className="w-[75%] mx-auto">
+        <Separator className="bg-white/75 mt-4 mb-1.5 rounded-full" style={{ height: 1.5 }} />
+      </div>
       {/* Hot-O-Meter Section */}
       <HotOMeterTeaserCard />
       {/* Section Separator: Hot-O-Meter > TUS Videos */}
-      <Separator className="bg-white/75 mt-3 mb-1.5 rounded-full" style={{ height: 1.5 }} />
+      <div className="w-[75%] mx-auto">
+        <Separator className="bg-white/75 mt-3 mb-1.5 rounded-full" style={{ height: 1.5 }} />
+      </div>
       {/* TUS Videos */}
       <YouTubePreviewBlock />
       {/* Section Separator: TUS Videos > Bottom nav */}
-      <Separator className="bg-white/75 mt-4 mb-2 rounded-full" style={{ height: 1.5 }} />
+      <div className="w-[75%] mx-auto">
+        <Separator className="bg-white/75 mt-4 mb-2 rounded-full" style={{ height: 1.5 }} />
+      </div>
       {/* Bottom nav */}
       <HomeBottomNav />
     </div>
