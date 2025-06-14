@@ -112,7 +112,7 @@ export function YouTubeTable() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-2 sm:gap-4">
+    <div className="flex flex-col items-center gap-1 sm:gap-2">
       {/* --- Date Filter + Watch on YouTube row --- */}
       <div className="w-full flex flex-col items-center gap-2 mb-4">
         <div className="flex flex-col sm:flex-row gap-2 items-center justify-center">
