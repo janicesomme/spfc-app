@@ -10,15 +10,13 @@ import { useToast } from "@/hooks/use-toast";
 
 interface NewsItem {
   id: string;
-  title: string;
-  source: string;
-  category: string;
-  sentiment: string;
-  tone: string;
-  topic: string;
-  url: string;
-  created_at: string;
-  content_preview: string;
+  title: string | null;
+  source: string | null;
+  category: string | null;
+  summary: string | null;
+  image_url: string | null;
+  published_at: string | null;
+  url: string | null;
 }
 
 export function NewsTable() {
@@ -28,20 +26,21 @@ export function NewsTable() {
 
   useEffect(() => {
     fetchNews();
-    
+
     // Set up real-time subscription
     const channel = supabase
       .channel('news-changes')
-      .on('postgres_changes', 
+      .on('postgres_changes',
         { event: '*', schema: 'public', table: 'news_items' },
         (payload) => {
-          console.log('News change:', payload);
+          // You can uncomment console.log for debugging:
+          // console.log('News change:', payload);
           fetchNews();
-          
+
           if (payload.eventType === 'INSERT') {
             toast({
               title: "Breaking News",
-              description: `New ${payload.new.category} news from ${payload.new.source}`,
+              description: `New ${payload.new.category || "General"} news from ${payload.new.source || "Unknown"}`,
             });
           }
         }
@@ -54,37 +53,31 @@ export function NewsTable() {
   }, [toast]);
 
   const fetchNews = async () => {
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from('news_items')
-        .select('*')
-        .order('created_at', { ascending: false })
+        .select('id,title,source,category,summary,image_url,published_at,url')
+        .order('published_at', { ascending: false })
         .limit(15);
 
       if (error) throw error;
       setNews(data || []);
     } catch (error) {
-      console.error('Error fetching news:', error);
+      // console.error('Error fetching news:', error);
       toast({
         title: "Error",
         description: "Failed to fetch news items",
         variant: "destructive",
       });
+      setNews([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const getSentimentColor = (sentiment: string) => {
-    switch (sentiment?.toLowerCase()) {
-      case 'positive': return 'bg-green-100 text-green-800';
-      case 'negative': return 'bg-red-100 text-red-800';
-      case 'neutral': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-blue-100 text-blue-800';
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
+  // We'll just color category badges, skip 'sentiment'
+  const getCategoryColor = (category: string | null | undefined) => {
     switch (category?.toLowerCase()) {
       case 'transfer': return 'bg-purple-100 text-purple-800';
       case 'manager': return 'bg-orange-100 text-orange-800';
@@ -93,6 +86,22 @@ export function NewsTable() {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  // Format a friendly published time string
+  function getRelativeTime(dateString: string | null): string {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+      if (seconds < 60) return `${seconds}s ago`;
+      if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+      if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+      return date.toLocaleDateString();
+    } catch {
+      return "";
+    }
+  }
 
   if (loading) {
     return (
@@ -121,8 +130,7 @@ export function NewsTable() {
               <TableHead>Title</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>Category</TableHead>
-              <TableHead>Sentiment</TableHead>
-              <TableHead>Topic</TableHead>
+              <TableHead>Summary</TableHead>
               <TableHead>Time</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
@@ -131,33 +139,27 @@ export function NewsTable() {
             {news.map((item) => (
               <TableRow key={item.id} className="hover:bg-red-50">
                 <TableCell className="font-medium max-w-md">
-                  <div className="truncate" title={item.title}>
-                    {item.title}
+                  <div className="truncate" title={item.title || undefined}>
+                    {item.title || <span className="italic text-gray-400">No title</span>}
                   </div>
-                  {item.content_preview && (
-                    <div className="text-sm text-gray-500 truncate mt-1">
-                      {item.content_preview}
-                    </div>
-                  )}
                 </TableCell>
-                <TableCell>{item.source}</TableCell>
+                <TableCell>{item.source || <span className="italic text-gray-400">Unknown</span>}</TableCell>
                 <TableCell>
                   <Badge className={getCategoryColor(item.category)}>
-                    {item.category}
+                    {item.category || "General"}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Badge className={getSentimentColor(item.sentiment)}>
-                    {item.sentiment}
-                  </Badge>
+                  <div className="truncate max-w-xs text-xs text-gray-500">
+                    {item.summary ? item.summary : <span className="italic text-gray-400">–</span>}
+                  </div>
                 </TableCell>
-                <TableCell className="max-w-xs truncate">{item.topic}</TableCell>
-                <TableCell>{new Date(item.created_at).toLocaleTimeString()}</TableCell>
+                <TableCell>{getRelativeTime(item.published_at)}</TableCell>
                 <TableCell>
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="sm"
-                    onClick={() => window.open(item.url, '_blank')}
+                    onClick={() => item.url && window.open(item.url, '_blank')}
                   >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
