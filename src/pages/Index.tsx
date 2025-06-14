@@ -18,7 +18,7 @@ function HomeHeader() {
       <span className="pl-4 pr-3 flex items-center">
         <OfficialTUSLogo size={58} />
       </span>
-      <div className="flex flex-col justify-center flex-1 min-w-0">
+      <div className="flex flex-col justify-center flex-1 min-w-0 items-center">
         <span
           className="font-semibold tracking-tight"
           style={{
@@ -34,7 +34,7 @@ function HomeHeader() {
           The United Stand
         </span>
         <span
-          className="mt-[2px] text-[1.09rem] font-normal leading-normal"
+          className="mt-1 text-[1.01rem] font-normal leading-normal text-center"
           style={{
             color: "#FFD700",
             fontFamily: "Inter, system-ui, sans-serif",
@@ -43,9 +43,12 @@ function HomeHeader() {
             opacity: 1,
             lineHeight: 1.22,
             textTransform: "none",
+            marginTop: "8px",
+            display: "block",
+            width: "100%",
           }}
         >
-          Your latest news and transfer news, exactly how you want it.
+          Your latest news and transfer news...
         </span>
       </div>
     </header>
