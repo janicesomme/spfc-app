@@ -1,14 +1,13 @@
 
 import React, { useEffect, useState } from "react";
 import { TUSLogo } from "@/components/TUSLogo";
-import { HeadlineBlock } from "@/components/HeadlineBlock";
 import { HomeBottomNav } from "@/components/HomeBottomNav";
 import { ExternalLink, Play } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+// ---------- News Section ----------
 function NewsPreviewBlock() {
   const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,34 +46,32 @@ function NewsPreviewBlock() {
   }
 
   return (
-    <section className="w-full pt-2 pb-2 px-2">
-      <div className="flex items-baseline justify-between mb-2 px-1">
-        <span className="text-white font-bold text-[1.1rem] tracking-wide">
-          Latest Headlines
+    <section className="w-full pt-2 pb-1 px-0">
+      <div className="flex items-baseline justify-between mb-2 px-4">
+        <span className="text-white font-black text-xl tracking-wide select-none" style={{ letterSpacing: "0.04em" }}>
+          News
         </span>
       </div>
       {loading ? (
-        <div className="w-full flex items-center justify-center h-20">
-          <span className="text-gray-200 font-semibold text-base animate-pulse">
-            Loading...
-          </span>
+        <div className="w-full flex items-center justify-center h-16">
+          <span className="text-gray-200 font-semibold animate-pulse">Loading...</span>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 px-2">
           {articles.map((item) => (
             <a
               key={item.id}
               href={item.url ?? "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl bg-[#111]/80 border border-white/15 px-2 py-2 hover:bg-[#212]/90 transition group"
+              className="flex items-center gap-3 rounded-lg bg-[#111]/90 border border-white/10 px-2 py-2 hover:bg-[#222]/90 transition group"
               tabIndex={0}
             >
               {item.image_url ? (
                 <img
                   src={item.image_url}
                   alt=""
-                  className="w-12 h-12 object-cover rounded-md flex-shrink-0 border border-white/40 shadow-sm"
+                  className="w-12 h-12 object-cover rounded-md border border-white/30 shadow-sm"
                   loading="lazy"
                 />
               ) : (
@@ -83,14 +80,12 @@ function NewsPreviewBlock() {
                 </div>
               )}
               <div className="flex-1 min-w-0 flex flex-col">
-                <div className="font-semibold text-white text-[15px] truncate group-hover:underline">
+                <div className="font-semibold text-white text-[16px] truncate group-hover:underline">
                   {item.title ?? <span className="italic text-gray-400">No title</span>}
                 </div>
-                <div className="flex gap-2 items-center mt-0.5">
-                  <span className="text-xs text-gray-300 tracking-wide uppercase font-bold">
-                    {item.source ?? "Unknown"}
-                  </span>
-                  <span className="text-xs text-gray-400 font-normal">{getRelativeTime(item.published_at)}</span>
+                <div className="flex gap-2 items-center mt-1">
+                  <span className="text-xs text-gray-300 uppercase font-bold tracking-wider">{item.source ?? "Unknown"}</span>
+                  <span className="text-xs text-gray-400">{getRelativeTime(item.published_at)}</span>
                 </div>
               </div>
               <ExternalLink className="w-4 h-4 opacity-70 ml-1 group-hover:opacity-100" />
@@ -98,45 +93,57 @@ function NewsPreviewBlock() {
           ))}
         </div>
       )}
-      <div className="flex justify-end mt-2 mr-1">
+      <div className="flex justify-between mt-2 px-4">
+        <span></span>
         <Link
           to="/news"
-          className="text-[15px] font-bold text-[#FFD700] underline underline-offset-2 transition hover:text-white"
+          className="text-sm font-bold text-[#FFD700] underline underline-offset-2 transition hover:text-white"
         >
           More News →
         </Link>
       </div>
-      <Separator className="bg-white/80 mt-4 mb-2 rounded-full" />
+      <Separator className="bg-white/85 mt-4 mb-2 rounded-full" />
     </section>
   );
 }
 
+// ---------- Hot-O-Meter Teaser ----------
 function HotOMeterTeaserCard() {
-  // Visual avatar/question mark
   return (
-    <div
-      className="flex flex-col items-center justify-between rounded-2xl border-2 border-orange-500 bg-[#0e0e0f] h-full px-2 py-4 min-h-[140px] text-center shadow-sm"
-      style={{ minWidth: 0 }}
-    >
-      <div className="mb-1">
-        <span className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 via-red-500 to-yellow-300 text-white text-4xl font-bold shadow-lg mb-2">
+    <div className="w-full px-4">
+      <div
+        className="flex items-center justify-between rounded-2xl border-2 border-orange-500 bg-[#101012] px-3 py-4 shadow-sm"
+      >
+        {/* Left: circular question mark */}
+        <span className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 via-red-500 to-yellow-300 text-white text-3xl font-black shadow-lg mr-2 shrink-0">
           ?
         </span>
+        {/* Middle: heading/subtext */}
+        <div className="flex-1 flex flex-col items-start px-2 gap-0.5 min-w-0">
+          <span className="text-base font-black text-white tracking-wide leading-tight" style={{ letterSpacing: "0.04em" }}>
+            Hot-O-Meter
+          </span>
+          <span className="text-sm text-[#FFD700] font-medium leading-snug opacity-95" style={{ fontStyle: "italic" }}>
+            Who's moving up and who's falling off the Hot-O-Meter?
+          </span>
+        </div>
+        {/* Right: big #8 */}
+        <span className="block text-4xl text-white font-extrabold ml-3 shrink-0 drop-shadow" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>8</span>
       </div>
-      <span className="block text-4xl font-[900] text-white drop-shadow" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>8</span>
-      <span className="text-sm text-white mt-1.5 mb-2 font-semibold leading-tight px-1">
-        Who’s moving up and who’s falling off the Hot-O-Meter?
-      </span>
-      <Link
-        to="/hot-o-meter"
-        className="text-[13px] font-bold text-orange-400 underline underline-offset-2 transition hover:text-yellow-300"
-      >
-        View Hot-O-Meter →
-      </Link>
+      <div className="flex justify-end mt-1.5 mb-2">
+        <Link
+          to="/hot-o-meter"
+          className="text-sm font-bold text-red-500 underline underline-offset-2 transition hover:text-yellow-400"
+        >
+          View Hot-O-Meter →
+        </Link>
+      </div>
+      <Separator className="bg-white/85 mt-3 mb-1 rounded-full" />
     </div>
   );
 }
 
+// ---------- Videos Section ----------
 function YouTubePreviewBlock() {
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -160,26 +167,28 @@ function YouTubePreviewBlock() {
   }, []);
 
   return (
-    <section className="w-full px-1">
-      <span className="text-white font-bold text-[1.05rem] px-1 pt-0 pb-1 block mb-1">
-        Latest TUS Videos
-      </span>
+    <section className="w-full pb-1">
+      <div className="flex items-baseline justify-between mb-2 px-4">
+        <span className="text-white font-black text-[1.07rem] tracking-wide">
+          TUS Videos
+        </span>
+      </div>
       {loading ? (
-        <div className="h-28 flex items-center justify-center">
+        <div className="h-20 flex items-center justify-center">
           <span className="text-gray-200 animate-pulse">Loading...</span>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 px-2">
           {videos.map((vid) => (
             <a
               key={vid.id}
               href={vid.video_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg bg-[#101014] border border-white/12 px-2 py-2 focus:ring focus:ring-yellow-300 transition group"
+              className="flex items-center gap-3 rounded-xl bg-[#101014] border border-white/12 px-2 py-2 focus:ring focus:ring-yellow-300 transition group"
               tabIndex={0}
             >
-              <div className="relative w-[52px] h-[32px] rounded-md overflow-hidden bg-gray-700 flex-shrink-0">
+              <div className="relative w-[60px] h-[38px] rounded-md overflow-hidden bg-gray-700 flex-shrink-0">
                 {vid.thumbnail_url ? (
                   <img
                     src={vid.thumbnail_url}
@@ -193,51 +202,75 @@ function YouTubePreviewBlock() {
                   </div>
                 )}
                 <span className="absolute right-1 bottom-1 bg-[#C8102E] rounded-full p-[1.5px]">
-                  <Play className="w-3.5 h-3.5 text-white" />
+                  <Play className="w-4 h-4 text-white" />
                 </span>
               </div>
-              <span className="flex-1 text-xs font-semibold text-white/90 truncate group-hover:underline">
+              <span className="flex-1 text-[15px] font-semibold text-white/90 truncate group-hover:underline">
                 {vid.title}
               </span>
             </a>
           ))}
         </div>
       )}
+      <Separator className="bg-white/85 mt-4 mb-2 rounded-full" />
     </section>
   );
 }
 
+// -------------------- HEADER --------------------
+function HomeHeader() {
+  return (
+    <header className="w-full bg-[#C8102E] px-0 py-3 border-b border-white/10 shadow flex flex-row items-center">
+      <span className="pl-3">
+        <TUSLogo size={48} />
+      </span>
+      <div className="flex flex-col flex-1 pl-3">
+        <span
+          className="font-black"
+          style={{
+            color: "#fff",
+            fontSize: "1.75rem",
+            fontFamily: "Inter, system-ui, sans-serif",
+            letterSpacing: "0.06em",
+            lineHeight: 1.13,
+            marginBottom: "1px",
+          }}
+        >
+          THE UNITED STAND
+        </span>
+        <span
+          className="text-[1.01rem] font-medium"
+          style={{
+            color: "#FFD700",
+            fontFamily: "Inter, system-ui, sans-serif",
+            letterSpacing: "0.01em",
+            fontStyle: "italic",
+            opacity: 0.96,
+            marginTop: "-3px",
+          }}
+        >
+          Your latest news and transfer news, exactly how you want it.
+        </span>
+      </div>
+    </header>
+  );
+}
+
+// -------------------- PAGE ROOT --------------------
 export default function Index() {
   return (
     <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-[#C8102E] via-[#E5242A] to-[#FFD700] w-full max-w-md mx-auto pb-24">
-      {/* Top Banner Row */}
-      <header className="w-full flex items-center justify-between gap-3 bg-[#C8102E] py-3 px-3 border-b border-white/10 shadow" style={{ minHeight: 0 }}>
-        <TUSLogo size={46} />
-        <div className="flex-1 flex flex-col items-start justify-center ml-2">
-          <span className="sr-only">The United Stand</span>
-        </div>
-        {/* Just logo left for now */}
-      </header>
+      {/* Top Banner */}
+      <HomeHeader />
 
-      {/* Headline block */}
-      <HeadlineBlock />
-
-      {/* News block */}
+      {/* News */}
       <NewsPreviewBlock />
 
-      {/* Split section */}
-      <div className="flex flex-row items-stretch gap-2 px-2 pt-1 pb-3 min-h-[144px]">
-        {/* Hot-O-Meter */}
-        <div className="flex-1">
-          <HotOMeterTeaserCard />
-        </div>
-        {/* Vertical divider */}
-        <div className="w-[3px] rounded-full bg-white/70 my-3 mx-1" />
-        {/* Videos */}
-        <div className="flex-1 flex flex-col">
-          <YouTubePreviewBlock />
-        </div>
-      </div>
+      {/* Hot-O-Meter Section */}
+      <HotOMeterTeaserCard />
+
+      {/* TUS Videos */}
+      <YouTubePreviewBlock />
 
       {/* Bottom nav */}
       <HomeBottomNav />
