@@ -21,8 +21,6 @@ export function YouTubeTable() {
 
   useEffect(() => {
     fetchVideos();
-
-    // Set up real-time subscription
     const channel = supabase
       .channel('youtube-changes')
       .on('postgres_changes',
@@ -38,7 +36,6 @@ export function YouTubeTable() {
         }
       )
       .subscribe();
-
     return () => {
       supabase.removeChannel(channel);
     };
@@ -50,8 +47,7 @@ export function YouTubeTable() {
         .from('youtube_videos')
         .select('*')
         .order('publish_date', { ascending: false })
-        .limit(3); // show only 3 latest videos
-
+        .limit(3);
       if (error) throw error;
       setVideos(data || []);
     } catch (error) {
@@ -77,62 +73,61 @@ export function YouTubeTable() {
     );
   }
 
-  // Proper card height so 3 cards fit on most screens: ~160px per card plus spacing (e.g. 20px gap)
-  // Using 430px wide (matches nav/tab), 16:9 ratio -> height is 241px, but we can scale height a bit
-  // We'll set a fixed width of 100% (max 430px), and fix the aspect ratio
-  // Each card includes thumbnail (16:9), then a compact title block
+  // Set card width to 380px for mobile-like look, but max 430px for desktop. Height of aspect-[16/9] is width * 9/16.
+  // Surround each Card with an anchor tag for full card clickability and accessibility.
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-4">
       {videos.map((video) => (
-        <Card
+        <a
           key={video.id}
-          className="w-full max-w-[430px] shadow-md border border-red-500/70 animate-fade-in"
-          style={{
-            boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
-            borderWidth: '1.5px',
-            borderColor: '#dc2626',
-            borderRadius: '1rem',
-          }}
+          href={video.video_url.replaceAll('"', '')}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full max-w-[380px] sm:max-w-[430px] block focus:ring-2 focus:ring-red-400 rounded-xl transition"
+          tabIndex={0}
+          aria-label={`Play video: ${video.title}`}
         >
-          <CardContent className="flex flex-col px-2 pt-2 pb-3">
-            <div
-              className="w-full aspect-[16/9] bg-gray-200 rounded-t-lg overflow-hidden cursor-pointer flex items-center justify-center border border-gray-200"
-              style={{
-                minHeight: 0,
-                minWidth: 0,
-                // Make image height a bit smaller than max 16:9, so three fit more easily
-                maxHeight: "160px",
-              }}
-              onClick={() => window.open(video.video_url, '_blank')}
-              tabIndex={0}
-              role="button"
-              aria-label={`Play video: ${video.title}`}
-            >
-              {video.thumbnail_url ? (
-                <img
-                  src={video.thumbnail_url}
-                  alt={video.title}
-                  className="w-full h-full object-cover select-none"
-                  style={{
-                    minHeight: 0,
-                    minWidth: 0,
-                  }}
-                  draggable={false}
-                />
-              ) : (
-                <div className="flex items-center justify-center w-full h-full">
-                  <Play className="h-12 w-12 text-gray-400" />
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col justify-center items-center mt-2 px-1">
-              <div className="text-base font-semibold text-gray-900 text-center break-words leading-tight line-clamp-2">
-                {video.title}
+          <Card
+            className="w-full shadow-md border border-red-500/70 animate-fade-in rounded-xl"
+            style={{
+              boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
+              borderWidth: '1.5px',
+              borderColor: '#dc2626',
+              borderRadius: '1rem',
+            }}
+          >
+            <CardContent className="flex flex-col px-3 pt-3 pb-4">
+              <div
+                className="w-full aspect-[16/9] bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200 mb-2"
+                style={{
+                  minHeight: 0,
+                  minWidth: 0,
+                  width: "100%",
+                  height: "auto",
+                }}
+              >
+                {video.thumbnail_url ? (
+                  <img
+                    src={video.thumbnail_url}
+                    alt={video.title}
+                    className="object-contain w-full h-full max-h-full max-w-full transition"
+                    draggable={false}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full">
+                    <Play className="h-12 w-12 text-gray-400" />
+                  </div>
+                )}
               </div>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="flex flex-col justify-center items-center px-1">
+                <div className="text-base font-semibold text-gray-900 text-center break-words leading-tight line-clamp-2">
+                  {video.title}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </a>
       ))}
       {videos.length === 0 && (
         <div className="text-center py-8 text-gray-500">
