@@ -16,15 +16,6 @@ interface Player {
   image_url?: string | null;
 }
 
-function extractClub(info?: string | null): string {
-  if (!info) return "";
-  const clubMatch = info.match(/(?:Club:|at|from)\s*([A-Za-z0-9\s\.\-']+?)(?=\s|,|\.|\n|$)/i);
-  if (clubMatch) return clubMatch[1];
-  const alt = info.match(/from\s+([A-Za-z0-9\s\.\-']+)/i) || info.match(/at\s+([A-Za-z0-9\s\.\-']+)/i);
-  if (alt) return alt[1];
-  return "";
-}
-
 function getCardScore(confidence?: number | null): number {
   if (!confidence && confidence !== 0) return 1;
   const score = Math.round((Number(confidence) / 100) * 10);
@@ -52,9 +43,10 @@ export function HotOMeterList() {
 
   async function fetchPlayers() {
     setLoading(true);
+    // Select "club" directly instead of extracting from player_info
     const { data, error } = await supabase
       .from("transfer_reports")
-      .select("id, player_name, player_info, confidence, image_url")
+      .select("id, player_name, club, confidence, image_url")
       .order("confidence", { ascending: false });
     if (error) {
       setPlayers([]);
@@ -65,7 +57,7 @@ export function HotOMeterList() {
       .map(row => ({
         id: row.id,
         player_name: (row.player_name || "Unknown").toUpperCase(),
-        club: extractClub(row.player_info),
+        club: row.club || "",
         image_url: row.image_url,
         score: getCardScore(row.confidence),
       }))
@@ -247,3 +239,4 @@ export function HotOMeterList() {
 }
 
 // This file is now 200+ lines long and should be split into smaller components soon for maintainability!
+
