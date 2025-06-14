@@ -378,6 +378,10 @@ export default function Index() {
     <div className="relative min-h-screen flex flex-col bg-[#131418] w-full max-w-md mx-auto pb-24">
       {/* Top Banner */}
       <HomeHeader />
+      {/* --- Section Separator: Top divider above News --- */}
+      <div className="w-[75%] mx-auto">
+        <Separator className="bg-white/75 mt-4 mb-1.5 rounded-full" style={{ height: 1.5 }} />
+      </div>
       {/* News */}
       <NewsPreviewBlock />
       {/* Section Separator: News > Hot-O-Meter */}
