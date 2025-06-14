@@ -47,6 +47,7 @@ export type Database = {
           executive_summary: string | null
           final_summary: string | null
           id: number
+          image_url: string | null
           key_insights: string | null
           mark_take: string | null
           market_competition: string | null
@@ -69,6 +70,7 @@ export type Database = {
           executive_summary?: string | null
           final_summary?: string | null
           id?: number
+          image_url?: string | null
           key_insights?: string | null
           mark_take?: string | null
           market_competition?: string | null
@@ -91,6 +93,7 @@ export type Database = {
           executive_summary?: string | null
           final_summary?: string | null
           id?: number
+          image_url?: string | null
           key_insights?: string | null
           mark_take?: string | null
           market_competition?: string | null

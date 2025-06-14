@@ -4,17 +4,35 @@ import { HotOMeterList } from "@/components/HotOMeterList";
 
 export default function HotOMeter() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div
+      className="min-h-screen w-full"
+      style={{
+        background: "linear-gradient(180deg, #C8102E 0%, #FFD700 100%)",
+        minHeight: "100vh",
+      }}
+    >
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-black px-4 py-5 md:py-7 shadow-lg flex flex-col items-start rounded-b-3xl">
-        <div className="flex items-center space-x-3">
-          <span className="text-yellow-400 text-2xl md:text-3xl">🔥</span>
-          <span className="text-yellow-400 font-extrabold text-xl md:text-2xl tracking-wide">HOT-O-METER</span>
+      <header className="sticky top-0 z-10 w-full flex flex-col items-center py-7 px-4 md:py-10" style={{background: "transparent"}}>
+        <div className="flex items-center gap-2">
+          <span className="text-[2.2rem] md:text-4xl select-none">🔥</span>
+          <span
+            className="font-black uppercase"
+            style={{
+              color: "#FFD700",
+              fontSize: "2.1rem",
+              letterSpacing: 1.5,
+              textShadow: "0 2px 8px #914422",
+            }}
+          >
+            HOT-O-METER
+          </span>
         </div>
-        <span className="text-white mt-1 text-sm md:text-base font-medium opacity-90 ml-[35px]">Man United Transfers</span>
+        <span className="uppercase font-semibold mt-1 text-sm tracking-widest text-white/95 drop-shadow" style={{letterSpacing: "0.15em"}}>
+          man united transfers
+        </span>
       </header>
 
-      <main className="max-w-md mx-auto w-full px-2 py-0">
+      <main className="w-full px-2 mx-auto max-w-md">
         <HotOMeterList />
       </main>
     </div>
