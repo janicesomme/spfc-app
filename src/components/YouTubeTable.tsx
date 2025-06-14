@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Play } from "lucide-react";
@@ -102,11 +101,9 @@ export function YouTubeTable() {
             }}
           >
             <Card
-              className="w-full shadow-md border border-red-500/70 animate-fade-in rounded-xl"
+              className="w-full shadow-md border animate-fade-in rounded-xl"
               style={{
                 boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
-                borderWidth: '1.5px',
-                borderColor: '#dc2626',
                 borderRadius: '1rem',
                 background: "#fff",
               }}
