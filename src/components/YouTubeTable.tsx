@@ -18,6 +18,7 @@ export function YouTubeTable() {
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const [brokenImages, setBrokenImages] = useState<{ [id: string]: boolean }>({});
 
   useEffect(() => {
     fetchVideos();
@@ -49,7 +50,7 @@ export function YouTubeTable() {
         .order('publish_date', { ascending: false })
         .limit(3);
       if (error) throw error;
-      setVideos(data || []);
+      setVideos((data || []) as YouTubeVideo[]);
     } catch (error) {
       toast({
         title: "Error",
@@ -61,9 +62,11 @@ export function YouTubeTable() {
     }
   };
 
+  // Mobile: max-w-[370px], tighter gap-2; Desktop: max-w-[430px], gap-4
+  // Thumbnail: smaller (h-40) on mobile, larger (h-48) on desktop
   if (loading) {
     return (
-      <Card className="max-w-[430px] mx-auto w-full">
+      <Card className="max-w-[380px] mx-auto w-full">
         <CardContent>
           <div className="flex items-center justify-center h-32">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
@@ -73,62 +76,80 @@ export function YouTubeTable() {
     );
   }
 
-  // Set card width to 380px for mobile-like look, but max 430px for desktop. Height of aspect-[16/9] is width * 9/16.
-  // Surround each Card with an anchor tag for full card clickability and accessibility.
+  // Utility to strip quotes from url fields
+  const cleanUrl = (url: string | null | undefined) => {
+    if (!url) return "";
+    return url.replace(/"/g, '');
+  };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      {videos.map((video) => (
-        <a
-          key={video.id}
-          href={video.video_url.replaceAll('"', '')}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full max-w-[380px] sm:max-w-[430px] block focus:ring-2 focus:ring-red-400 rounded-xl transition"
-          tabIndex={0}
-          aria-label={`Play video: ${video.title}`}
-        >
-          <Card
-            className="w-full shadow-md border border-red-500/70 animate-fade-in rounded-xl"
+    <div className="flex flex-col items-center gap-2 sm:gap-4">
+      {videos.map((video) => {
+        const videoUrl = cleanUrl(video.video_url);
+        const thumbnailUrl = cleanUrl(video.thumbnail_url);
+
+        return (
+          <a
+            key={video.id}
+            href={videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full max-w-[370px] sm:max-w-[430px] block focus:ring-2 focus:ring-red-400 rounded-xl transition"
+            tabIndex={0}
+            aria-label={`Play video: ${video.title}`}
             style={{
-              boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
-              borderWidth: '1.5px',
-              borderColor: '#dc2626',
-              borderRadius: '1rem',
+              marginBottom: '2px'
             }}
           >
-            <CardContent className="flex flex-col px-3 pt-3 pb-4">
-              <div
-                className="w-full aspect-[16/9] bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200 mb-2"
-                style={{
-                  minHeight: 0,
-                  minWidth: 0,
-                  width: "100%",
-                  height: "auto",
-                }}
-              >
-                {video.thumbnail_url ? (
-                  <img
-                    src={video.thumbnail_url}
-                    alt={video.title}
-                    className="object-contain w-full h-full max-h-full max-w-full transition"
-                    draggable={false}
-                  />
-                ) : (
-                  <div className="flex items-center justify-center w-full h-full">
-                    <Play className="h-12 w-12 text-gray-400" />
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col justify-center items-center px-1">
-                <div className="text-base font-semibold text-gray-900 text-center break-words leading-tight line-clamp-2">
-                  {video.title}
+            <Card
+              className="w-full shadow-md border border-red-500/70 animate-fade-in rounded-xl"
+              style={{
+                boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
+                borderWidth: '1.5px',
+                borderColor: '#dc2626',
+                borderRadius: '1rem',
+                background: "#fff",
+              }}
+            >
+              <CardContent className="flex flex-col px-2 pt-2 pb-3 sm:px-3 sm:pt-3 sm:pb-4">
+                <div
+                  className="w-full aspect-[16/9] bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200 mb-1.5 sm:mb-2 overflow-hidden"
+                  style={{
+                    minHeight: 0,
+                    minWidth: 0,
+                    width: "100%",
+                    height: "auto",
+                  }}
+                >
+                  {thumbnailUrl && !brokenImages[video.id] ? (
+                    <img
+                      src={thumbnailUrl}
+                      alt={video.title}
+                      className="object-contain w-full h-full max-h-full max-w-full transition"
+                      draggable={false}
+                      onError={() =>
+                        setBrokenImages(prev => ({
+                          ...prev,
+                          [video.id]: true,
+                        }))
+                      }
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-full bg-gray-100">
+                      <Play className="h-12 w-12 text-gray-400" />
+                    </div>
+                  )}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </a>
-      ))}
+                <div className="flex flex-col justify-center items-center px-1">
+                  <div className="text-sm sm:text-base font-semibold text-gray-900 text-center break-words leading-tight line-clamp-2">
+                    {video.title}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </a>
+        );
+      })}
       {videos.length === 0 && (
         <div className="text-center py-8 text-gray-500">
           No YouTube videos available
