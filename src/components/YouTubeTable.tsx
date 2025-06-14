@@ -186,7 +186,7 @@ export function YouTubeTable() {
             >
               <CardContent className="flex flex-col px-2 pt-2 pb-3 sm:px-3 sm:pt-3 sm:pb-4">
                 <div
-                  className="w-full aspect-[16/9] bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200 mb-1.5 sm:mb-2 overflow-hidden"
+                  className="w-full aspect-[16/9] bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200 mb-0.5 sm:mb-0.5 overflow-hidden"
                   style={{
                     minHeight: 0,
                     minWidth: 0,
