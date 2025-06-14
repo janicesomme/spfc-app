@@ -41,6 +41,7 @@ export type Database = {
       }
       transfer_reports: {
         Row: {
+          age: number | null
           ai_reasoning: string | null
           club: string | null
           club_willingness: string | null
@@ -65,6 +66,7 @@ export type Database = {
           verdict: string | null
         }
         Insert: {
+          age?: number | null
           ai_reasoning?: string | null
           club?: string | null
           club_willingness?: string | null
@@ -89,6 +91,7 @@ export type Database = {
           verdict?: string | null
         }
         Update: {
+          age?: number | null
           ai_reasoning?: string | null
           club?: string | null
           club_willingness?: string | null

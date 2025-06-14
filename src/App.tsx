@@ -14,6 +14,7 @@ import Players from "./pages/Players";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import HotOMeter from "./pages/HotOMeter";
+import Index from "./pages/Index";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +34,7 @@ function App() {
         <BrowserRouter>
           <Layout>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Index />} />
               <Route path="/transfer-reports" element={<TransferReports />} />
               <Route path="/transfer-targets" element={<TransferTargets />} />
               <Route path="/news" element={<News />} />
