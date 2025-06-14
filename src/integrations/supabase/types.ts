@@ -11,7 +11,6 @@ export type Database = {
     Tables: {
       news_items: {
         Row: {
-          category: string | null
           id: string
           image_url: string | null
           published_at: string | null
@@ -21,7 +20,6 @@ export type Database = {
           url: string | null
         }
         Insert: {
-          category?: string | null
           id?: string
           image_url?: string | null
           published_at?: string | null
@@ -31,7 +29,6 @@ export type Database = {
           url?: string | null
         }
         Update: {
-          category?: string | null
           id?: string
           image_url?: string | null
           published_at?: string | null
