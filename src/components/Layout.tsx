@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./Sidebar";
@@ -16,12 +17,10 @@ export function Layout({ children }: LayoutProps) {
           <div className="p-6">
             {/* Red tab navigation now appears on every page, above the other content */}
             <PageTabsNav />
+            {/* Remove the "Live Dashboard" label and indicator */}
             <div className="flex items-center mb-6">
               <SidebarTrigger className="mr-4 lg:hidden" />
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-600">Live Dashboard</span>
-              </div>
+              {/* Removed status indicator and label */}
             </div>
             {children}
           </div>
@@ -30,3 +29,4 @@ export function Layout({ children }: LayoutProps) {
     </SidebarProvider>
   );
 }
+

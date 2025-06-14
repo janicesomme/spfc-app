@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { Play } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -69,9 +69,6 @@ export function YouTubeTable() {
   if (loading) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle className="text-red-600">YouTube Content</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center h-32">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
@@ -83,25 +80,15 @@ export function YouTubeTable() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-red-600">YouTube Content Pipeline</CardTitle>
-      </CardHeader>
       <CardContent>
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-3/5">Video</TableHead>
-              <TableHead className="w-2/5">Title</TableHead>
-            </TableRow>
-          </TableHeader>
           <TableBody>
             {videos.map((video) => (
               <TableRow
                 key={video.id}
                 className="hover:bg-red-50"
-                style={{ height: '192px' /* Make row even taller */ }}
+                style={{ height: '192px' }}
               >
-                {/* Video thumbnail, bigger with 16:9 ratio */}
                 <TableCell className="align-middle p-4 w-3/5">
                   <div className="flex items-center h-full">
                     <div
@@ -111,7 +98,7 @@ export function YouTubeTable() {
                         minWidth: '280px',
                         maxWidth: '480px',
                         minHeight: '160px',
-                        backgroundColor: '#e5e7eb', // tailwind gray-200
+                        backgroundColor: '#e5e7eb',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -136,7 +123,6 @@ export function YouTubeTable() {
                     </div>
                   </div>
                 </TableCell>
-                {/* Title, in the right half */}
                 <TableCell className="align-middle p-4 w-2/5">
                   <div className="flex flex-col h-full justify-center">
                     <div className="text-xl font-semibold text-gray-900 mb-2 break-words leading-tight">
