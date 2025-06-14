@@ -79,67 +79,61 @@ export function YouTubeTable() {
   }
 
   return (
-    <Card>
-      <CardContent>
-        <Table>
-          <TableBody>
-            {videos.map((video) => (
-              <TableRow
-                key={video.id}
-                className="hover:bg-red-50"
-                style={{ height: '192px' }}
-              >
-                <TableCell className="align-middle p-4 w-3/5">
-                  <div className="flex items-center h-full">
-                    <div
-                      className="relative w-full max-w-[480px] mx-auto rounded-lg shadow-lg overflow-hidden bg-gray-200"
-                      style={{
-                        aspectRatio: '16/9',
-                        minWidth: '280px',
-                        maxWidth: '480px',
-                        minHeight: '160px',
-                        backgroundColor: '#e5e7eb',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      {video.thumbnail_url ? (
-                        <img
-                          src={video.thumbnail_url}
-                          alt={video.title}
-                          className="w-full h-full object-cover"
-                          style={{ aspectRatio: '16/9', minHeight: 0, minWidth: 0 }}
-                          onClick={() => window.open(video.video_url, '_blank')}
-                          tabIndex={0}
-                          role="button"
-                          aria-label={`Play video: ${video.title}`}
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center w-full h-full">
-                          <Play className="h-12 w-12 text-gray-400" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="align-middle p-4 w-2/5">
-                  <div className="flex flex-col h-full justify-center">
-                    <div className="text-xl font-semibold text-gray-900 mb-2 break-words leading-tight">
-                      {video.title}
-                    </div>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        {videos.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            No YouTube videos available
-          </div>
-        )}
-      </CardContent>
-    </Card>
+    <div className="flex flex-col gap-6">
+      {videos.map((video) => (
+        <Card
+          key={video.id}
+          className="mx-auto max-w-[430px] shadow-md border border-red-500/70 animate-fade-in"
+          style={{
+            boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
+            borderWidth: '1.5px',
+            borderColor: '#dc2626', // Tailwind red-600
+            borderRadius: '1rem',
+          }}
+        >
+          <CardContent className="flex flex-col gap-1 p-4">
+            <div className="relative w-full mx-auto rounded-lg overflow-hidden bg-gray-200 border border-gray-200"
+              style={{
+                aspectRatio: '9/16',
+                minWidth: '200px',
+                maxWidth: '380px',
+                marginBottom: '0.5rem',
+                backgroundColor: '#e5e7eb',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {video.thumbnail_url ? (
+                <img
+                  src={video.thumbnail_url}
+                  alt={video.title}
+                  className="w-full h-full object-cover cursor-pointer"
+                  style={{ aspectRatio: '9/16', minHeight: 0, minWidth: 0 }}
+                  onClick={() => window.open(video.video_url, '_blank')}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Play video: ${video.title}`}
+                />
+              ) : (
+                <div className="flex items-center justify-center w-full h-full">
+                  <Play className="h-12 w-12 text-gray-400" />
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col justify-center">
+              <div className="text-lg font-semibold text-gray-900 mb-0.5 break-words leading-tight">
+                {video.title}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+      {videos.length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          No YouTube videos available
+        </div>
+      )}
+    </div>
   );
 }

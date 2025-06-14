@@ -13,7 +13,7 @@ export function PageTabsNav() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="flex gap-2 mt-1 mb-8">
+    <nav className="flex justify-center gap-2 mt-1 mb-8">
       {tabs.map((tab) => {
         const isActive =
           tab.path === "/"
@@ -46,4 +46,3 @@ export function PageTabsNav() {
     </nav>
   );
 }
-
