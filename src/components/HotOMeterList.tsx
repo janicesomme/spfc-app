@@ -92,8 +92,8 @@ export function HotOMeterList() {
             PLAYER
           </span>
         </div>
-        <div className="flex-[1.35] flex flex-col items-start pl-10 min-w-0">
-          {/* Increased pl-10 for CLUB heading shift right */}
+        <div className="flex-[1.35] flex flex-col items-start pl-[48px] min-w-0">
+          {/* CLUB heading shifted further right by pl-[48px] (≈half cm more) */}
           <span
             className="text-white uppercase"
             style={{
@@ -204,8 +204,8 @@ export function HotOMeterList() {
                 </span>
               </div>
               {/* Club */}
-              <div className="flex-[1.35] min-w-0 flex flex-col justify-center pl-1">
-                {/* Moved club name further left with pl-1 */}
+              <div className="flex-[1.35] min-w-0 flex flex-col justify-center -ml-2">
+                {/* Moved club name further left with -ml-2 (≈half cm) */}
                 <span
                   className="block text-[12px] text-white/85 font-semibold capitalize truncate"
                   style={{
