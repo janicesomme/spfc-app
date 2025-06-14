@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, News, Repeat, Video } from "lucide-react";
+import { Home, Newspaper, Repeat, Video } from "lucide-react";
 
 const tabs = [
   {
@@ -12,7 +12,7 @@ const tabs = [
   {
     label: "News",
     path: "/news",
-    icon: News,
+    icon: Newspaper,
   },
   {
     label: "Transfers",

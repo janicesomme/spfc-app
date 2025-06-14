@@ -2,18 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
+// Only the columns that are present in your news_items table!
 interface NewsItem {
   id: string;
   title: string | null;
   source: string | null;
-  category: string | null;
-  summary: string | null;
   image_url: string | null;
   published_at: string | null;
   url: string | null;
@@ -27,29 +25,33 @@ export function NewsTable() {
   useEffect(() => {
     fetchNews();
 
-    // Set up real-time subscription
-    const channel = supabase
-      .channel('news-changes')
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'news_items' },
-        (payload) => {
-          // You can uncomment console.log for debugging:
-          // console.log('News change:', payload);
-          fetchNews();
+    // Real-time subscription is disabled or can be readded if needed, but since 'category' doesn't exist, 
+    // we can't describe new news by `category` in the toast.
+    // You can add a different message if you wish.
+    // -- disabled for now:
 
-          if (payload.eventType === 'INSERT') {
-            toast({
-              title: "Breaking News",
-              description: `New ${payload.new.category || "General"} news from ${payload.new.source || "Unknown"}`,
-            });
-          }
-        }
-      )
-      .subscribe();
+    // const channel = supabase
+    //   .channel('news-changes')
+    //   .on('postgres_changes',
+    //     { event: '*', schema: 'public', table: 'news_items' },
+    //     (payload) => {
+    //       fetchNews();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    //       if (payload.eventType === 'INSERT') {
+    //         toast({
+    //           title: "Breaking News",
+    //           description: `New news from ${payload.new.source || "Unknown"}`,
+    //         });
+    //       }
+    //     }
+    //   )
+    //   .subscribe();
+
+    // return () => {
+    //   supabase.removeChannel(channel);
+    // };
+    // }, [toast]);
+
   }, [toast]);
 
   const fetchNews = async () => {
@@ -57,14 +59,13 @@ export function NewsTable() {
     try {
       const { data, error } = await supabase
         .from('news_items')
-        .select('id,title,source,category,summary,image_url,published_at,url')
+        .select('id,title,source,image_url,published_at,url')
         .order('published_at', { ascending: false })
         .limit(15);
 
       if (error) throw error;
       setNews(data || []);
     } catch (error) {
-      // console.error('Error fetching news:', error);
       toast({
         title: "Error",
         description: "Failed to fetch news items",
@@ -73,17 +74,6 @@ export function NewsTable() {
       setNews([]);
     } finally {
       setLoading(false);
-    }
-  };
-
-  // We'll just color category badges, skip 'sentiment'
-  const getCategoryColor = (category: string | null | undefined) => {
-    switch (category?.toLowerCase()) {
-      case 'transfer': return 'bg-purple-100 text-purple-800';
-      case 'manager': return 'bg-orange-100 text-orange-800';
-      case 'injury': return 'bg-red-100 text-red-800';
-      case 'contract': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -129,8 +119,7 @@ export function NewsTable() {
             <TableRow>
               <TableHead>Title</TableHead>
               <TableHead>Source</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Summary</TableHead>
+              <TableHead>Image</TableHead>
               <TableHead>Time</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
@@ -145,14 +134,10 @@ export function NewsTable() {
                 </TableCell>
                 <TableCell>{item.source || <span className="italic text-gray-400">Unknown</span>}</TableCell>
                 <TableCell>
-                  <Badge className={getCategoryColor(item.category)}>
-                    {item.category || "General"}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="truncate max-w-xs text-xs text-gray-500">
-                    {item.summary ? item.summary : <span className="italic text-gray-400">–</span>}
-                  </div>
+                  {item.image_url
+                    ? <img src={item.image_url} alt="news" className="w-10 h-10 object-cover rounded" />
+                    : <span className="italic text-gray-400">No image</span>
+                  }
                 </TableCell>
                 <TableCell>{getRelativeTime(item.published_at)}</TableCell>
                 <TableCell>
