@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ExternalLink } from "lucide-react";
+import { formatDistanceToNow, parseISO } from "date-fns";
 
 interface NewsItem {
   id: string;
@@ -9,6 +10,18 @@ interface NewsItem {
   source: string | null;
   image_url: string | null;
   url: string | null;
+  published_at: string | null;
+}
+
+function getRelativeTime(dateString: string | null): string {
+  if (!dateString) return "";
+  try {
+    const date =
+      typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
+    return formatDistanceToNow(date, { addSuffix: true }).replace("about ", "");
+  } catch {
+    return "";
+  }
 }
 
 export default function News() {
@@ -24,7 +37,7 @@ export default function News() {
     try {
       const { data, error } = await supabase
         .from("news_items")
-        .select("id,title,source,image_url,url")
+        .select("id,title,source,image_url,url,published_at")
         .order("published_at", { ascending: false })
         .limit(7);
 
@@ -47,88 +60,91 @@ export default function News() {
 
   if (!news.length) {
     return (
-      <div className="text-center py-16 text-gray-600">
+      <div className="text-center py-16 text-muted-foreground">
         No news available
       </div>
     );
   }
 
   const topStory = news[0];
-  const otherArticles = news.slice(1, 7); // Next 6
+  const otherArticles = news.slice(1, 7);
 
   return (
-    <div className="w-full max-w-md mx-auto py-0 bg-white min-h-screen">
-      {/* Top bar - mimic BBC with yellow background */}
-      <div className="bg-yellow-400 flex items-center justify-between px-4 py-2">
-        <span className="flex items-center gap-2">
-          <span className="bg-black text-yellow-400 font-bold px-2 py-1 text-lg rounded-sm tracking-tight">BBC</span>
-          <span className="text-black font-semibold text-lg tracking-wide">SPORT</span>
-        </span>
-        <span className="text-black font-semibold text-lg pr-1">Menu</span>
-      </div>
-
+    <div className="w-full max-w-md mx-auto py-4 bg-white min-h-screen">
       {/* Top Story */}
       <a
         href={topStory?.url || "#"}
         target="_blank"
         rel="noopener noreferrer"
-        className="block"
+        className="block focus:outline-none"
+        tabIndex={0}
+        aria-label={topStory?.title ?? "Top story"}
       >
         {topStory?.image_url && (
           <img
             src={topStory.image_url}
             alt={topStory.title || "Top story"}
-            className="w-full h-56 object-cover"
+            className="w-full h-56 sm:h-64 object-cover rounded-xl bg-gray-200"
             style={{
-              background: "#ccc",
-              borderBottom: "1px solid #eee",
+              borderBottom: "1px solid #f3f3f3",
             }}
           />
         )}
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">LIVE</span>
-            <span className="text-xs text-blue-700 font-medium">
-              {topStory?.source || "News"}
-            </span>
-          </div>
-          <div className="text-lg font-bold leading-snug text-gray-900 mb-1">
+        <div className="px-4 pt-4 pb-2">
+          <div className="text-xl font-bold leading-snug text-gray-900 mb-2" style={{ lineClamp: 3, display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden", WebkitLineClamp: 3 }}>
             {topStory?.title}
+          </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+            <span className="truncate max-w-[130px]">{topStory?.source || "News"}</span>
+            <span>&middot;</span>
+            <span>{getRelativeTime(topStory?.published_at)}</span>
           </div>
         </div>
       </a>
 
       {/* Article list */}
-      <div className="divide-y divide-gray-200">
+      <div className="mt-2 divide-y divide-gray-100">
         {otherArticles.map((item) => (
           <a
             href={item.url || "#"}
             target="_blank"
             rel="noopener noreferrer"
             key={item.id}
-            className="flex items-center px-4 py-3 gap-3 hover:bg-yellow-50 transition"
+            className="flex items-center px-4 py-3 gap-3 hover:bg-yellow-50 transition group rounded-lg focus:outline-none"
+            tabIndex={0}
+            aria-label={item.title ?? "News article"}
           >
             {item.image_url ? (
               <img
                 src={item.image_url}
                 alt={item.title || "Article"}
-                className="w-16 h-16 object-cover rounded"
-                style={{ background: "#ccc" }}
+                className="w-16 h-16 object-cover rounded-lg flex-shrink-0 bg-gray-200"
               />
             ) : (
-              <div className="w-16 h-16 rounded bg-gray-200 flex items-center justify-center text-gray-400 text-2xl">
-                <ExternalLink />
+              <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg text-gray-300">
+                <ExternalLink className="w-8 h-8" />
               </div>
             )}
-            <div className="flex-1 min-w-0">
-              <div className="font-medium text-sm text-gray-900 truncate">
+            <div className="flex-1 min-w-0 flex flex-col justify-center">
+              <div
+                className="font-medium text-sm text-gray-900 mb-1 leading-tight line-clamp-2"
+                style={{
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  WebkitLineClamp: 2,
+                  fontSize: "0.95rem"
+                }}
+              >
                 {item.title}
               </div>
-              <div className="text-xs text-gray-500 mt-1">
-                {item.source}
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span className="truncate max-w-[90px]">{item.source || "News"}</span>
+                <span>&middot;</span>
+                <span>{getRelativeTime(item.published_at)}</span>
               </div>
             </div>
-            <ExternalLink className="w-4 h-4 text-gray-400 shrink-0" />
+            <ExternalLink className="w-4 h-4 text-gray-300 group-hover:text-gray-500 ml-2 flex-shrink-0" />
           </a>
         ))}
       </div>
