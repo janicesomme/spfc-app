@@ -50,7 +50,7 @@ export function YouTubeTable() {
         .from('youtube_videos')
         .select('*')
         .order('publish_date', { ascending: false })
-        .limit(10);
+        .limit(3); // show only 3 latest videos
 
       if (error) throw error;
       setVideos(data || []);
@@ -67,7 +67,7 @@ export function YouTubeTable() {
 
   if (loading) {
     return (
-      <Card>
+      <Card className="max-w-[430px] mx-auto w-full">
         <CardContent>
           <div className="flex items-center justify-center h-32">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
@@ -77,12 +77,17 @@ export function YouTubeTable() {
     );
   }
 
+  // Proper card height so 3 cards fit on most screens: ~160px per card plus spacing (e.g. 20px gap)
+  // Using 430px wide (matches nav/tab), 16:9 ratio -> height is 241px, but we can scale height a bit
+  // We'll set a fixed width of 100% (max 430px), and fix the aspect ratio
+  // Each card includes thumbnail (16:9), then a compact title block
+
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-3">
       {videos.map((video) => (
         <Card
           key={video.id}
-          className="w-full max-w-sm mx-auto shadow-md border border-red-500/70 animate-fade-in"
+          className="w-full max-w-[430px] shadow-md border border-red-500/70 animate-fade-in"
           style={{
             boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
             borderWidth: '1.5px',
@@ -90,9 +95,15 @@ export function YouTubeTable() {
             borderRadius: '1rem',
           }}
         >
-          <CardContent className="flex flex-col p-2 pb-4">
+          <CardContent className="flex flex-col px-2 pt-2 pb-3">
             <div
               className="w-full aspect-[16/9] bg-gray-200 rounded-t-lg overflow-hidden cursor-pointer flex items-center justify-center border border-gray-200"
+              style={{
+                minHeight: 0,
+                minWidth: 0,
+                // Make image height a bit smaller than max 16:9, so three fit more easily
+                maxHeight: "160px",
+              }}
               onClick={() => window.open(video.video_url, '_blank')}
               tabIndex={0}
               role="button"
@@ -102,8 +113,11 @@ export function YouTubeTable() {
                 <img
                   src={video.thumbnail_url}
                   alt={video.title}
-                  className="w-full h-full object-cover"
-                  style={{ minHeight: 0, minWidth: 0 }}
+                  className="w-full h-full object-cover select-none"
+                  style={{
+                    minHeight: 0,
+                    minWidth: 0,
+                  }}
                   draggable={false}
                 />
               ) : (
@@ -112,8 +126,8 @@ export function YouTubeTable() {
                 </div>
               )}
             </div>
-            <div className="flex flex-col justify-center items-center mt-2 px-2">
-              <div className="text-md font-semibold text-gray-900 text-center break-words leading-tight">
+            <div className="flex flex-col justify-center items-center mt-2 px-1">
+              <div className="text-base font-semibold text-gray-900 text-center break-words leading-tight line-clamp-2">
                 {video.title}
               </div>
             </div>
