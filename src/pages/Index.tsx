@@ -1,7 +1,8 @@
+
 import React, { useEffect, useState } from "react";
 import { TUSLogo } from "@/components/TUSLogo";
 import { HomeBottomNav } from "@/components/HomeBottomNav";
-import { ExternalLink, ArrowRight, Play, Youtube } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Separator } from "@/components/ui/separator";
@@ -95,7 +96,10 @@ function NewsPreviewBlock() {
       <div className="flex items-center justify-between mb-2 px-4">
         <span
           className="font-semibold text-white text-[1.18rem] leading-tight"
-          style={{ fontFamily: "Inter, system-ui, sans-serif", letterSpacing: "-0.01em" }}
+          style={{
+            fontFamily: "Inter, system-ui, sans-serif",
+            letterSpacing: "-0.01em",
+          }}
         >
           News
         </span>
@@ -103,31 +107,35 @@ function NewsPreviewBlock() {
       {/* News Stories */}
       {loading || articles.length === 0 ? (
         <div className="w-full flex items-center justify-center h-16">
-          <span className="text-gray-200 font-semibold animate-pulse">Loading...</span>
+          <span className="text-gray-200 font-semibold animate-pulse">
+            Loading...
+          </span>
         </div>
       ) : (
-        <div className="flex flex-col gap-2 px-2">
-          {/* Featured Story */}
+        <div className="flex flex-col px-2 gap-0">
+          {/* --- Featured Story --- */}
           {articles[0] && (
             <a
               key={articles[0].id}
               href={articles[0].url ?? "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex rounded-2xl border border-transparent bg-[#18181C] px-2 py-2 gap-4 group hover:bg-[#232325] transition"
+              className="flex flex-row items-stretch rounded-2xl border border-transparent bg-[#18181C] px-2 py-2 gap-3 group hover:bg-[#232325] transition"
               style={{ minHeight: 90 }}
               tabIndex={0}
             >
+              {/* Image */}
               <img
                 src={articles[0].image_url || "/placeholder.svg"}
                 alt=""
-                className="w-[90px] h-[90px] object-cover rounded-xl border-[2.5px] border-[#252525] shadow bg-neutral-700"
+                className="w-[92px] h-[92px] object-cover rounded-xl border-[2px] border-[#2a2a2a] shadow bg-neutral-700 flex-shrink-0"
                 style={{ flexShrink: 0 }}
                 loading="lazy"
               />
-              <div className="flex-1 flex flex-col min-w-0 justify-center ml-1">
+              {/* Headline + source (stacked) */}
+              <div className="flex flex-col justify-center flex-1 min-w-0 ml-1.5 space-y-[8px]">
                 <div
-                  className="font-semibold text-[1.18rem] text-white mb-1.5 group-hover:underline leading-tight"
+                  className="font-semibold text-[1.16rem] text-white group-hover:underline leading-tight"
                   style={{
                     fontWeight: 600,
                     lineHeight: 1.18,
@@ -135,60 +143,85 @@ function NewsPreviewBlock() {
                     fontFamily: "Inter, system-ui, sans-serif",
                   }}
                 >
-                  {articles[0].title || <span className="italic text-gray-400">No title</span>}
+                  {articles[0].title || (
+                    <span className="italic text-gray-400">No title</span>
+                  )}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mt-0">
                   <span className="font-medium text-xs uppercase tracking-wider text-[#FFD700]">
                     {articles[0].source || "Unknown"}
                   </span>
-                  <span className="text-xs font-normal text-[#E1E1E1] mt-[1px]">{getRelativeTime(articles[0].published_at)}</span>
+                  <span className="text-xs font-normal text-[#E1E1E1]">
+                    {getRelativeTime(articles[0].published_at)}
+                  </span>
                 </div>
               </div>
             </a>
           )}
-          {/* Next two stories */}
-          {articles.slice(1).map((item) => (
-            <a
-              key={item.id}
-              href={item.url ?? "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 rounded-lg bg-[#18181C] border border-transparent px-2 py-2 hover:bg-[#232325] transition group"
-              tabIndex={0}
-              style={{ minHeight: 58 }}
-            >
-              <img
-                src={item.image_url || "/placeholder.svg"}
-                alt=""
-                className="w-12 h-12 object-cover rounded-lg border border-[#35353b] bg-neutral-800 flex-shrink-0"
-                loading="lazy"
-              />
-              <div className="flex flex-col flex-1 min-w-0">
-                <div className="text-[1rem] font-normal text-white truncate group-hover:underline leading-snug">
-                  {item.title || <span className="italic text-gray-400">No title</span>}
-                </div>
-                <span className="text-[0.92rem] font-normal text-[#E1E1E1]">{getRelativeTime(item.published_at)}</span>
-              </div>
-            </a>
-          ))}
+          {/* --- Secondary Stories --- */}
+          <div className="flex flex-col mt-2 gap-0">
+            {articles.slice(1).map((item, idx, arr) => (
+              <React.Fragment key={item.id}>
+                <a
+                  href={item.url ?? "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-lg bg-[#18181C] border border-transparent px-2 py-2 hover:bg-[#232325] transition group"
+                  tabIndex={0}
+                  style={{
+                    minHeight: 58,
+                  }}
+                >
+                  <img
+                    src={item.image_url || "/placeholder.svg"}
+                    alt=""
+                    className="w-12 h-12 object-cover rounded-lg border border-[#35353b] bg-neutral-800 flex-shrink-0"
+                    loading="lazy"
+                  />
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <div className="text-[1rem] font-normal text-white truncate group-hover:underline leading-snug">
+                      {item.title || (
+                        <span className="italic text-gray-400">No title</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-[2px]">
+                      <span className="font-medium text-xs uppercase tracking-wider text-[#FFD700]">
+                        {item.source || "Unknown"}
+                      </span>
+                      <span className="text-xs font-normal text-[#E1E1E1]">
+                        {getRelativeTime(item.published_at)}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+                {/* Accent line between secondary stories (not after the last) */}
+                {idx < arr.length - 1 && (
+                  <div className="px-1">
+                    <div className="w-full h-[1.7px] bg-[#e4e4e7] rounded-full mx-2 my-[2px]" />
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       )}
+
       {/* More News Link */}
       <div className="flex justify-end mt-2 px-4">
         <Link
           to="/news"
-          className="inline-flex items-center gap-[5px] font-medium text-[#C8102E] hover:text-black/90 underline underline-offset-[2.5px] decoration-[#C8102E] transition group"
+          className="inline-flex items-center gap-[5px] font-semibold underline underline-offset-[2.5px] decoration-[#e60000] transition group"
           style={{
             fontSize: "1.01rem",
             letterSpacing: "-0.01em",
-            fontWeight: 500,
+            color: "#e60000",
+            fontWeight: 600,
           }}
         >
           More News
-          <ArrowRight className="w-5 h-5 ml-1 pb-[1px] text-[#C8102E] transition group-hover:text-black/90" strokeWidth={2.1} />
+          <ArrowRight className="w-5 h-5 ml-1 pb-[1px] text-[#e60000] transition group-hover:text-black/90" strokeWidth={2.1} />
         </Link>
       </div>
-      <Separator className="bg-white/75 mt-4 mb-1.5 rounded-full" style={{ height: 1.5 }} />
     </section>
   );
 }
@@ -237,7 +270,6 @@ function HotOMeterTeaserCard() {
           <ArrowRight className="w-5 h-5 ml-1 pb-[1px] text-[#C8102E] transition group-hover:text-black/90" strokeWidth={2.15} />
         </Link>
       </div>
-      <Separator className="bg-white/75 mt-3 mb-1.5 rounded-full" style={{ height: 1.5 }} />
     </section>
   );
 }
@@ -270,7 +302,10 @@ function YouTubePreviewBlock() {
       <div className="flex items-center justify-between mb-2 px-4">
         <span
           className="font-semibold text-white text-[1.14rem] leading-tight"
-          style={{ fontFamily: "Inter, system-ui, sans-serif", letterSpacing: "-0.01em" }}
+          style={{
+            fontFamily: "Inter, system-ui, sans-serif",
+            letterSpacing: "-0.01em",
+          }}
         >
           Latest TUS Videos
         </span>
@@ -287,17 +322,18 @@ function YouTubePreviewBlock() {
               href={vid.video_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 rounded-xl bg-[#18181C] border border-transparent px-2 py-2 focus:ring focus:ring-yellow-300 transition group hover:bg-[#232325]"
+              className="flex items-center gap-3 rounded-xl bg-[#18181C] border border-transparent px-2 py-2 focus:ring focus:ring-yellow-300 transition group hover:bg-[#232325]"
               tabIndex={0}
               style={{ minHeight: 56 }}
             >
-              <div className="relative w-[57px] h-[38px] rounded-lg overflow-hidden bg-neutral-700 flex-shrink-0 border border-[#232323]">
+              <div className="relative w-[66px] h-[42px] rounded-lg overflow-hidden bg-neutral-700 flex-shrink-0 border border-[#232323]">
                 {vid.thumbnail_url ? (
                   <img
                     src={vid.thumbnail_url}
                     alt={vid.title}
                     className="w-full h-full object-cover block"
                     loading="lazy"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-900 flex items-center justify-center text-2xl text-gray-500">
@@ -308,7 +344,7 @@ function YouTubePreviewBlock() {
                   <Play className="w-[14.5px] h-[14.5px] text-white" />
                 </span>
               </div>
-              <span className="flex-1 text-[1rem] font-normal text-white/90 truncate group-hover:underline" style={{ fontWeight: 400 }}>
+              <span className="flex-1 text-[0.99rem] font-normal text-white/90 truncate group-hover:underline leading-snug" style={{ fontWeight: 400 }}>
                 {vid.title}
               </span>
             </a>
@@ -330,7 +366,6 @@ function YouTubePreviewBlock() {
           <ArrowRight className="w-5 h-5 ml-1 pb-[1px] text-[#C8102E] transition group-hover:text-black/90" strokeWidth={2.1} />
         </Link>
       </div>
-      <Separator className="bg-white/75 mt-4 mb-2 rounded-full" style={{ height: 1.5 }} />
     </section>
   );
 }
@@ -341,16 +376,18 @@ export default function Index() {
     <div className="relative min-h-screen flex flex-col bg-[#131418] w-full max-w-md mx-auto pb-24">
       {/* Top Banner */}
       <HomeHeader />
-
       {/* News */}
       <NewsPreviewBlock />
-
+      {/* Section Separator: News > Hot-O-Meter */}
+      <Separator className="bg-white/75 mt-4 mb-1.5 rounded-full" style={{ height: 1.5 }} />
       {/* Hot-O-Meter Section */}
       <HotOMeterTeaserCard />
-
+      {/* Section Separator: Hot-O-Meter > TUS Videos */}
+      <Separator className="bg-white/75 mt-3 mb-1.5 rounded-full" style={{ height: 1.5 }} />
       {/* TUS Videos */}
       <YouTubePreviewBlock />
-
+      {/* Section Separator: TUS Videos > Bottom nav */}
+      <Separator className="bg-white/75 mt-4 mb-2 rounded-full" style={{ height: 1.5 }} />
       {/* Bottom nav */}
       <HomeBottomNav />
     </div>
