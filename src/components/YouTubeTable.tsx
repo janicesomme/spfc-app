@@ -102,7 +102,7 @@ export function YouTubeTable() {
   // Loading indicator
   if (loading) {
     return (
-      <Card className="max-w-[380px] mx-auto w-full">
+      <Card className="max-w-[380px] mx-auto w-full bg-black border-black">
         <CardContent>
           <div className="flex items-center justify-center h-32">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
@@ -177,11 +177,12 @@ export function YouTubeTable() {
             }}
           >
             <Card
-              className="w-full shadow-md border animate-fade-in rounded-xl"
+              className="w-full shadow-md border rounded-xl bg-black border-black animate-fade-in"
               style={{
                 boxShadow: "0 4px 16px 0 rgba(150,150,160,0.10)",
                 borderRadius: "1rem",
-                background: "#fff",
+                background: "#000",
+                borderColor: "#000",
               }}
             >
               <CardContent className="flex flex-col px-2 pt-2 pb-3 sm:px-3 sm:pt-3 sm:pb-4">
@@ -231,3 +232,4 @@ export function YouTubeTable() {
     </div>
   );
 }
+
