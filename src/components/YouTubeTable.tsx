@@ -1,9 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { supabase } from "@/integrations/supabase/client";
 import { Play } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 interface YouTubeVideo {
@@ -79,41 +78,33 @@ export function YouTubeTable() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col items-center gap-6">
       {videos.map((video) => (
         <Card
           key={video.id}
-          className="mx-auto max-w-[430px] shadow-md border border-red-500/70 animate-fade-in"
+          className="w-full max-w-sm mx-auto shadow-md border border-red-500/70 animate-fade-in"
           style={{
             boxShadow: '0 4px 16px 0 rgba(150,150,160,0.10)',
             borderWidth: '1.5px',
-            borderColor: '#dc2626', // Tailwind red-600
+            borderColor: '#dc2626',
             borderRadius: '1rem',
           }}
         >
-          <CardContent className="flex flex-col gap-1 p-4">
-            <div className="relative w-full mx-auto rounded-lg overflow-hidden bg-gray-200 border border-gray-200"
-              style={{
-                aspectRatio: '9/16',
-                minWidth: '200px',
-                maxWidth: '380px',
-                marginBottom: '0.5rem',
-                backgroundColor: '#e5e7eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+          <CardContent className="flex flex-col p-2 pb-4">
+            <div
+              className="w-full aspect-[16/9] bg-gray-200 rounded-t-lg overflow-hidden cursor-pointer flex items-center justify-center border border-gray-200"
+              onClick={() => window.open(video.video_url, '_blank')}
+              tabIndex={0}
+              role="button"
+              aria-label={`Play video: ${video.title}`}
             >
               {video.thumbnail_url ? (
                 <img
                   src={video.thumbnail_url}
                   alt={video.title}
-                  className="w-full h-full object-cover cursor-pointer"
-                  style={{ aspectRatio: '9/16', minHeight: 0, minWidth: 0 }}
-                  onClick={() => window.open(video.video_url, '_blank')}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`Play video: ${video.title}`}
+                  className="w-full h-full object-cover"
+                  style={{ minHeight: 0, minWidth: 0 }}
+                  draggable={false}
                 />
               ) : (
                 <div className="flex items-center justify-center w-full h-full">
@@ -121,8 +112,8 @@ export function YouTubeTable() {
                 </div>
               )}
             </div>
-            <div className="flex flex-col justify-center">
-              <div className="text-lg font-semibold text-gray-900 mb-0.5 break-words leading-tight">
+            <div className="flex flex-col justify-center items-center mt-2 px-2">
+              <div className="text-md font-semibold text-gray-900 text-center break-words leading-tight">
                 {video.title}
               </div>
             </div>
