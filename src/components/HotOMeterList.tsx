@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -79,7 +78,7 @@ export function HotOMeterList() {
           marginBottom: 1,
         }}
       >
-        <div className="flex-[2] flex flex-col items-end pr-3 min-w-0">
+        <div className="flex-[2] flex flex-col items-start pl-2 min-w-0" /* moved left by adding pl-2, items-start */>
           <span
             className="text-white uppercase"
             style={{
@@ -93,7 +92,7 @@ export function HotOMeterList() {
             PLAYER
           </span>
         </div>
-        <div className="flex-[1.2] flex flex-col items-end pr-2 min-w-0">
+        <div className="flex-[1.2] flex flex-col items-start pl-3 min-w-0" /* moved left by changing pr-2 to pl-3, items-start */>
           <span
             className="text-white uppercase"
             style={{
@@ -144,8 +143,8 @@ export function HotOMeterList() {
               key={player.id}
               className={
                 `flex items-center rounded-2xl
-                px-3.5 py-2.5 md:py-3 mb-[9px]
-                min-h-[60px] md:min-h-[62px]
+                px-3 py-2 mb-[5px]
+                min-h-[46px] md:min-h-[54px]
                 cursor-default
                 transition-all duration-100
                 group`
@@ -173,9 +172,8 @@ export function HotOMeterList() {
                   draggable={false}
                 />
               </div>
-              {/* Name and club */}
-              <div className="flex-[2] min-w-0 flex flex-col justify-center mr-2">
-                {/* First name */}
+              {/* Name */}
+              <div className="flex-[2] min-w-0 flex flex-col justify-center mr-1">
                 {first.length > 0 && (
                   <span
                     className="block text-white/90 !leading-tight"
@@ -191,22 +189,23 @@ export function HotOMeterList() {
                     {first}
                   </span>
                 )}
-                {/* Last name */}
                 <span
                   className="block font-black  text-white"
                   style={{
-                    fontSize: "1.18rem",
+                    fontSize: "1.05rem",
                     letterSpacing: "0.06em",
                     fontFamily: "Inter, system-ui, sans-serif",
                     textTransform: "uppercase",
-                    lineHeight: 1.19,
+                    lineHeight: 1.17,
                   }}
                 >
                   {last}
                 </span>
-                {/* Club */}
+              </div>
+              {/* Club */}
+              <div className="flex-[1.2] min-w-0 flex flex-col justify-center pl-3">
                 <span
-                  className="block mt-0.5 text-[12px] text-white/70 font-semibold capitalize truncate"
+                  className="block text-[12px] text-white/85 font-semibold capitalize truncate"
                   style={{
                     fontFamily: "Inter, system-ui, sans-serif",
                     letterSpacing: "0.045em",
@@ -220,10 +219,10 @@ export function HotOMeterList() {
               {/* Score */}
               <div className="flex-[.8] flex flex-col items-end pr-1">
                 <span
-                  className="font-black drop-shadow text-[2rem] md:text-[2.3rem] leading-none select-none"
+                  className="font-black drop-shadow text-[1.6rem] md:text-[2rem] leading-none select-none"
                   style={{
-                    color: YELLOW,
-                    textShadow: "0 3px 10px #a47518, 0 1px 1px #000, 0 0px 7px #ffd70079",
+                    color: "#fff", // White instead of YELLOW
+                    textShadow: "0 3px 10px #444, 0 1px 1px #000, 0 0px 7px #fff8",
                     fontFamily: "Inter, system-ui, sans-serif",
                   }}
                 >
@@ -239,4 +238,3 @@ export function HotOMeterList() {
 }
 
 // This file is now 200+ lines long and should be split into smaller components soon for maintainability!
-
