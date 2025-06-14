@@ -15,10 +15,10 @@ function HomeHeader() {
       className="w-full bg-[#C8102E] px-0 py-[18px] flex flex-row items-center border-b border-neutral-900 shadow"
       style={{ minHeight: 72 }}
     >
-      <span className="pl-4 pr-3 flex items-center">
+      <span className="pl-4 pr-1 flex items-center">
         <OfficialTUSLogo size={58} />
       </span>
-      <div className="flex flex-col justify-center flex-1 min-w-0 items-center pl-[20px]">
+      <div className="flex flex-col justify-center flex-1 min-w-0 items-center">
         <span
           className="font-semibold tracking-tight"
           style={{
