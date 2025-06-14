@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Play, Search, Youtube } from "lucide-react";
+import { Play, Youtube } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+// Removed import of Search and Input as they're not needed anymore
 
 interface YouTubeVideo {
   id: string;
@@ -27,8 +27,7 @@ export function YouTubeTable() {
   const { toast } = useToast();
   const [brokenImages, setBrokenImages] = useState<{ [id: string]: boolean }>({});
 
-  // Toolbar state
-  const [searchTerm, setSearchTerm] = useState("");
+  // Removed searchTerm state
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
 
   // Fetch videos logic
@@ -80,15 +79,9 @@ export function YouTubeTable() {
     return url.replace(/"/g, "");
   };
 
-  // Filtering logic
+  // Filtering logic (now only filters by date)
   const filteredVideos = useMemo(() => {
-    // Filter videos by search term
-    let filtered = videos.filter((video) =>
-      video.title
-        ? video.title.toLowerCase().includes(searchTerm.trim().toLowerCase())
-        : false
-    );
-
+    let filtered = videos;
     if (dateFilter !== "all") {
       const now = new Date();
       let threshold: Date;
@@ -103,9 +96,8 @@ export function YouTubeTable() {
         return pubDate >= threshold;
       });
     }
-
-    return filtered.slice(0, 20); // in case many are returned, limit to 20 for perf
-  }, [videos, searchTerm, dateFilter]);
+    return filtered.slice(0, 20); // Limit for perf
+  }, [videos, dateFilter]);
 
   // Loading indicator
   if (loading) {
@@ -122,22 +114,6 @@ export function YouTubeTable() {
 
   return (
     <div className="flex flex-col items-center gap-2 sm:gap-4">
-      {/* --- Search Bar row --- */}
-      <div className="w-full flex justify-center mt-0 mb-2">
-        <div className="flex items-center bg-white rounded-lg border border-gray-200 px-3 py-2 w-[90vw] max-w-2xl sm:max-w-3xl sm:w-3/4 shadow-sm">
-          <Search size={20} className="mr-2 text-gray-500 shrink-0" aria-hidden />
-          <Input
-            type="text"
-            placeholder="Search videos…"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border-none shadow-none px-0 py-0 focus:ring-0 focus-visible:ring-0 text-[1rem] placeholder:text-gray-400 bg-transparent"
-            style={{ background: "transparent" }}
-            aria-label="Search videos by title"
-          />
-        </div>
-      </div>
-
       {/* --- Date Filter + Watch on YouTube row --- */}
       <div className="w-full flex flex-col items-center gap-2 mb-4">
         <div className="flex flex-col sm:flex-row gap-2 items-center justify-center">

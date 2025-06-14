@@ -134,6 +134,7 @@ export type Database = {
       }
       youtube_videos: {
         Row: {
+          category: string | null
           clickbait_blurb: string | null
           id: string
           publish_date: string | null
@@ -142,6 +143,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          category?: string | null
           clickbait_blurb?: string | null
           id?: string
           publish_date?: string | null
@@ -150,6 +152,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          category?: string | null
           clickbait_blurb?: string | null
           id?: string
           publish_date?: string | null
