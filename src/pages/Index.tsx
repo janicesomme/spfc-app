@@ -117,53 +117,55 @@ function NewsPreviewBlock() {
         <div className="flex flex-col px-2 gap-0">
           {/* --- Featured Story --- */}
           {articles[0] && (
-            <a
-              key={articles[0].id}
-              href={articles[0].url ?? "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-row items-stretch rounded-2xl border border-transparent bg-[#18181C] px-2 py-2 gap-3 group hover:bg-[#232325] transition"
-              style={{ minHeight: 90 }}
-              tabIndex={0}
-            >
-              {/* Image */}
-              <img
-                src={articles[0].image_url || "/placeholder.svg"}
-                alt=""
-                className="w-[92px] h-[92px] object-cover rounded-xl border-[2px] border-[#2a2a2a] shadow bg-neutral-700 flex-shrink-0"
-                style={{ flexShrink: 0 }}
-                loading="lazy"
-              />
-              {/* Headline + source (stacked) */}
-              <div className="flex flex-col justify-center flex-1 min-w-0 ml-1.5 space-y-[8px]">
-                <div
-                  className="font-semibold text-[1.16rem] text-white group-hover:underline leading-tight"
-                  style={{
-                    fontWeight: 600,
-                    lineHeight: 1.18,
-                    letterSpacing: "-0.014em",
-                    fontFamily: "Inter, system-ui, sans-serif",
-                  }}
-                >
-                  {articles[0].title || (
-                    <span className="italic text-gray-400">No title</span>
-                  )}
+            <>
+              <a
+                key={articles[0].id}
+                href={articles[0].url ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-row items-stretch rounded-2xl border border-transparent bg-[#18181C] px-2 py-2 gap-3 group hover:bg-[#232325] transition"
+                style={{ minHeight: 90 }}
+                tabIndex={0}
+              >
+                {/* Image */}
+                <img
+                  src={articles[0].image_url || "/placeholder.svg"}
+                  alt=""
+                  className="w-[92px] h-[92px] object-cover rounded-xl border-[2px] border-[#2a2a2a] shadow bg-neutral-700 flex-shrink-0"
+                  style={{ flexShrink: 0 }}
+                  loading="lazy"
+                />
+                {/* Headline + source (stacked) */}
+                <div className="flex flex-col justify-center flex-1 min-w-0 ml-1.5 space-y-[8px]">
+                  <div
+                    className="font-semibold text-[1.16rem] text-white group-hover:underline leading-tight"
+                    style={{
+                      fontWeight: 600,
+                      lineHeight: 1.18,
+                      letterSpacing: "-0.014em",
+                      fontFamily: "Inter, system-ui, sans-serif",
+                    }}
+                  >
+                    {articles[0].title || (
+                      <span className="italic text-gray-400">No title</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 mt-0">
+                    <span className="font-medium text-xs uppercase tracking-wider text-[#FFD700]">
+                      {articles[0].source || "Unknown"}
+                    </span>
+                    <span className="text-xs font-normal text-[#E1E1E1]">
+                      {getRelativeTime(articles[0].published_at)}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 mt-0">
-                  <span className="font-medium text-xs uppercase tracking-wider text-[#FFD700]">
-                    {articles[0].source || "Unknown"}
-                  </span>
-                  <span className="text-xs font-normal text-[#E1E1E1]">
-                    {getRelativeTime(articles[0].published_at)}
-                  </span>
-                </div>
+              </a>
+              {/* Divider line between featured and secondary stories - exactly 75% width */}
+              <div className="w-[75%] mx-auto">
+                <div className="h-[1.7px] bg-[#e4e4e7] rounded-full my-[6px]" />
               </div>
-            </a>
+            </>
           )}
-          {/* Divider line between featured and secondary stories */}
-          <div className="w-[75%] mx-auto">
-            <div className="h-[1.7px] bg-[#e4e4e7] rounded-full my-[6px]" />
-          </div>
           {/* --- Secondary Stories --- */}
           <div className="flex flex-col mt-2 gap-0">
             {articles.slice(1).map((item, idx, arr) => (
@@ -382,28 +384,12 @@ export default function Index() {
     <div className="relative min-h-screen flex flex-col bg-[#131418] w-full max-w-md mx-auto pb-24">
       {/* Top Banner */}
       <HomeHeader />
-      {/* --- Section Separator: Top divider above News --- */}
-      <div className="w-[75%] mx-auto">
-        <Separator className="bg-white/75 mt-4 mb-1.5 rounded-full" style={{ height: 1.5 }} />
-      </div>
       {/* News */}
       <NewsPreviewBlock />
-      {/* Section Separator: News > Hot-O-Meter */}
-      <div className="w-[75%] mx-auto">
-        <Separator className="bg-white/75 mt-4 mb-1.5 rounded-full" style={{ height: 1.5 }} />
-      </div>
       {/* Hot-O-Meter Section */}
       <HotOMeterTeaserCard />
-      {/* Section Separator: Hot-O-Meter > TUS Videos */}
-      <div className="w-[75%] mx-auto">
-        <Separator className="bg-white/75 mt-3 mb-1.5 rounded-full" style={{ height: 1.5 }} />
-      </div>
       {/* TUS Videos */}
       <YouTubePreviewBlock />
-      {/* Section Separator: TUS Videos > Bottom nav */}
-      <div className="w-[75%] mx-auto">
-        <Separator className="bg-white/75 mt-4 mb-2 rounded-full" style={{ height: 1.5 }} />
-      </div>
       {/* Bottom nav */}
       <HomeBottomNav />
     </div>
