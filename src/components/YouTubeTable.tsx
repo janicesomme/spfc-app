@@ -60,7 +60,7 @@ export function YouTubeTable() {
       const { data, error } = await supabase
         .from("youtube_videos")
         .select("*")
-        .order("publish_date", { ascending: false }) // fetch all, let filtering happen client-side
+        .order("publish_date", { ascending: false });
       if (error) throw error;
       setVideos((data || []) as YouTubeVideo[]);
     } catch (error) {
@@ -122,10 +122,9 @@ export function YouTubeTable() {
 
   return (
     <div className="flex flex-col items-center gap-2 sm:gap-4">
-      {/* Top Toolbar */}
-      <div className="w-full max-w-[370px] sm:max-w-[430px] flex flex-col sm:flex-row items-stretch gap-2 mb-3 sm:mb-5">
-        {/* Search input */}
-        <div className="flex flex-1 items-center bg-white rounded-lg border border-gray-200 px-3 py-2">
+      {/* --- Search Bar row --- */}
+      <div className="w-full flex justify-center mt-0 mb-2">
+        <div className="flex items-center bg-white rounded-lg border border-gray-200 px-3 py-2 w-[90vw] max-w-2xl sm:max-w-3xl sm:w-3/4 shadow-sm">
           <Search size={20} className="mr-2 text-gray-500 shrink-0" aria-hidden />
           <Input
             type="text"
@@ -133,32 +132,36 @@ export function YouTubeTable() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border-none shadow-none px-0 py-0 focus:ring-0 focus-visible:ring-0 text-[1rem] placeholder:text-gray-400 bg-transparent"
-            style={{background:"transparent"}}
+            style={{ background: "transparent" }}
             aria-label="Search videos by title"
           />
         </div>
-        {/* Date filter */}
-        <div className="flex items-center">
-          <label htmlFor="youtube-date-filter" className="hidden sm:block mr-2 text-sm font-medium text-gray-600">
-            Posted:
-          </label>
-          <Select value={dateFilter} onValueChange={setDateFilter}>
-            <SelectTrigger id="youtube-date-filter" className="w-full sm:w-[135px] focus:ring-0 h-10 text-sm bg-white border-gray-200">
-              <SelectValue placeholder="All time" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All time</SelectItem>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        {/* Watch all on YouTube button */}
-        <div className="flex items-center justify-end flex-shrink-0">
+      </div>
+
+      {/* --- Date Filter + Watch on YouTube row --- */}
+      <div className="w-full flex flex-col items-center gap-2 mb-4">
+        <div className="flex flex-col sm:flex-row gap-2 items-center justify-center">
+          {/* Date filter */}
+          <div className="flex items-center">
+            <label htmlFor="youtube-date-filter" className="mr-2 text-sm font-medium text-gray-600">
+              Posted:
+            </label>
+            <Select value={dateFilter} onValueChange={v => setDateFilter(v as DateFilter)}>
+              <SelectTrigger id="youtube-date-filter" className="w-36 focus:ring-0 h-10 text-sm bg-white border-gray-200">
+                <SelectValue placeholder="All time" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All time</SelectItem>
+                <SelectItem value="7d">Last 7 days</SelectItem>
+                <SelectItem value="30d">Last 30 days</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Watch all on YouTube button */}
           <Button
             variant="outline"
             size="sm"
-            className="font-bold text-red-600 px-3 h-10 flex gap-1 items-center border-red-300 hover:bg-red-50 ml-auto sm:ml-2"
+            className="font-bold text-red-600 px-3 h-10 flex gap-1 items-center border-red-300 hover:bg-red-50"
             style={{
               borderWidth: "1.5px",
               borderColor: "#ef4444",
@@ -171,12 +174,14 @@ export function YouTubeTable() {
               rel="noopener noreferrer"
               aria-label="Watch all on YouTube"
               tabIndex={0}
+              className="flex items-center"
             >
               <Youtube size={20} className="mr-1" /> <span className="hidden xs:inline">Watch all on</span> YouTube
             </a>
           </Button>
         </div>
       </div>
+
       {/* Videos */}
       {filteredVideos.map((video) => {
         const videoUrl = cleanUrl(video.video_url);
