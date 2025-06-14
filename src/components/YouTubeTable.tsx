@@ -94,45 +94,72 @@ export function YouTubeTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Video</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Clickbait Blurb</TableHead>
-              <TableHead>Published</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="w-1/2">Video</TableHead>
+              <TableHead className="w-1/2">Title</TableHead>
+              <TableHead className="hidden md:table-cell">Clickbait Blurb</TableHead>
+              <TableHead className="hidden md:table-cell">Published</TableHead>
+              <TableHead className="hidden md:table-cell">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {videos.map((video) => (
-              <TableRow key={video.id} className="hover:bg-red-50">
-                <TableCell>
-                  <div className="flex items-center space-x-3">
+              <TableRow
+                key={video.id}
+                className="hover:bg-red-50"
+                style={{ height: '160px' /* About double the usual row height */ }}
+              >
+                {/* Video thumbnail: half the row, extra tall */}
+                <TableCell className="align-top p-4 w-1/2">
+                  <div className="flex items-center h-full">
                     {video.thumbnail_url ? (
                       <img 
                         src={video.thumbnail_url} 
                         alt={video.title}
-                        className="w-16 h-9 object-cover rounded"
+                        className="w-full max-w-[320px] h-[120px] rounded-lg object-cover shadow-lg"
+                        style={{
+                          // Ensures it takes up half the row, visually
+                          minWidth: '160px',
+                          maxWidth: '320px',
+                          minHeight: '120px',
+                          aspectRatio: '16/7', // Custom wide aspect
+                        }}
                       />
                     ) : (
-                      <div className="w-16 h-9 bg-gray-200 rounded flex items-center justify-center">
-                        <Play className="h-4 w-4 text-gray-400" />
+                      <div className="w-full max-w-[320px] h-[120px] bg-gray-200 rounded-lg flex items-center justify-center">
+                        <Play className="h-8 w-8 text-gray-400" />
                       </div>
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="font-medium max-w-md">
-                  <div className="truncate" title={video.title}>
-                    {video.title}
+                {/* Title, wrap in other half */}
+                <TableCell className="align-top p-4 w-1/2">
+                  <div className="flex flex-col h-full justify-between">
+                    <div className="text-lg font-semibold text-gray-900 mb-2 break-words leading-snug">
+                      {video.title}
+                    </div>
+                    <div className="md:hidden text-xs text-gray-500 mt-2 truncate">{video.clickbait_blurb}</div>
+                    <div className="md:hidden text-xs text-gray-400 mt-1">{video.publish_date ? new Date(video.publish_date).toLocaleDateString() : 'Not published'}</div>
+                    <div className="md:hidden mt-3">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => window.open(video.video_url, '_blank')}
+                      >
+                        <ExternalLink className="h-5 w-5" />
+                      </Button>
+                    </div>
                   </div>
                 </TableCell>
-                <TableCell className="max-w-xs">
-                  <div className="truncate text-sm text-gray-600">
+                {/* Desktop columns */}
+                <TableCell className="hidden md:table-cell align-top p-4 max-w-xs">
+                  <div className="text-sm text-gray-600 break-words">
                     {video.clickbait_blurb}
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden md:table-cell align-top p-4">
                   {video.publish_date ? new Date(video.publish_date).toLocaleDateString() : 'Not published'}
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden md:table-cell align-top p-4">
                   <div className="flex space-x-2">
                     <Button 
                       variant="ghost" 
