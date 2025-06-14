@@ -78,7 +78,7 @@ export function HotOMeterList() {
           marginBottom: 1,
         }}
       >
-        <div className="flex-[2] flex flex-col items-start pl-2 min-w-0" /* moved left by adding pl-2, items-start */>
+        <div className="flex-[2] flex flex-col items-start pl-2 min-w-0">
           <span
             className="text-white uppercase"
             style={{
@@ -92,7 +92,7 @@ export function HotOMeterList() {
             PLAYER
           </span>
         </div>
-        <div className="flex-[1.2] flex flex-col items-start pl-3 min-w-0" /* moved left by changing pr-2 to pl-3, items-start */>
+        <div className="flex-[1.35] flex flex-col items-start min-w-0">
           <span
             className="text-white uppercase"
             style={{
@@ -203,7 +203,7 @@ export function HotOMeterList() {
                 </span>
               </div>
               {/* Club */}
-              <div className="flex-[1.2] min-w-0 flex flex-col justify-center pl-3">
+              <div className="flex-[1.35] min-w-0 flex flex-col justify-center">
                 <span
                   className="block text-[12px] text-white/85 font-semibold capitalize truncate"
                   style={{
