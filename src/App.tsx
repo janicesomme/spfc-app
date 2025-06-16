@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,6 +16,7 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import HotOMeter from "./pages/HotOMeter";
 import Index from "./pages/Index";
+import PlayerProfile from "./pages/PlayerProfile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +42,7 @@ function App() {
               <Route path="/news" element={<News />} />
               <Route path="/youtube" element={<YouTube />} />
               <Route path="/players" element={<Players />} />
+              <Route path="/player-profile" element={<PlayerProfile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/hot-o-meter" element={<HotOMeter />} />
               <Route path="*" element={<NotFound />} />
