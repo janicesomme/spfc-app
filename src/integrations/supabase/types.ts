@@ -9,111 +9,252 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      news_items: {
+      news_articles: {
         Row: {
+          category: string | null
+          content_type: string | null
+          created_at: string | null
           id: string
           image_url: string | null
+          is_active: boolean | null
           published_at: string | null
+          scraped_at: string | null
           source: string | null
           summary: string | null
-          title: string | null
-          url: string | null
+          title: string
+          url: string
         }
         Insert: {
+          category?: string | null
+          content_type?: string | null
+          created_at?: string | null
           id?: string
           image_url?: string | null
+          is_active?: boolean | null
           published_at?: string | null
+          scraped_at?: string | null
           source?: string | null
           summary?: string | null
-          title?: string | null
-          url?: string | null
+          title: string
+          url: string
         }
         Update: {
+          category?: string | null
+          content_type?: string | null
+          created_at?: string | null
           id?: string
           image_url?: string | null
+          is_active?: boolean | null
           published_at?: string | null
+          scraped_at?: string | null
           source?: string | null
           summary?: string | null
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      news_items: {
+        Row: {
+          breaking_news: boolean | null
+          category: string | null
+          content_preview: string | null
+          content_type: string | null
+          engagement_score: number | null
+          fan_interest_score: number | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          priority: string | null
+          processed_at: string | null
+          published_at: string | null
+          quote: string | null
+          raw_content: string | null
+          reliability: number | null
+          scraped_at: string | null
+          sentiment: string | null
+          source: string | null
+          source_type: string | null
+          source_url: string | null
+          specialization: string | null
+          summary: string | null
+          tier_rating: string | null
+          tier_tag: string | null
+          timestamp: string | null
+          title: string | null
+          url: string | null
+          workflow_run_id: string | null
+        }
+        Insert: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_preview?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          quote?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
           title?: string | null
           url?: string | null
+          workflow_run_id?: string | null
+        }
+        Update: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_preview?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          quote?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
+          title?: string | null
+          url?: string | null
+          workflow_run_id?: string | null
+        }
+        Relationships: []
+      }
+      scouting_reports: {
+        Row: {
+          analysis: string | null
+          full_report: string | null
+          id: string
+          player_name: string
+          position: string | null
+          quick_takes: string | null
+          report_created_at: string | null
+          snapshot: string | null
+          source_insights: string | null
+        }
+        Insert: {
+          analysis?: string | null
+          full_report?: string | null
+          id?: string
+          player_name: string
+          position?: string | null
+          quick_takes?: string | null
+          report_created_at?: string | null
+          snapshot?: string | null
+          source_insights?: string | null
+        }
+        Update: {
+          analysis?: string | null
+          full_report?: string | null
+          id?: string
+          player_name?: string
+          position?: string | null
+          quick_takes?: string | null
+          report_created_at?: string | null
+          snapshot?: string | null
+          source_insights?: string | null
         }
         Relationships: []
       }
       transfer_reports: {
         Row: {
           age: number | null
-          ai_reasoning: string | null
+          breaking_news_alert: boolean | null
           club: string | null
           club_willingness: string | null
           confidence: number | null
+          contract_expires: string | null
           executive_summary: string | null
-          final_summary: string | null
           id: number
           image_url: string | null
+          injury_status: string | null
           key_insights: string | null
-          mark_take: string | null
           market_competition: string | null
-          next_steps: string | null
-          player_info: string | null
+          news_reliability: string | null
+          news_source: string | null
           player_name: string | null
+          position: string | null
           real_time_intelligence: string | null
           risk_factors: string | null
           tactical_fit: string | null
           timestamp: string
-          transfer_likelihood: string | null
-          united_strategy: string | null
-          urgency_level: string | null
-          verdict: string | null
+          transfermarkt_stats: Json | null
+          transfermarkt_value: string | null
         }
         Insert: {
           age?: number | null
-          ai_reasoning?: string | null
+          breaking_news_alert?: boolean | null
           club?: string | null
           club_willingness?: string | null
           confidence?: number | null
+          contract_expires?: string | null
           executive_summary?: string | null
-          final_summary?: string | null
           id?: number
           image_url?: string | null
+          injury_status?: string | null
           key_insights?: string | null
-          mark_take?: string | null
           market_competition?: string | null
-          next_steps?: string | null
-          player_info?: string | null
+          news_reliability?: string | null
+          news_source?: string | null
           player_name?: string | null
+          position?: string | null
           real_time_intelligence?: string | null
           risk_factors?: string | null
           tactical_fit?: string | null
           timestamp: string
-          transfer_likelihood?: string | null
-          united_strategy?: string | null
-          urgency_level?: string | null
-          verdict?: string | null
+          transfermarkt_stats?: Json | null
+          transfermarkt_value?: string | null
         }
         Update: {
           age?: number | null
-          ai_reasoning?: string | null
+          breaking_news_alert?: boolean | null
           club?: string | null
           club_willingness?: string | null
           confidence?: number | null
+          contract_expires?: string | null
           executive_summary?: string | null
-          final_summary?: string | null
           id?: number
           image_url?: string | null
+          injury_status?: string | null
           key_insights?: string | null
-          mark_take?: string | null
           market_competition?: string | null
-          next_steps?: string | null
-          player_info?: string | null
+          news_reliability?: string | null
+          news_source?: string | null
           player_name?: string | null
+          position?: string | null
           real_time_intelligence?: string | null
           risk_factors?: string | null
           tactical_fit?: string | null
           timestamp?: string
-          transfer_likelihood?: string | null
-          united_strategy?: string | null
-          urgency_level?: string | null
-          verdict?: string | null
+          transfermarkt_stats?: Json | null
+          transfermarkt_value?: string | null
         }
         Relationships: []
       }
@@ -149,7 +290,267 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      tus_breaking_news: {
+        Row: {
+          breaking_news: boolean | null
+          category: string | null
+          content_type: string | null
+          engagement_score: number | null
+          fan_interest_score: number | null
+          id: string | null
+          image_url: string | null
+          is_active: boolean | null
+          priority: string | null
+          processed_at: string | null
+          published_at: string | null
+          raw_content: string | null
+          reliability: number | null
+          scraped_at: string | null
+          sentiment: string | null
+          source: string | null
+          source_type: string | null
+          source_url: string | null
+          specialization: string | null
+          summary: string | null
+          tier_rating: string | null
+          tier_tag: string | null
+          timestamp: string | null
+          title: string | null
+          url: string | null
+          workflow_run_id: string | null
+        }
+        Insert: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
+          title?: string | null
+          url?: string | null
+          workflow_run_id?: string | null
+        }
+        Update: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
+          title?: string | null
+          url?: string | null
+          workflow_run_id?: string | null
+        }
+        Relationships: []
+      }
+      tus_gold_tier: {
+        Row: {
+          breaking_news: boolean | null
+          category: string | null
+          content_type: string | null
+          engagement_score: number | null
+          fan_interest_score: number | null
+          id: string | null
+          image_url: string | null
+          is_active: boolean | null
+          priority: string | null
+          processed_at: string | null
+          published_at: string | null
+          raw_content: string | null
+          reliability: number | null
+          scraped_at: string | null
+          sentiment: string | null
+          source: string | null
+          source_type: string | null
+          source_url: string | null
+          specialization: string | null
+          summary: string | null
+          tier_rating: string | null
+          tier_tag: string | null
+          timestamp: string | null
+          title: string | null
+          url: string | null
+          workflow_run_id: string | null
+        }
+        Insert: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
+          title?: string | null
+          url?: string | null
+          workflow_run_id?: string | null
+        }
+        Update: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
+          title?: string | null
+          url?: string | null
+          workflow_run_id?: string | null
+        }
+        Relationships: []
+      }
+      tus_high_interest: {
+        Row: {
+          breaking_news: boolean | null
+          category: string | null
+          content_type: string | null
+          engagement_score: number | null
+          fan_interest_score: number | null
+          id: string | null
+          image_url: string | null
+          is_active: boolean | null
+          priority: string | null
+          processed_at: string | null
+          published_at: string | null
+          raw_content: string | null
+          reliability: number | null
+          scraped_at: string | null
+          sentiment: string | null
+          source: string | null
+          source_type: string | null
+          source_url: string | null
+          specialization: string | null
+          summary: string | null
+          tier_rating: string | null
+          tier_tag: string | null
+          timestamp: string | null
+          title: string | null
+          url: string | null
+          workflow_run_id: string | null
+        }
+        Insert: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
+          title?: string | null
+          url?: string | null
+          workflow_run_id?: string | null
+        }
+        Update: {
+          breaking_news?: boolean | null
+          category?: string | null
+          content_type?: string | null
+          engagement_score?: number | null
+          fan_interest_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          priority?: string | null
+          processed_at?: string | null
+          published_at?: string | null
+          raw_content?: string | null
+          reliability?: number | null
+          scraped_at?: string | null
+          sentiment?: string | null
+          source?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          specialization?: string | null
+          summary?: string | null
+          tier_rating?: string | null
+          tier_tag?: string | null
+          timestamp?: string | null
+          title?: string | null
+          url?: string | null
+          workflow_run_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

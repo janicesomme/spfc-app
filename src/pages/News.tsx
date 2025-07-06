@@ -1,23 +1,25 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, RefreshCw, Search } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-interface NewsItem {
+interface NewsArticle {
   id: string;
-  title: string | null;
+  title: string;
+  summary: string | null;
   source: string | null;
   image_url: string | null;
-  url: string | null;
+  url: string;
   published_at: string | null;
+  created_at: string;
 }
 
 function getRelativeTime(dateString: string | null): string {
   if (!dateString) return "";
   try {
-    const date =
-      typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
+    const date = typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
     return formatDistanceToNow(date, { addSuffix: true }).replace("about ", "");
   } catch {
     return "";
@@ -25,31 +27,119 @@ function getRelativeTime(dateString: string | null): string {
 }
 
 export default function News() {
-  const [news, setNews] = useState<NewsItem[]>([]);
+  const [news, setNews] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSource, setSelectedSource] = useState("All");
+  const [sources, setSources] = useState<string[]>([]);
 
-  useEffect(() => {
-    fetchNews();
-    // eslint-disable-next-line
-  }, []);
+  const ARTICLES_PER_PAGE = 20;
 
-  async function fetchNews() {
-    setLoading(true);
+  const fetchNews = useCallback(async (offset = 0, reset = true) => {
+    if (offset === 0) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+    
     try {
-      const { data, error } = await supabase
-        .from("news_items")
-        .select("id,title,source,image_url,url,published_at")
-        .order("published_at", { ascending: false })
-        .limit(7);
+      let query = supabase
+        .from("news_articles")
+        .select("id, title, summary, source, image_url, url, published_at, created_at")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      // Apply source filter
+      if (selectedSource !== "All") {
+        query = query.eq("source", selectedSource);
+      }
+
+      // Apply search filter
+      if (searchTerm) {
+        query = query.or(`title.ilike.%${searchTerm}%,summary.ilike.%${searchTerm}%`);
+      }
+
+      const { data, error } = await query
+        .range(offset, offset + ARTICLES_PER_PAGE - 1);
 
       if (error) throw error;
-      setNews(data || []);
+
+      const articles = data || [];
+      
+      if (reset) {
+        setNews(articles);
+      } else {
+        setNews(prev => [...prev, ...articles]);
+      }
+      
+      setHasMore(articles.length === ARTICLES_PER_PAGE);
     } catch (err) {
-      setNews([]);
+      console.error("Error fetching news:", err);
+      if (reset) {
+        setNews([]);
+      }
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
-  }
+  }, [selectedSource, searchTerm]);
+
+  const fetchSources = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from("news_articles")
+        .select("source")
+        .eq("is_active", true)
+        .not("source", "is", null);
+
+      if (error) throw error;
+
+      const uniqueSources = Array.from(new Set(data.map(item => item.source))).filter(Boolean);
+      setSources(["All", ...uniqueSources.sort()]);
+    } catch (err) {
+      console.error("Error fetching sources:", err);
+      setSources(["All"]);
+    }
+  }, []);
+
+  const handleRefresh = () => {
+    fetchNews(0, true);
+  };
+
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMore) {
+      fetchNews(news.length, false);
+    }
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+  };
+
+  const handleSourceFilter = (source: string) => {
+    setSelectedSource(source);
+  };
+
+  // Initial load and source fetch
+  useEffect(() => {
+    Promise.all([fetchNews(0, true), fetchSources()]);
+  }, [fetchNews, fetchSources]);
+
+  // Auto-refresh every 5 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNews(0, true);
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [fetchNews]);
+
+  // Re-fetch when search term or source changes
+  useEffect(() => {
+    fetchNews(0, true);
+  }, [searchTerm, selectedSource, fetchNews]);
 
   if (loading) {
     return (
@@ -59,141 +149,155 @@ export default function News() {
     );
   }
 
-  if (!news.length) {
-    return (
-      <div className="text-center py-16 text-[#A0A0A0] bg-[#0D0D0D]">
-        No news available
-      </div>
-    );
-  }
-
-  const topStory = news[0];
-  const otherArticles = news.slice(1, 7);
-
   return (
-    <div className="w-full max-w-md min-h-screen mx-auto py-2 bg-[#0D0D0D] px-0">
-      {/* Minimal top spacing */}
-      <div className="h-1" aria-hidden="true" />
-      {/* Top Story */}
-      <a
-        href={topStory?.url || "#"}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block focus:outline-none px-3"
-        tabIndex={0}
-        aria-label={topStory?.title ?? "Top story"}
-      >
-        <div className="rounded-[12px] overflow-hidden bg-[#1A1A1A] shadow-md mb-3 relative transition-all">
-          {topStory?.image_url && (
-            <div
-              className="w-full flex justify-center items-center bg-[#111]"
-              style={{
-                borderBottom: "1px solid #181818",
-                aspectRatio: "1 / 1",
-                minHeight: 220,
-                maxHeight: 340,
-                overflow: "hidden",
-                display: "flex",
-              }}
+    <div className="w-full max-w-4xl min-h-screen mx-auto py-4 bg-[#0D0D0D] px-4">
+      {/* Header with search and filters */}
+      <div className="mb-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-[#EAEAEA]">Manchester United News</h1>
+          <Button
+            onClick={handleRefresh}
+            variant="ghost"
+            size="sm"
+            className="text-[#A0A0A0] hover:text-[#EAEAEA]"
+            disabled={loading}
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+          </Button>
+        </div>
+
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#A0A0A0]" />
+          <Input
+            placeholder="Search articles..."
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="pl-10 bg-[#1A1A1A] border-[#333] text-[#EAEAEA] placeholder:text-[#A0A0A0]"
+          />
+        </div>
+
+        {/* Source filters */}
+        <div className="flex flex-wrap gap-2">
+          {sources.map((source) => (
+            <Button
+              key={source}
+              onClick={() => handleSourceFilter(source)}
+              variant={selectedSource === source ? "default" : "outline"}
+              size="sm"
+              className={`${
+                selectedSource === source
+                  ? "bg-red-600 text-white hover:bg-red-700"
+                  : "bg-[#1A1A1A] text-[#A0A0A0] border-[#333] hover:bg-[#202126] hover:text-[#EAEAEA]"
+              }`}
             >
-              <img
-                src={topStory.image_url}
-                alt={topStory.title || "Top story"}
-                className="object-cover w-full h-full min-h-[220px] max-h-[340px] rounded-[8px]"
-                style={{ borderRadius: 8, objectFit: "cover", aspectRatio: "1/1" }}
-              />
+              {source}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {/* No articles message */}
+      {!news.length ? (
+        <div className="text-center py-16 text-[#A0A0A0]">
+          {searchTerm || selectedSource !== "All" 
+            ? "No articles found matching your criteria" 
+            : "No news available"}
+        </div>
+      ) : (
+        <>
+          {/* Articles grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {news.map((article) => (
+              <article
+                key={article.id}
+                className="bg-[#1A1A1A] rounded-[12px] overflow-hidden hover:bg-[#202126] transition-colors group"
+              >
+                {/* Article image */}
+                {article.image_url ? (
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={article.image_url}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const fallback = document.createElement('div');
+                        fallback.className = 'w-full h-full flex items-center justify-center bg-[#111] text-[#666]';
+                        fallback.innerHTML = '<svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>';
+                        target.parentNode?.appendChild(fallback);
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video bg-[#111] flex items-center justify-center text-[#666]">
+                    <ExternalLink className="w-8 h-8" />
+                  </div>
+                )}
+
+                {/* Article content */}
+                <div className="p-4 space-y-3">
+                  <h2 className="font-bold text-lg text-[#EAEAEA] leading-tight line-clamp-2">
+                    {article.title}
+                  </h2>
+                  
+                  {article.summary && (
+                    <p className="text-sm text-[#A0A0A0] line-clamp-3 leading-relaxed">
+                      {article.summary}
+                    </p>
+                  )}
+
+                  <div className="flex items-center justify-between text-xs text-[#A0A0A0]">
+                    <span className="truncate max-w-[120px]">
+                      {article.source || "Unknown"}
+                    </span>
+                    <span>{getRelativeTime(article.published_at || article.created_at)}</span>
+                  </div>
+
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-between text-[#A0A0A0] hover:text-[#EAEAEA] hover:bg-[#333]"
+                  >
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between"
+                    >
+                      Read More
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </Button>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Load more button */}
+          {hasMore && (
+            <div className="text-center">
+              <Button
+                onClick={handleLoadMore}
+                disabled={loadingMore}
+                variant="outline"
+                className="bg-[#1A1A1A] text-[#A0A0A0] border-[#333] hover:bg-[#202126] hover:text-[#EAEAEA]"
+              >
+                {loadingMore ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
+                    Loading...
+                  </>
+                ) : (
+                  "Load More Articles"
+                )}
+              </Button>
             </div>
           )}
-          <div className="px-4 pt-3 pb-3">
-            <div
-              className="font-bold text-lg md:text-xl leading-snug text-[#EAEAEA] mb-0"
-              style={{
-                display: '-webkit-box',
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                WebkitLineClamp: 2,
-              }}
-            >
-              {topStory?.title}
-            </div>
-            <div className="flex items-center gap-2 text-xs mt-2" style={{ color: "#A0A0A0" }}>
-              <span className="truncate max-w-[130px]">{topStory?.source || "News"}</span>
-              <span>&middot;</span>
-              <span>{getRelativeTime(topStory?.published_at)}</span>
-            </div>
-          </div>
-          {/* Soft Divider/Drop Shadow below feature */}
-          <div className="absolute left-0 right-0 -bottom-3 h-6 flex justify-center pointer-events-none">
-            <div className="w-[68%] h-2 rounded-full blur-md opacity-65 bg-[#07070C]" style={{ filter: "blur(12px)", boxShadow: "0 6px 32px 2px #15131A" }} />
-          </div>
-        </div>
-      </a>
-
-      {/* Article list */}
-      <div className="mt-2 space-y-2 px-3 pb-24">
-        {otherArticles.map((item) => (
-          <a
-            href={item.url || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={item.id}
-            className="flex items-center gap-3 group rounded-[12px] bg-[#1A1A1A] px-3 py-2 hover:bg-[#202126] transition focus:outline-none"
-            tabIndex={0}
-            aria-label={item.title ?? "News article"}
-            style={{
-              boxShadow: "0 1px 4px 0 rgba(0,0,0,.065)",
-              alignItems: "flex-start",
-              paddingTop: 8, // Reduce padding: original was ~12
-              paddingBottom: 8, // Reduce padding: original was ~12
-            }}
-          >
-            {item.image_url ? (
-              <img
-                src={item.image_url}
-                alt={item.title || "Article"}
-                className="object-cover w-16 h-16 rounded-[8px] bg-[#111] flex-shrink-0"
-                style={{
-                  width: 64,
-                  height: 64,
-                  aspectRatio: "1/1",
-                  borderRadius: 8,
-                  objectFit: "cover",
-                }}
-              />
-            ) : (
-              <div className="w-16 h-16 flex items-center justify-center bg-[#161616] rounded-[8px] text-gray-700">
-                <ExternalLink className="w-7 h-7" />
-              </div>
-            )}
-            <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <div
-                className="font-semibold text-base text-[#EAEAEA] mb-1 leading-snug"
-                style={{
-                  display: '-webkit-box',
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  WebkitLineClamp: 2,
-                }}
-              >
-                {item.title}
-              </div>
-              <div className="flex items-center gap-2 text-xs mt-0.5" style={{ color: "#A0A0A0" }}>
-                <span className="truncate max-w-[90px]">{item.source || "News"}</span>
-                <span>&middot;</span>
-                <span>{getRelativeTime(item.published_at)}</span>
-              </div>
-            </div>
-            <ExternalLink
-              className="w-3.5 h-3.5 text-[#444] group-hover:text-[#EAEAEA] ml-2 flex-shrink-0"
-              style={{
-                verticalAlign: "middle",
-                marginTop: 3,
-                marginLeft: 8,
-              }}
-            />
-          </a>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }
