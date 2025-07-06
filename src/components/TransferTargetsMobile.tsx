@@ -6,11 +6,11 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface TransferTarget {
   id: number;
-  player_name: string;
-  player_info: string;
-  confidence: number;
-  club?: string;
-  position?: string;
+  player_name: string | null;
+  confidence: number | null;
+  club: string | null;
+  position: string | null;
+  executive_summary: string | null;
   value?: string;
   initials?: string;
 }
@@ -28,43 +28,17 @@ export function TransferTargetsMobile() {
     try {
       const { data, error } = await supabase
         .from('transfer_reports')
-        .select('id, player_name, player_info, confidence')
+        .select('id, player_name, confidence, club, position, executive_summary')
         .order('confidence', { ascending: false })
         .limit(7);
 
       if (error) throw error;
 
       const processedTargets = data?.map((target) => {
-        // Parse player_info to extract club, position, and value
-        let club = 'Unknown Club';
-        let position = 'Unknown Position';
-        let value = 'Unknown Value';
-
-        try {
-          // Try to extract info from player_info string
-          const info = target.player_info || '';
-          
-          // Extract club (look for common patterns)
-          const clubMatch = info.match(/(?:Club:|at|from)\s*([A-Za-z\s]+?)(?:\s|,|\.|\n|$)/i);
-          if (clubMatch) club = clubMatch[1].trim();
-          
-          // Extract position
-          const positionMatch = info.match(/(?:Position:|plays as|striker|midfielder|defender|goalkeeper|winger|forward)/i);
-          if (positionMatch) {
-            if (info.toLowerCase().includes('striker') || info.toLowerCase().includes('forward')) position = 'Striker';
-            else if (info.toLowerCase().includes('midfielder')) position = 'Midfielder';
-            else if (info.toLowerCase().includes('defender')) position = 'Defender';
-            else if (info.toLowerCase().includes('goalkeeper')) position = 'Goalkeeper';
-            else if (info.toLowerCase().includes('winger')) position = 'Winger';
-          }
-          
-          // Extract value (look for currency symbols and numbers)
-          const valueMatch = info.match(/[€£$]\s*(\d+(?:\.\d+)?)\s*[MmBb]/);
-          if (valueMatch) value = `€${valueMatch[1]}M`;
-          
-        } catch (e) {
-          console.log('Error parsing player info:', e);
-        }
+        // Use data from database or generate defaults
+        const club = target.club || 'Unknown Club';
+        const position = target.position || 'Unknown Position';
+        const value = 'TBD'; // Generate random value for demo
 
         // Generate initials
         const names = target.player_name?.split(' ') || ['Unknown', 'Player'];

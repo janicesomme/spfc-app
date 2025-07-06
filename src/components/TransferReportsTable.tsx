@@ -8,12 +8,14 @@ import { useToast } from "@/hooks/use-toast";
 
 interface TransferReport {
   id: number;
-  player_name: string;
-  transfer_likelihood: string;
-  confidence: number;
-  urgency_level: string;
-  verdict: string;
+  player_name: string | null;
+  confidence: number | null;
   timestamp: string;
+  club: string | null;
+  position: string | null;
+  executive_summary: string | null;
+  market_competition: string | null;
+  news_reliability: string | null;
 }
 
 export function TransferReportsTable() {
@@ -70,25 +72,6 @@ export function TransferReportsTable() {
     }
   };
 
-  const getUrgencyColor = (urgency: string) => {
-    switch (urgency?.toLowerCase()) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getLikelihoodColor = (likelihood: string) => {
-    switch (likelihood?.toLowerCase()) {
-      case 'very likely': return 'bg-green-100 text-green-800';
-      case 'likely': return 'bg-blue-100 text-blue-800';
-      case 'possible': return 'bg-yellow-100 text-yellow-800';
-      case 'unlikely': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   if (loading) {
     return (
       <Card>
@@ -114,10 +97,10 @@ export function TransferReportsTable() {
           <TableHeader>
             <TableRow>
               <TableHead>Player</TableHead>
-              <TableHead>Likelihood</TableHead>
+              <TableHead>Club</TableHead>
+              <TableHead>Position</TableHead>
               <TableHead>Confidence</TableHead>
-              <TableHead>Urgency</TableHead>
-              <TableHead>Verdict</TableHead>
+              <TableHead>News Source</TableHead>
               <TableHead>Updated</TableHead>
             </TableRow>
           </TableHeader>
@@ -125,18 +108,14 @@ export function TransferReportsTable() {
             {reports.map((report) => (
               <TableRow key={report.id} className="hover:bg-red-50">
                 <TableCell className="font-medium">{report.player_name}</TableCell>
-                <TableCell>
-                  <Badge className={getLikelihoodColor(report.transfer_likelihood)}>
-                    {report.transfer_likelihood}
-                  </Badge>
-                </TableCell>
+                <TableCell>{report.club || 'Unknown'}</TableCell>
+                <TableCell>{report.position || 'Unknown'}</TableCell>
                 <TableCell>{report.confidence}%</TableCell>
                 <TableCell>
-                  <Badge className={getUrgencyColor(report.urgency_level)}>
-                    {report.urgency_level}
+                  <Badge className={report.news_reliability === 'High' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                    {report.news_reliability || 'Unknown'}
                   </Badge>
                 </TableCell>
-                <TableCell className="max-w-xs truncate">{report.verdict}</TableCell>
                 <TableCell>{new Date(report.timestamp).toLocaleString()}</TableCell>
               </TableRow>
             ))}

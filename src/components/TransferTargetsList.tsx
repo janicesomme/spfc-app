@@ -6,10 +6,10 @@ import { useToast } from "@/hooks/use-toast";
 
 interface TransferTarget {
   id: number;
-  player_name: string;
-  transfer_likelihood: string;
-  confidence: number;
-  verdict: string;
+  player_name: string | null;
+  confidence: number | null;
+  club: string | null;
+  position: string | null;
 }
 
 export function TransferTargetsList() {
@@ -25,7 +25,7 @@ export function TransferTargetsList() {
     try {
       const { data, error } = await supabase
         .from('transfer_reports')
-        .select('id, player_name, transfer_likelihood, confidence, verdict')
+        .select('id, player_name, confidence, club, position')
         .order('confidence', { ascending: false })
         .limit(10);
 
@@ -86,7 +86,7 @@ export function TransferTargetsList() {
                 {target.player_name || 'Unknown Player'}
               </h3>
               <p className="text-sm text-gray-500 mt-0.5">
-                Market Value {getMarketValue()}
+                {target.club || 'Unknown Club'} • {target.position || 'Unknown Position'}
               </p>
             </div>
 
@@ -96,7 +96,7 @@ export function TransferTargetsList() {
                 {target.confidence}% likely
               </div>
               <div className="text-xs text-gray-500 mt-0.5">
-                {target.transfer_likelihood || 'Possible'}
+                Transfer Target
               </div>
             </div>
 
