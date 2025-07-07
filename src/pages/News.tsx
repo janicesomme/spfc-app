@@ -4,6 +4,7 @@ import { ExternalLink, RefreshCw, Search } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import stadiumImage from "@/assets/man-utd-stadium.jpg";
 
 interface NewsArticle {
   id: string;
@@ -221,7 +222,7 @@ export default function News() {
                   className="block aspect-video overflow-hidden cursor-pointer"
                 >
                   <img 
-                    src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=300&fit=crop&auto=format`}
+                    src={stadiumImage}
                     alt={article.title}
                     className="w-full h-48 object-cover rounded-lg"
                   />
