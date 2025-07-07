@@ -221,18 +221,9 @@ export default function News() {
                   className="block aspect-video overflow-hidden cursor-pointer"
                 >
                   <img 
-                    src={article.image_url} 
+                    src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=300&fit=crop&auto=format`}
                     alt={article.title}
                     className="w-full h-48 object-cover rounded-lg"
-                    onLoad={() => console.log('Image loaded:', article.image_url)}
-                    onError={(e) => {
-                      console.log('Image failed to load:', article.image_url);
-                      const target = e.target as HTMLImageElement;
-                      target.src = "https://assets.manutd.com/AssetPicker/images/0/0/16/126/817809/mufc-crest1606231460741.png";
-                      target.style.backgroundColor = "#DC2626";
-                      target.style.objectFit = "contain";
-                      target.style.padding = "16px";
-                    }}
                   />
                 </a>
 
