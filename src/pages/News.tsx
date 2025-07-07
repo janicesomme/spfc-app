@@ -224,6 +224,15 @@ export default function News() {
                     src={article.image_url} 
                     alt={article.title}
                     className="w-full h-48 object-cover rounded-lg"
+                    onLoad={() => console.log('Image loaded:', article.image_url)}
+                    onError={(e) => {
+                      console.log('Image failed to load:', article.image_url);
+                      const target = e.target as HTMLImageElement;
+                      target.src = "https://assets.manutd.com/AssetPicker/images/0/0/16/126/817809/mufc-crest1606231460741.png";
+                      target.style.backgroundColor = "#DC2626";
+                      target.style.objectFit = "contain";
+                      target.style.padding = "16px";
+                    }}
                   />
                 </a>
 
