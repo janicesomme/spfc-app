@@ -4,7 +4,6 @@ import { ExternalLink, RefreshCw, Search } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArticleImage } from "@/components/ArticleImage";
 
 interface NewsArticle {
   id: string;
@@ -214,19 +213,28 @@ export default function News() {
                 key={article.id}
                 className="bg-[#1A1A1A] rounded-[12px] overflow-hidden hover:bg-[#202126] transition-colors group"
               >
-                {/* Article image - clickable */}
-                <a
-                  href={article.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block aspect-video overflow-hidden cursor-pointer"
-                >
-                  <ArticleImage
-                    src={article.image_url}
-                    alt={article.title}
-                    className="aspect-video w-full h-full rounded-t-[12px]"
-                  />
-                </a>
+                {/* Article image - only show if image_url exists */}
+                {article.image_url && (
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block aspect-video overflow-hidden cursor-pointer"
+                  >
+                    <img 
+                      src={article.image_url}
+                      alt={article.title}
+                      className="w-full h-48 object-cover rounded-t-[12px]"
+                      onError={(e) => {
+                        // If image fails to load, hide the image container
+                        const target = e.target as HTMLImageElement;
+                        if (target.parentElement?.parentElement) {
+                          target.parentElement.parentElement.style.display = 'none';
+                        }
+                      }}
+                    />
+                  </a>
+                )}
 
                 {/* Article content */}
                 <div className="p-4 space-y-3">
