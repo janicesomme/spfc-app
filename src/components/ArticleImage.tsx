@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface ArticleImageProps {
   src?: string | null;
@@ -11,21 +11,29 @@ export const ArticleImage: React.FC<ArticleImageProps> = ({
   alt,
   className = ""
 }) => {
-  const [imageSrc, setImageSrc] = useState(
-    src || 'https://logos-world.net/wp-content/uploads/2020/06/Manchester-United-Logo.png'
-  );
+  // Use working Manchester United official asset
+  const manUtdImage = "https://assets.manutd.com/AssetPicker/images/0/0/16/126/817809/mufc-crest1606231460741.png";
   
-  const handleImageError = () => {
-    setImageSrc('https://logos-world.net/wp-content/uploads/2020/06/Manchester-United-Logo.png');
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    // If even the official image fails, show red background with MUFC text
+    const target = e.target as HTMLImageElement;
+    target.style.display = 'none';
+    if (target.parentElement) {
+      target.parentElement.innerHTML = '<div class="w-full h-48 bg-red-600 flex items-center justify-center text-white font-bold text-xl rounded-lg">MUFC</div>';
+    }
   };
   
   return (
     <img 
-      src={imageSrc}
-      alt={alt}
+      src={manUtdImage}
+      alt="Manchester United"
+      className={`w-full h-48 object-contain bg-red-600 rounded-lg p-4 ${className}`}
+      style={{ 
+        minHeight: '192px',
+        backgroundColor: '#DC2626', // Man Utd red background
+        objectFit: 'contain'
+      }}
       onError={handleImageError}
-      className={`w-full h-full object-cover ${className}`}
-      style={{ minHeight: '192px', backgroundColor: '#f3f4f6' }}
     />
   );
 };
