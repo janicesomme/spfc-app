@@ -4,6 +4,7 @@ import { ExternalLink, RefreshCw, Search } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ArticleImage } from "@/components/ArticleImage";
 
 interface NewsArticle {
   id: string;
@@ -213,28 +214,19 @@ export default function News() {
                 key={article.id}
                 className="bg-[#1A1A1A] rounded-[12px] overflow-hidden hover:bg-[#202126] transition-colors group"
               >
-                {/* Article image */}
-                {article.image_url ? (
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={article.image_url}
-                      alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const fallback = document.createElement('div');
-                        fallback.className = 'w-full h-full flex items-center justify-center bg-[#111] text-[#666]';
-                        fallback.innerHTML = '<svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>';
-                        target.parentNode?.appendChild(fallback);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div className="aspect-video bg-[#111] flex items-center justify-center text-[#666]">
-                    <ExternalLink className="w-8 h-8" />
-                  </div>
-                )}
+                {/* Article image - clickable */}
+                <a
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block aspect-video overflow-hidden cursor-pointer"
+                >
+                  <ArticleImage
+                    src={article.image_url}
+                    alt={article.title}
+                    className="aspect-video w-full h-full rounded-t-[12px]"
+                  />
+                </a>
 
                 {/* Article content */}
                 <div className="p-4 space-y-3">

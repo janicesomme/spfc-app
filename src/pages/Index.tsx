@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Separator } from "@/components/ui/separator";
 import { OfficialTUSLogo } from "@/components/OfficialTUSLogo";
+import { ArticleImage } from "@/components/ArticleImage";
 
 // -------------------- TOP BANNER (Red Only) --------------------
 function HomeHeader() {
@@ -129,12 +130,10 @@ function NewsPreviewBlock() {
                 tabIndex={0}
               >
                 {/* Image */}
-                <img
-                  src={articles[0].image_url || "/placeholder.svg"}
-                  alt=""
-                  className="w-[92px] h-[92px] object-cover rounded-xl border-[2px] border-[#2a2a2a] shadow bg-neutral-700 flex-shrink-0"
-                  style={{ flexShrink: 0 }}
-                  loading="lazy"
+                <ArticleImage
+                  src={articles[0].image_url}
+                  alt={articles[0].title || "News article"}
+                  className="w-[92px] h-[92px] rounded-xl border-[2px] border-[#2a2a2a] shadow flex-shrink-0"
                 />
                 {/* Headline + source (stacked) */}
                 <div className="flex flex-col justify-center flex-1 min-w-0 ml-1.5 space-y-[8px]">
@@ -181,11 +180,10 @@ function NewsPreviewBlock() {
                     minHeight: 58,
                   }}
                 >
-                  <img
-                    src={item.image_url || "/placeholder.svg"}
-                    alt=""
-                    className="w-12 h-12 object-cover rounded-lg border border-[#35353b] bg-neutral-800 flex-shrink-0"
-                    loading="lazy"
+                  <ArticleImage
+                    src={item.image_url}
+                    alt={item.title || "News article"}
+                    className="w-12 h-12 rounded-lg border border-[#35353b] flex-shrink-0"
                   />
                   <div className="flex flex-col flex-1 min-w-0">
                     <div className="text-[1rem] font-normal text-white truncate group-hover:underline leading-snug">
