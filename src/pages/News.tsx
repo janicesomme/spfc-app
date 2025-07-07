@@ -4,7 +4,6 @@ import { ExternalLink, RefreshCw, Search } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import stadiumImage from "@/assets/man-utd-stadium.jpg";
 
 interface NewsArticle {
   id: string;
@@ -214,19 +213,21 @@ export default function News() {
                 key={article.id}
                 className="bg-[#1A1A1A] rounded-[12px] overflow-hidden hover:bg-[#202126] transition-colors group"
               >
-                {/* Article image */}
-                <a
-                  href={article.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block aspect-video overflow-hidden cursor-pointer"
-                >
-                  <img 
-                    src={stadiumImage}
-                    alt={article.title}
-                    className="w-full h-48 object-cover rounded-lg"
-                  />
-                </a>
+                {/* Article image - only show if image_url exists */}
+                {article.image_url && (
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block aspect-video overflow-hidden cursor-pointer"
+                  >
+                    <img 
+                      src={article.image_url}
+                      alt={article.title}
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                  </a>
+                )}
 
                 {/* Article content */}
                 <div className="p-4 space-y-3">
