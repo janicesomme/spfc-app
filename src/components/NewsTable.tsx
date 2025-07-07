@@ -58,9 +58,10 @@ export function NewsTable() {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('news_items')
-        .select('id,title,source,image_url,published_at,url')
-        .order('published_at', { ascending: false })
+        .from('news_articles')
+        .select('id,title,summary,source,image_url,url,published_at,created_at')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
         .limit(15);
 
       if (error) throw error;

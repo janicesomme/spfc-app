@@ -62,9 +62,10 @@ function NewsPreviewBlock() {
   useEffect(() => {
     let mounted = true;
     supabase
-      .from("news_items")
-      .select("id,title,source,image_url,published_at,url")
-      .order("published_at", { ascending: false })
+      .from("news_articles")
+      .select("id,title,summary,source,image_url,url,published_at,created_at")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
       .limit(3)
       .then(({ data }) => {
         if (mounted) {
