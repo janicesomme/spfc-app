@@ -4,15 +4,24 @@ import { ExternalLink, RefreshCw, Search } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 interface NewsArticle {
   id: string;
   title: string;
-  summary: string | null;
-  source: string | null;
+  description: string | null;
+  link: string | null;
   image_url: string | null;
-  url: string;
+  source: string | null;
+  source_logo: string | null;
   published_at: string | null;
+  relevance_score: number | null;
+  rank: number | null;
+  has_image: boolean | null;
+  is_breaking: boolean | null;
+  is_transfer: boolean | null;
+  is_match_report: boolean | null;
+  is_active: boolean | null;
   created_at: string;
 }
 
@@ -46,10 +55,12 @@ export default function News() {
     
     try {
       let query = supabase
-        .from("news_articles")
-        .select("id, title, summary, source, image_url, url, published_at, created_at")
+        .from("man_utd_news")
+        .select("id, title, description, link, image_url, source, source_logo, published_at, relevance_score, rank, has_image, is_breaking, is_transfer, is_match_report, is_active, created_at")
         .eq("is_active", true)
-        .order("created_at", { ascending: false });
+        .order("rank", { ascending: true, nullsFirst: false })
+        .order("relevance_score", { ascending: false, nullsFirst: false })
+        .order("published_at", { ascending: false, nullsFirst: false });
 
       // Apply source filter
       if (selectedSource !== "All") {
@@ -58,7 +69,7 @@ export default function News() {
 
       // Apply search filter
       if (searchTerm) {
-        query = query.or(`title.ilike.%${searchTerm}%,summary.ilike.%${searchTerm}%`);
+        query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
       }
 
       const { data, error } = await query
@@ -89,7 +100,7 @@ export default function News() {
   const fetchSources = useCallback(async () => {
     try {
       const { data, error } = await supabase
-        .from("news_articles")
+        .from("man_utd_news")
         .select("source")
         .eq("is_active", true)
         .not("source", "is", null);
@@ -207,63 +218,78 @@ export default function News() {
       ) : (
         <>
           {/* Articles grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
             {news.map((article) => (
               <article
                 key={article.id}
-                className="bg-[#1A1A1A] rounded-[12px] overflow-hidden hover:bg-[#202126] transition-colors group"
+                className="bg-[#1A1A1A] rounded-lg overflow-hidden hover:bg-[#202126] transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
               >
-                {/* Article image - only show if image_url exists */}
-                {article.image_url && (
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block aspect-video overflow-hidden cursor-pointer"
-                  >
+                {/* Article image */}
+                <div className="aspect-video overflow-hidden">
+                  {article.image_url ? (
                     <img 
                       src={article.image_url}
                       alt={article.title}
-                      className="w-full h-48 object-cover rounded-lg"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                  </a>
-                )}
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-[#333] to-[#222] flex items-center justify-center">
+                      <span className="text-[#666] text-sm">No Image</span>
+                    </div>
+                  )}
+                </div>
 
                 {/* Article content */}
                 <div className="p-4 space-y-3">
+                  {/* Badges */}
+                  <div className="flex flex-wrap gap-2">
+                    {article.is_breaking && (
+                      <Badge className="bg-red-600 text-white text-xs font-semibold">
+                        BREAKING
+                      </Badge>
+                    )}
+                    {article.is_transfer && (
+                      <Badge className="bg-blue-600 text-white text-xs font-semibold">
+                        TRANSFER
+                      </Badge>
+                    )}
+                    {article.is_match_report && (
+                      <Badge className="bg-green-600 text-white text-xs font-semibold">
+                        MATCH
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Title - clickable */}
                   <h2 className="font-bold text-lg text-[#EAEAEA] leading-tight line-clamp-2">
-                    {article.title}
+                    {article.link ? (
+                      <a
+                        href={article.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-red-400 transition-colors"
+                      >
+                        {article.title}
+                      </a>
+                    ) : (
+                      article.title
+                    )}
                   </h2>
                   
-                  {article.summary && (
+                  {/* Description */}
+                  {article.description && (
                     <p className="text-sm text-[#A0A0A0] line-clamp-3 leading-relaxed">
-                      {article.summary}
+                      {article.description}
                     </p>
                   )}
 
-                  <div className="flex items-center justify-between text-xs text-[#A0A0A0]">
-                    <span className="truncate max-w-[120px]">
+                  {/* Source and published date */}
+                  <div className="flex items-center justify-between text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
+                    <span className="truncate max-w-[120px] font-medium">
                       {article.source || "Unknown"}
                     </span>
                     <span>{getRelativeTime(article.published_at || article.created_at)}</span>
                   </div>
-
-                  <Button
-                    asChild
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-between text-[#A0A0A0] hover:text-[#EAEAEA] hover:bg-[#333]"
-                  >
-                    <a
-                      href={article.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between"
-                    >
-                      Read More
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </Button>
                 </div>
               </article>
             ))}
