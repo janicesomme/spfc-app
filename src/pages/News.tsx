@@ -10,7 +10,7 @@ interface NewsArticle {
   id: string;
   title: string;
   description: string | null;
-  link: string | null;
+  url: string | null;
   image_url: string | null;
   source: string | null;
   source_logo: string | null;
@@ -56,7 +56,7 @@ export default function News() {
     try {
       let query = supabase
         .from("man_utd_news")
-        .select("id, title, description, link, image_url, source, source_logo, published_at, relevance_score, rank, has_image, is_breaking, is_transfer, is_match_report, is_active, created_at")
+        .select("id, title, description, url, image_url, source, source_logo, published_at, relevance_score, rank, has_image, is_breaking, is_transfer, is_match_report, is_active, created_at")
         .eq("is_active", true)
         .order("rank", { ascending: true, nullsFirst: false })
         .order("relevance_score", { ascending: false, nullsFirst: false })
@@ -224,73 +224,130 @@ export default function News() {
                 key={article.id}
                 className="bg-[#1A1A1A] rounded-lg overflow-hidden hover:bg-[#202126] transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
               >
-                {/* Article image */}
-                <div className="aspect-video overflow-hidden">
-                  {article.image_url ? (
-                    <img 
-                      src={article.image_url}
-                      alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-[#333] to-[#222] flex items-center justify-center">
-                      <span className="text-[#666] text-sm">No Image</span>
+                {article.url ? (
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    {/* Article image */}
+                    <div className="aspect-video overflow-hidden">
+                      {article.image_url ? (
+                        <img 
+                          src={article.image_url}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-[#333] to-[#222] flex items-center justify-center">
+                          <span className="text-[#666] text-sm">No Image</span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
 
-                {/* Article content */}
-                <div className="p-4 space-y-3">
-                  {/* Badges */}
-                  <div className="flex flex-wrap gap-2">
-                    {article.is_breaking && (
-                      <Badge className="bg-red-600 text-white text-xs font-semibold">
-                        BREAKING
-                      </Badge>
-                    )}
-                    {article.is_transfer && (
-                      <Badge className="bg-blue-600 text-white text-xs font-semibold">
-                        TRANSFER
-                      </Badge>
-                    )}
-                    {article.is_match_report && (
-                      <Badge className="bg-green-600 text-white text-xs font-semibold">
-                        MATCH
-                      </Badge>
-                    )}
-                  </div>
+                    {/* Article content */}
+                    <div className="p-4 space-y-3">
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-2">
+                        {article.is_breaking && (
+                          <Badge className="bg-red-600 text-white text-xs font-semibold">
+                            BREAKING
+                          </Badge>
+                        )}
+                        {article.is_transfer && (
+                          <Badge className="bg-blue-600 text-white text-xs font-semibold">
+                            TRANSFER
+                          </Badge>
+                        )}
+                        {article.is_match_report && (
+                          <Badge className="bg-green-600 text-white text-xs font-semibold">
+                            MATCH
+                          </Badge>
+                        )}
+                      </div>
 
-                  {/* Title - clickable */}
-                  <h2 className="font-bold text-lg text-[#EAEAEA] leading-tight line-clamp-2">
-                    {article.link ? (
-                      <a
-                        href={article.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-red-400 transition-colors"
-                      >
+                      {/* Title */}
+                      <h2 className="font-bold text-lg text-[#EAEAEA] leading-tight line-clamp-2 hover:text-red-400 transition-colors">
                         {article.title}
-                      </a>
-                    ) : (
-                      article.title
-                    )}
-                  </h2>
-                  
-                  {/* Description */}
-                  {article.description && (
-                    <p className="text-sm text-[#A0A0A0] line-clamp-3 leading-relaxed">
-                      {article.description}
-                    </p>
-                  )}
+                      </h2>
+                      
+                      {/* Description */}
+                      {article.description && (
+                        <p className="text-sm text-[#A0A0A0] line-clamp-3 leading-relaxed">
+                          {article.description}
+                        </p>
+                      )}
 
-                  {/* Source and published date */}
-                  <div className="flex items-center justify-between text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
-                    <span className="truncate max-w-[120px] font-medium">
-                      {article.source || "Unknown"}
-                    </span>
-                    <span>{getRelativeTime(article.published_at || article.created_at)}</span>
-                  </div>
-                </div>
+                      {/* Source and published date */}
+                      <div className="flex items-center justify-between text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
+                        <span className="truncate max-w-[120px] font-medium">
+                          {article.source || "Unknown"}
+                        </span>
+                        <span>{getRelativeTime(article.published_at || article.created_at)}</span>
+                      </div>
+                    </div>
+                  </a>
+                ) : (
+                  <>
+                    {/* Article image */}
+                    <div className="aspect-video overflow-hidden">
+                      {article.image_url ? (
+                        <img 
+                          src={article.image_url}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-[#333] to-[#222] flex items-center justify-center">
+                          <span className="text-[#666] text-sm">No Image</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Article content */}
+                    <div className="p-4 space-y-3">
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-2">
+                        {article.is_breaking && (
+                          <Badge className="bg-red-600 text-white text-xs font-semibold">
+                            BREAKING
+                          </Badge>
+                        )}
+                        {article.is_transfer && (
+                          <Badge className="bg-blue-600 text-white text-xs font-semibold">
+                            TRANSFER
+                          </Badge>
+                        )}
+                        {article.is_match_report && (
+                          <Badge className="bg-green-600 text-white text-xs font-semibold">
+                            MATCH
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Title */}
+                      <h2 className="font-bold text-lg text-[#EAEAEA] leading-tight line-clamp-2">
+                        {article.title}
+                      </h2>
+                      
+                      {/* Description */}
+                      {article.description && (
+                        <p className="text-sm text-[#A0A0A0] line-clamp-3 leading-relaxed">
+                          {article.description}
+                        </p>
+                      )}
+
+                      {/* Source and published date */}
+                      <div className="flex items-center justify-between text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
+                        <span className="truncate max-w-[120px] font-medium">
+                          {article.source || "Unknown"}
+                        </span>
+                        <span>{getRelativeTime(article.published_at || article.created_at)}</span>
+                      </div>
+                    </div>
+                  </>
+                )}
               </article>
             ))}
           </div>
