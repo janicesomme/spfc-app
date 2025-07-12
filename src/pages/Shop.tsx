@@ -1,35 +1,42 @@
-import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 export default function Shop() {
   const navigate = useNavigate();
 
-  return (
-    <div className="min-h-screen bg-[#0D0D0D] flex flex-col">
-      {/* Header with back button */}
-      <div className="flex items-center gap-3 p-4 border-b border-[#171717] bg-[#0D0D0D] sticky top-0 z-50">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate(-1)}
-          className="text-[#EAEAEA] hover:bg-[#171717]"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <h1 className="text-lg font-semibold text-[#EAEAEA]">FUTV Official Store</h1>
-      </div>
+  useEffect(() => {
+    // Open the store in a new tab when this component mounts
+    window.open('https://futv.teemill.com', '_blank');
+    // Navigate back to the previous page
+    navigate(-1);
+  }, [navigate]);
 
-      {/* WebView - using iframe for web compatibility */}
-      <div className="flex-1">
-        <iframe
-          src="https://futv.teemill.com"
-          className="w-full h-full border-0"
-          title="FUTV Official Store"
-          allow="payment; fullscreen"
-          sandbox="allow-same-origin allow-scripts allow-forms allow-payments allow-popups allow-top-navigation"
-        />
+  return (
+    <div className="min-h-screen bg-[#0D0D0D] flex flex-col items-center justify-center p-8">
+      <div className="text-center space-y-4">
+        <ExternalLink className="h-12 w-12 text-[#C8102E] mx-auto" />
+        <h1 className="text-2xl font-bold text-[#EAEAEA]">Opening FUTV Official Store</h1>
+        <p className="text-[#A0A0A0] max-w-md">
+          The store is opening in a new tab. If it didn't open automatically, click the button below.
+        </p>
+        <div className="space-y-3">
+          <Button
+            onClick={() => window.open('https://futv.teemill.com', '_blank')}
+            className="bg-[#C8102E] hover:bg-[#A00D26] text-white px-6 py-2"
+          >
+            <ExternalLink className="h-4 w-4 mr-2" />
+            Open Store
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="text-[#A0A0A0] hover:text-[#EAEAEA] hover:bg-[#171717] block mx-auto"
+          >
+            Go Back
+          </Button>
+        </div>
       </div>
     </div>
   );
