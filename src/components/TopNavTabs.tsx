@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const tabs = [
   { label: "Home", path: "/" },
   { label: "News", path: "/news" },
-  { label: "Transfers", path: "/transfer-reports" },
-  { label: "TUS Videos", path: "/youtube" },
+  { label: "Videos", path: "/youtube" },
+  { label: "🛒 Shop", path: "/shop" },
 ];
 
 export function TopNavTabs() {

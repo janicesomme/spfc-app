@@ -7,10 +7,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import Dashboard from "./pages/Dashboard";
-import TransferReports from "./pages/TransferReports";
-import TransferTargets from "./pages/TransferTargets";
 import News from "./pages/News";
 import YouTube from "./pages/YouTube";
+import Shop from "./pages/Shop";
 import Players from "./pages/Players";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -37,10 +36,9 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/transfer-reports" element={<TransferReports />} />
-              <Route path="/transfer-targets" element={<TransferTargets />} />
               <Route path="/news" element={<News />} />
               <Route path="/youtube" element={<YouTube />} />
+              <Route path="/shop" element={<Shop />} />
               <Route path="/players" element={<Players />} />
               <Route path="/player-profile" element={<PlayerProfile />} />
               <Route path="/settings" element={<Settings />} />
