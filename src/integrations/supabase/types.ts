@@ -14,6 +14,145 @@ export type Database = {
   }
   public: {
     Tables: {
+      bets: {
+        Row: {
+          actual_away_goals: number | null
+          actual_home_goals: number | null
+          actual_winnings: number | null
+          fixture_id: string
+          id: string
+          is_correct: boolean | null
+          odds: number
+          placed_at: string | null
+          potential_winnings: number
+          prediction: Json
+          question_id: number
+          stake: number
+          user_id: string
+        }
+        Insert: {
+          actual_away_goals?: number | null
+          actual_home_goals?: number | null
+          actual_winnings?: number | null
+          fixture_id: string
+          id?: string
+          is_correct?: boolean | null
+          odds: number
+          placed_at?: string | null
+          potential_winnings: number
+          prediction: Json
+          question_id: number
+          stake: number
+          user_id: string
+        }
+        Update: {
+          actual_away_goals?: number | null
+          actual_home_goals?: number | null
+          actual_winnings?: number | null
+          fixture_id?: string
+          id?: string
+          is_correct?: boolean | null
+          odds?: number
+          placed_at?: string | null
+          potential_winnings?: number
+          prediction?: Json
+          question_id?: number
+          stake?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bets_fixture_id_fkey"
+            columns: ["fixture_id"]
+            isOneToOne: false
+            referencedRelation: "fixtures"
+            referencedColumns: ["external_id"]
+          },
+          {
+            foreignKeyName: "bets_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fixtures: {
+        Row: {
+          away_goals: number | null
+          competition: string | null
+          external_id: string
+          first_united_scorer: string | null
+          home_goals: number | null
+          kickoff: string | null
+          opponent: string | null
+          possession: number | null
+          shots_on_target: number | null
+          status: string | null
+          venue: string | null
+        }
+        Insert: {
+          away_goals?: number | null
+          competition?: string | null
+          external_id: string
+          first_united_scorer?: string | null
+          home_goals?: number | null
+          kickoff?: string | null
+          opponent?: string | null
+          possession?: number | null
+          shots_on_target?: number | null
+          status?: string | null
+          venue?: string | null
+        }
+        Update: {
+          away_goals?: number | null
+          competition?: string | null
+          external_id?: string
+          first_united_scorer?: string | null
+          home_goals?: number | null
+          kickoff?: string | null
+          opponent?: string | null
+          possession?: number | null
+          shots_on_target?: number | null
+          status?: string | null
+          venue?: string | null
+        }
+        Relationships: []
+      }
+      leaderboard: {
+        Row: {
+          created_at: string | null
+          id: string
+          total_winnings: number | null
+          user_id: string | null
+          username: string
+          winnings: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          total_winnings?: number | null
+          user_id?: string | null
+          username: string
+          winnings?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          total_winnings?: number | null
+          user_id?: string | null
+          username?: string
+          winnings?: number | null
+        }
+        Relationships: []
+      }
       man_utd_news: {
         Row: {
           category: string | null
@@ -239,6 +378,21 @@ export type Database = {
         }
         Relationships: []
       }
+      questions: {
+        Row: {
+          id: number
+          label: string
+        }
+        Insert: {
+          id: number
+          label: string
+        }
+        Update: {
+          id?: number
+          label?: string
+        }
+        Relationships: []
+      }
       scouting_reports: {
         Row: {
           analysis: string | null
@@ -347,6 +501,33 @@ export type Database = {
           timestamp?: string
           transfermarkt_stats?: Json | null
           transfermarkt_value?: string | null
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          discord_id: string | null
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          discord_id?: string | null
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          discord_id?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
         }
         Relationships: []
       }
