@@ -60,16 +60,6 @@ export default function Index() {
         backgroundColor: '#fc3f2b'
       }}
     >
-      {/* Background Image with Fans - positioned behind content */}
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `url('/lovable-uploads/0bba34e4-bd67-425a-b5e2-c565b65d75a0.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      />
       
       {/* Main Content */}
       <div className="relative z-10 flex flex-col min-h-screen">
