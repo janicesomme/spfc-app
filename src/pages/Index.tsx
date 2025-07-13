@@ -57,7 +57,7 @@ export default function Index() {
     <div 
       className="relative min-h-screen w-full max-w-md mx-auto pb-24 overflow-hidden"
       style={{ 
-        background: 'linear-gradient(135deg, #fc3f2b 0%, #d63384 50%, #1a1a1a 100%)'
+        backgroundColor: '#fc3f2b'
       }}
     >
       {/* Background Image with Fans - positioned behind content */}
