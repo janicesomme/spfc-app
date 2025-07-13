@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { HomeBottomNav } from "@/components/HomeBottomNav";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Users } from "lucide-react";
+import { ArrowRight, Play, Users, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { formatDistanceToNow, parseISO } from "date-fns";
+
+interface NewsArticle {
+  id: string;
+  title: string;
+  description: string | null;
+  url: string | null;
+  image_url: string | null;
+  source: string | null;
+  published_at: string | null;
+}
 
 // Countdown timer component
 function CountdownTimer() {
@@ -53,12 +65,42 @@ function CountdownTimer() {
 
 // Main homepage component
 export default function Index() {
+  const [topNews, setTopNews] = useState<NewsArticle[]>([]);
+
+  useEffect(() => {
+    const fetchTopNews = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("man_utd_news")
+          .select("id, title, description, url, image_url, source, published_at")
+          .eq("is_active", true)
+          .order("rank", { ascending: true, nullsFirst: false })
+          .order("relevance_score", { ascending: false, nullsFirst: false })
+          .order("published_at", { ascending: false, nullsFirst: false })
+          .limit(2);
+
+        if (error) throw error;
+        setTopNews(data || []);
+      } catch (err) {
+        console.error("Error fetching top news:", err);
+      }
+    };
+
+    fetchTopNews();
+  }, []);
+
+  const getRelativeTime = (dateString: string | null): string => {
+    if (!dateString) return "";
+    try {
+      const date = typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
+      return formatDistanceToNow(date, { addSuffix: true }).replace("about ", "");
+    } catch {
+      return "";
+    }
+  };
   return (
     <div 
-      className="relative min-h-screen w-full max-w-md mx-auto pb-24 overflow-hidden"
-      style={{ 
-        backgroundColor: '#fc3f2b'
-      }}
+      className="relative min-h-screen w-full max-w-md mx-auto pb-24 overflow-hidden bg-black"
     >
       
       {/* Main Content */}
@@ -80,47 +122,59 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Fan Comment Card */}
-        <section className="px-4 mb-6">
-          <div className="bg-white/90 rounded-lg p-4 shadow-md">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-[#fc3f2b] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                R
-              </div>
-              <div className="flex-1">
-                <p className="text-black text-sm mb-1">
-                  "We're not just WATCHING United, we're SURVIVING United together."
-                </p>
-                <p className="text-gray-600 text-xs font-medium">
-                  @RedDevil_4_Life
-                </p>
-              </div>
+        {/* Top News Headlines */}
+        <section className="px-4 mb-8 space-y-4">
+          {topNews.map((article) => (
+            <div key={article.id} className="bg-white/90 rounded-lg p-4 shadow-md">
+              {article.url ? (
+                <a
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1">
+                      <h3 className="text-black text-sm font-semibold mb-1 group-hover:text-red-600 transition-colors">
+                        {article.title}
+                      </h3>
+                      {article.description && (
+                        <p className="text-gray-600 text-xs mb-2 line-clamp-2">
+                          {article.description}
+                        </p>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <p className="text-gray-500 text-xs font-medium">
+                          {article.source || "Unknown"}
+                        </p>
+                        <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-red-600 transition-colors" />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              ) : (
+                <div className="flex items-start gap-3">
+                  <div className="flex-1">
+                    <h3 className="text-black text-sm font-semibold mb-1">
+                      {article.title}
+                    </h3>
+                    {article.description && (
+                      <p className="text-gray-600 text-xs mb-2 line-clamp-2">
+                        {article.description}
+                      </p>
+                    )}
+                    <p className="text-gray-500 text-xs font-medium">
+                      {article.source || "Unknown"}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          ))}
         </section>
 
-        {/* Prediction Game Section */}
-        <section className="px-4 mb-8">
-          <div className="bg-white/90 rounded-lg p-4 shadow-md text-center">
-            <p className="text-black text-sm mb-3 font-medium">
-              Make sure you make your predictions before Saturday!!
-            </p>
-            <Button 
-              className="bg-black hover:bg-gray-800 text-white font-bold px-6 py-2 rounded-lg w-full"
-              asChild
-            >
-              <Link to="/players">
-                Play Now
-              </Link>
-            </Button>
-          </div>
-        </section>
-
-        {/* Quick Hits Section */}
+        {/* Navigation Buttons */}
         <section className="px-6 pb-8">
-          <h2 className="text-4xl font-black text-white mb-6 tracking-wide">
-            QUICK HITS
-          </h2>
           
           <div className="space-y-4">
             <Button 
