@@ -73,54 +73,35 @@ export default function Index() {
       
       {/* Main Content */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        {/* Hero Section with DAY 39! */}
-        <header className="px-6 pt-8 pb-4">
-          {/* DAY 39! Header - Large and Bold */}
-          <div className="text-center mb-6">
-            <div className="mb-2">
-              <h1 className="text-8xl font-black text-white leading-none tracking-tight drop-shadow-lg">
-                DAY
-              </h1>
-            </div>
-            <div className="mb-6">
-              <h1 className="text-8xl font-black leading-none tracking-tight drop-shadow-lg"
-                  style={{ color: '#fc3f2b', WebkitTextStroke: '2px white' }}>
-                39!
-              </h1>
+        {/* YouTube Video Thumbnail */}
+        <div className="px-4 pt-4 mb-6">
+          <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
+            <img 
+              src="/lovable-uploads/0bba34e4-bd67-425a-b5e2-c565b65d75a0.png"
+              alt="DAY 39! YouTube Video Thumbnail"
+              className="w-full h-full object-cover"
+            />
+            {/* YouTube Play Button Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="bg-black/80 rounded-full p-4 hover:bg-black/60 transition-colors">
+                <Play className="w-12 h-12 text-white fill-white" />
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Watch the Latest Button - Prominent Red Button */}
-          <div className="flex justify-center mb-8">
-            <Button 
-              className="text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-xl border-0 w-full max-w-sm text-center"
-              style={{ backgroundColor: '#fc3f2b' }}
-              asChild
-            >
-              <Link to="/youtube" className="flex items-center justify-center gap-3">
-                WATCH THE LATEST
-                <span className="text-2xl">≫</span>
-              </Link>
-            </Button>
-          </div>
-        </header>
-
-        {/* Let Me Hear Your Voice Section */}
-        <section className="px-6 mb-8">
-          <h2 className="text-3xl font-black text-white mb-6 text-center tracking-wide">
-            LET ME HEAR YOUR VOICE
-          </h2>
-          
-          <div className="bg-[#F5F5DC] rounded-3xl p-6 shadow-lg">
-            <div className="flex items-start gap-4">
-              <div className="w-14 h-14 bg-[#F5F5DC] rounded-full border-4 border-black flex items-center justify-center text-3xl font-bold flex-shrink-0">
-                "
+        {/* Fan Comment Card */}
+        <section className="px-4 mb-6">
+          <div className="bg-white/90 rounded-lg p-4 shadow-md">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-[#fc3f2b] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                R
               </div>
               <div className="flex-1">
-                <p className="text-black text-xl font-medium leading-relaxed mb-4">
+                <p className="text-black text-sm mb-1">
                   "We're not just WATCHING United, we're SURVIVING United together."
                 </p>
-                <p className="text-yellow-600 font-bold text-lg">
+                <p className="text-gray-600 text-xs font-medium">
                   @RedDevil_4_Life
                 </p>
               </div>
@@ -128,29 +109,21 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Did You Play Section */}
-        <section className="px-6 mb-8">
-          <h2 className="text-4xl font-black text-white mb-6 text-center tracking-wide">
-            DID YOU PLAY?
-          </h2>
-          
-          <div className="bg-[#F5F5DC] rounded-3xl p-6 shadow-lg mb-6">
-            <div className="bg-yellow-400 text-black font-bold text-2xl px-6 py-3 rounded-2xl mb-6 text-center shadow-md">
-              MATCHDAY 17
-            </div>
-            <CountdownTimer />
+        {/* Prediction Game Section */}
+        <section className="px-4 mb-8">
+          <div className="bg-white/90 rounded-lg p-4 shadow-md text-center">
+            <p className="text-black text-sm mb-3 font-medium">
+              Make sure you make your predictions before Saturday!!
+            </p>
+            <Button 
+              className="bg-black hover:bg-gray-800 text-white font-bold px-6 py-2 rounded-lg w-full"
+              asChild
+            >
+              <Link to="/players">
+                Play Now
+              </Link>
+            </Button>
           </div>
-
-          {/* Prediction Game Button */}
-          <Button 
-            className="bg-black hover:bg-gray-800 text-white font-bold text-xl px-8 py-6 rounded-2xl w-full shadow-xl"
-            asChild
-          >
-            <Link to="/players" className="flex items-center justify-center gap-3">
-              <Users className="w-6 h-6" />
-              Play Our Prediction Game!!
-            </Link>
-          </Button>
         </section>
 
         {/* Quick Hits Section */}
