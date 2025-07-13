@@ -77,7 +77,7 @@ export default function Index() {
         <div className="px-4 pt-4 mb-6">
           <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
             <img 
-              src="/lovable-uploads/0bba34e4-bd67-425a-b5e2-c565b65d75a0.png"
+              src="/lovable-uploads/0f7f61b6-945e-4ce1-b734-17f8ca7b8380.png"
               alt="DAY 39! YouTube Video Thumbnail"
               className="w-full h-full object-cover"
             />
