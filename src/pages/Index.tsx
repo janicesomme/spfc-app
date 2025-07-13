@@ -122,55 +122,52 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Top News Headlines */}
-        <section className="px-4 mb-8 space-y-4">
-          {topNews.map((article) => (
-            <div key={article.id} className="bg-white/90 rounded-lg p-4 shadow-md">
-              {article.url ? (
-                <a
-                  href={article.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group"
-                >
+        {/* Latest News Section */}
+        <section className="px-4 mb-8">
+          <h2 className="text-white text-lg font-bold mb-4">Latest News</h2>
+          <div className="space-y-4">
+            {topNews.map((article) => (
+              <div key={article.id} className="bg-black border border-red-500 rounded-lg p-4 shadow-md">
+                {article.url ? (
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block group"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-1">
+                        <h3 className="text-white text-sm font-semibold mb-1 group-hover:text-red-400 transition-colors">
+                          {article.title}
+                        </h3>
+                        {article.description && (
+                          <p className="text-gray-300 text-xs mb-2 line-clamp-2">
+                            {article.description}
+                          </p>
+                        )}
+                        <div className="flex justify-end">
+                          <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-red-400 transition-colors" />
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                ) : (
                   <div className="flex items-start gap-3">
                     <div className="flex-1">
-                      <h3 className="text-black text-sm font-semibold mb-1 group-hover:text-red-600 transition-colors">
+                      <h3 className="text-white text-sm font-semibold mb-1">
                         {article.title}
                       </h3>
                       {article.description && (
-                        <p className="text-gray-600 text-xs mb-2 line-clamp-2">
+                        <p className="text-gray-300 text-xs mb-2 line-clamp-2">
                           {article.description}
                         </p>
                       )}
-                      <div className="flex items-center justify-between">
-                        <p className="text-gray-500 text-xs font-medium">
-                          {article.source || "Unknown"}
-                        </p>
-                        <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-red-600 transition-colors" />
-                      </div>
                     </div>
                   </div>
-                </a>
-              ) : (
-                <div className="flex items-start gap-3">
-                  <div className="flex-1">
-                    <h3 className="text-black text-sm font-semibold mb-1">
-                      {article.title}
-                    </h3>
-                    {article.description && (
-                      <p className="text-gray-600 text-xs mb-2 line-clamp-2">
-                        {article.description}
-                      </p>
-                    )}
-                    <p className="text-gray-500 text-xs font-medium">
-                      {article.source || "Unknown"}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Navigation Buttons */}
