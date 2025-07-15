@@ -188,12 +188,26 @@ export default function Index() {
 
         {/* Player Ratings Section */}
         <section className="px-4 pb-8">
-          <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
-            <img 
-              src="/lovable-uploads/d77ea982-c4fe-40a0-a809-94eb66afce8a.png"
-              alt="Rate The Players"
-              className="w-full h-auto object-cover"
-            />
+          <div className="relative w-full h-24 bg-gradient-to-r from-red-600 to-red-500 rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+            <div className="flex items-center justify-between h-full px-4">
+              {/* Text Section */}
+              <div className="text-white">
+                <h3 className="text-lg font-bold">Player Ratings</h3>
+              </div>
+              
+              {/* Player Images Section */}
+              <div className="flex space-x-2">
+                <div className="w-12 h-12 rounded-full bg-white/20 border-2 border-white/30"></div>
+                <div className="w-12 h-12 rounded-full bg-white/20 border-2 border-white/30"></div>
+              </div>
+            </div>
+            
+            {/* 5 Gold Stars - Centered */}
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="text-yellow-400 text-sm">★</div>
+              ))}
+            </div>
           </div>
         </section>
 
