@@ -77,7 +77,7 @@ export default function Index() {
           .order("rank", { ascending: true, nullsFirst: false })
           .order("relevance_score", { ascending: false, nullsFirst: false })
           .order("published_at", { ascending: false, nullsFirst: false })
-          .limit(2);
+          .limit(3);
 
         if (error) throw error;
         setTopNews(data || []);
@@ -125,9 +125,9 @@ export default function Index() {
         {/* Latest News Section */}
         <section className="px-4 mb-8">
           <h2 className="text-white text-lg font-bold mb-4">Latest News</h2>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {topNews.map((article) => (
-              <div key={article.id} className="bg-black border border-red-500 rounded-lg p-4 shadow-md">
+              <div key={article.id} className="bg-black rounded-lg p-3">
                 {article.url ? (
                   <a
                     href={article.url}
@@ -136,32 +136,37 @@ export default function Index() {
                     className="block group"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="flex-1">
-                        <h3 className="text-white text-sm font-semibold mb-1 group-hover:text-red-400 transition-colors">
+                      {article.image_url && (
+                        <div className="w-16 h-12 flex-shrink-0 rounded overflow-hidden">
+                          <img 
+                            src={article.image_url} 
+                            alt={article.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-white text-sm font-semibold leading-tight group-hover:text-red-400 transition-colors line-clamp-2">
                           {article.title}
                         </h3>
-                        {article.description && (
-                          <p className="text-gray-300 text-xs mb-2 line-clamp-2">
-                            {article.description}
-                          </p>
-                        )}
-                        <div className="flex justify-end">
-                          <ExternalLink className="w-3 h-3 text-gray-400 group-hover:text-red-400 transition-colors" />
-                        </div>
                       </div>
                     </div>
                   </a>
                 ) : (
                   <div className="flex items-start gap-3">
-                    <div className="flex-1">
-                      <h3 className="text-white text-sm font-semibold mb-1">
+                    {article.image_url && (
+                      <div className="w-16 h-12 flex-shrink-0 rounded overflow-hidden">
+                        <img 
+                          src={article.image_url} 
+                          alt={article.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white text-sm font-semibold leading-tight line-clamp-2">
                         {article.title}
                       </h3>
-                      {article.description && (
-                        <p className="text-gray-300 text-xs mb-2 line-clamp-2">
-                          {article.description}
-                        </p>
-                      )}
                     </div>
                   </div>
                 )}
