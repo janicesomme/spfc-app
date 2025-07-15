@@ -175,40 +175,25 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Navigation Buttons */}
-        <section className="px-6 pb-8">
-          
-          <div className="space-y-4">
-            <Button 
-              variant="outline" 
-              className="w-full bg-black/40 border-white/50 text-white hover:bg-black/60 text-left justify-start py-6 text-lg font-semibold rounded-xl"
-              asChild
-            >
-              <Link to="/news">
-                Latest Transfer News
-              </Link>
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              className="w-full bg-black/40 border-white/50 text-white hover:bg-black/60 text-left justify-start py-6 text-lg font-semibold rounded-xl"
-              asChild
-            >
-              <Link to="/hot-o-meter">
-                Hot-O-Meter Rankings
-              </Link>
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              className="w-full bg-black/40 border-white/50 text-white hover:bg-black/60 text-left justify-start py-6 text-lg font-semibold rounded-xl"
-              asChild
-            >
-              <Link to="/youtube">
-                <Play className="w-5 h-5 mr-3" />
-                Watch Latest Videos
-              </Link>
-            </Button>
+        {/* Pick Your Team Section */}
+        <section className="px-4 mb-4">
+          <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+            <img 
+              src="/lovable-uploads/7cfce8da-566a-45e0-bc3a-54ca1e6e57ee.png"
+              alt="Pick Your Team - XI Selector"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </section>
+
+        {/* Player Ratings Section */}
+        <section className="px-4 pb-8">
+          <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+            <img 
+              src="/lovable-uploads/d77ea982-c4fe-40a0-a809-94eb66afce8a.png"
+              alt="Rate The Players"
+              className="w-full h-auto object-cover"
+            />
           </div>
         </section>
 
