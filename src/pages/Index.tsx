@@ -188,30 +188,12 @@ export default function Index() {
 
         {/* Player Ratings Section */}
         <section className="px-4 pb-8">
-          <div className="relative w-full bg-red-600 rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity" style={{height: '96px'}}>
-            {/* Player Images */}
-            <div className="absolute right-4 top-2 flex space-x-2">
-              <div className="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 overflow-hidden">
-                <img src="/lovable-uploads/3febc123-098c-4ebc-985d-1d99f8bea831.png" alt="Player 1" className="w-full h-full object-cover" />
-              </div>
-              <div className="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 overflow-hidden">
-                <img src="/lovable-uploads/3febc123-098c-4ebc-985d-1d99f8bea831.png" alt="Player 2" className="w-full h-full object-cover" />
-              </div>
-            </div>
-            
-            {/* Text */}
-            <div className="absolute bottom-12 left-4">
-              <h3 className="text-white text-sm font-medium">
-                Player Ratings
-              </h3>
-            </div>
-            
-            {/* 5 Gold Stars - Centered at bottom */}
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="text-yellow-400 text-4xl">★</div>
-              ))}
-            </div>
+          <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+            <img 
+              src="/lovable-uploads/d77ea982-c4fe-40a0-a809-94eb66afce8a.png"
+              alt="Rate The Players"
+              className="w-full h-auto object-cover"
+            />
           </div>
         </section>
 
