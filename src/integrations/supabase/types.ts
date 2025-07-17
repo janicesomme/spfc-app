@@ -378,6 +378,68 @@ export type Database = {
         }
         Relationships: []
       }
+      official_xi: {
+        Row: {
+          fixture_id: string
+          id: string
+          player_ids: string[]
+        }
+        Insert: {
+          fixture_id: string
+          id?: string
+          player_ids: string[]
+        }
+        Update: {
+          fixture_id?: string
+          id?: string
+          player_ids?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "official_xi_fixture_id_fkey"
+            columns: ["fixture_id"]
+            isOneToOne: false
+            referencedRelation: "fixtures"
+            referencedColumns: ["external_id"]
+          },
+        ]
+      }
+      perfect_match_totals: {
+        Row: {
+          total_perfect_matches: number | null
+          user_id: string
+        }
+        Insert: {
+          total_perfect_matches?: number | null
+          user_id: string
+        }
+        Update: {
+          total_perfect_matches?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      players: {
+        Row: {
+          id: string
+          image_url: string | null
+          name: string
+          role: string
+        }
+        Insert: {
+          id?: string
+          image_url?: string | null
+          name: string
+          role: string
+        }
+        Update: {
+          id?: string
+          image_url?: string | null
+          name?: string
+          role?: string
+        }
+        Relationships: []
+      }
       questions: {
         Row: {
           id: number
@@ -501,6 +563,33 @@ export type Database = {
           timestamp?: string
           transfermarkt_stats?: Json | null
           transfermarkt_value?: string | null
+        }
+        Relationships: []
+      }
+      user_xi_submissions: {
+        Row: {
+          fixture_id: string
+          id: string
+          is_perfect_match: boolean | null
+          submitted_xi: string[]
+          timestamp: string | null
+          user_id: string
+        }
+        Insert: {
+          fixture_id: string
+          id?: string
+          is_perfect_match?: boolean | null
+          submitted_xi: string[]
+          timestamp?: string | null
+          user_id: string
+        }
+        Update: {
+          fixture_id?: string
+          id?: string
+          is_perfect_match?: boolean | null
+          submitted_xi?: string[]
+          timestamp?: string | null
+          user_id?: string
         }
         Relationships: []
       }
