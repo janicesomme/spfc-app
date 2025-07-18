@@ -8,6 +8,7 @@ interface Player {
   id: string;
   player_name: string;
   image_url: string;
+  position: string;
 }
 
 export default function PickPlayer() {
@@ -16,6 +17,14 @@ export default function PickPlayer() {
   const position = searchParams.get('position') || '';
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Helper function to get last name for sorting
+  const getLastName = (playerName: string): string => {
+    if (playerName === 'Matthijs de Ligt') return 'de Ligt';
+    if (playerName === 'Chidozie Obi-Martin') return 'Obi-Martin';
+    const nameParts = playerName.split(' ');
+    return nameParts[nameParts.length - 1];
+  };
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -34,7 +43,11 @@ export default function PickPlayer() {
               acc.push(current);
             }
             return acc;
-          }, []).sort((a: any, b: any) => a.player_name.localeCompare(b.player_name));
+          }, []).sort((a: any, b: any) => {
+            const lastNameA = getLastName(a.player_name);
+            const lastNameB = getLastName(b.player_name);
+            return lastNameA.localeCompare(lastNameB);
+          });
           
           setPlayers(uniquePlayers || []);
         }
@@ -64,16 +77,16 @@ export default function PickPlayer() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-red-900 to-red-800 flex items-center justify-center">
+      <div className="min-h-screen bg-red-600 flex items-center justify-center">
         <div className="text-white">Loading players...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-900 to-red-800">
+    <div className="min-h-screen bg-red-600">
       {/* Header */}
-      <div className="bg-black/50 p-4 flex items-center gap-3">
+      <div className="bg-black p-4 flex items-center gap-3">
         <Button
           variant="ghost"
           size="icon"
@@ -82,30 +95,30 @@ export default function PickPlayer() {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <div>
-          <h1 className="text-xl font-bold text-white">Select Player</h1>
-          <p className="text-white/70 text-sm">Position: {position}</p>
+        <div className="flex-1 text-center">
+          <h1 className="text-xl font-bold text-white">CHOOSE YOUR PLAYERS</h1>
         </div>
       </div>
 
       {/* Player List */}
       <div className="p-4">
-        <div className="grid gap-3">
+        <div className="space-y-3">
           {players.map((player) => (
             <button
               key={player.id}
               onClick={() => handlePlayerSelect(player)}
-              className="bg-white/10 rounded-lg p-4 flex items-center gap-4 hover:bg-white/20 transition-colors"
+              className="w-full bg-white rounded-lg p-4 flex items-center gap-4 hover:bg-gray-50 transition-colors"
             >
-              <div className="w-16 h-16 bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
                 <img 
                   src={player.image_url} 
                   alt={player.player_name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-full"
                 />
               </div>
-              <div className="flex-1 text-left">
-                <h3 className="text-white font-semibold">{player.player_name}</h3>
+              <div className="flex-1 text-left px-2">
+                <h3 className="text-black font-bold text-lg">{player.player_name}</h3>
+                <p className="text-black text-sm mt-1 leading-tight">{player.position || 'Position'}</p>
               </div>
             </button>
           ))}
