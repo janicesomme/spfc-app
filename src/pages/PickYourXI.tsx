@@ -15,17 +15,17 @@ interface SelectedPlayers {
 
 const formations = {
   '1-3-4-3': {
-    GK: { top: '88%', left: '50%' },
-    LB: { top: '68%', left: '25%' },
-    CB: { top: '68%', left: '50%' },
-    RB: { top: '68%', left: '75%' },
-    LM: { top: '42%', left: '20%' },
-    CM1: { top: '42%', left: '40%' },
-    CM2: { top: '42%', left: '60%' },
-    RM: { top: '42%', left: '80%' },
-    LW: { top: '20%', left: '25%' },
-    ST: { top: '20%', left: '50%' },
-    RW: { top: '20%', left: '75%' },
+    GK: { top: '80%', left: '50%' },
+    LB: { top: '60%', left: '25%' },
+    CB: { top: '60%', left: '50%' },
+    RB: { top: '60%', left: '75%' },
+    LM: { top: '34%', left: '18%' },
+    CM1: { top: '34%', left: '38%' },
+    CM2: { top: '34%', left: '62%' },
+    RM: { top: '34%', left: '82%' },
+    LW: { top: '12%', left: '25%' },
+    ST: { top: '12%', left: '50%' },
+    RW: { top: '12%', left: '75%' },
   }
 };
 
@@ -69,6 +69,9 @@ export default function PickYourXI() {
           backgroundImage: `url('/lovable-uploads/84058442-b5f9-45ca-b4e1-bfa7321242a5.png')`,
         }}
       />
+      
+      {/* Dark Overlay for better text visibility */}
+      <div className="absolute inset-0 bg-black/20" />
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
