@@ -1,34 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 
-// Mock player data - you can replace this with real data from your backend
-const mockPlayers = [
-  { id: '1', name: 'Bruno Fernandes', position: 'CM', image: '/placeholder.svg' },
-  { id: '2', name: 'Marcus Rashford', position: 'LW', image: '/placeholder.svg' },
-  { id: '3', name: 'Harry Maguire', position: 'CB', image: '/placeholder.svg' },
-  { id: '4', name: 'Andre Onana', position: 'GK', image: '/placeholder.svg' },
-  { id: '5', name: 'Casemiro', position: 'CM', image: '/placeholder.svg' },
-  { id: '6', name: 'Antony', position: 'RW', image: '/placeholder.svg' },
-  { id: '7', name: 'Luke Shaw', position: 'LB', image: '/placeholder.svg' },
-  { id: '8', name: 'Diogo Dalot', position: 'RB', image: '/placeholder.svg' },
-  { id: '9', name: 'Rasmus Hojlund', position: 'ST', image: '/placeholder.svg' },
-  { id: '10', name: 'Mason Mount', position: 'CM', image: '/placeholder.svg' },
-];
+interface Player {
+  id: string;
+  name: string;
+  role: string;
+  image_url: string | null;
+}
 
 export default function PickPlayer() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const position = searchParams.get('position') || '';
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handlePlayerSelect = (player: typeof mockPlayers[0]) => {
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('players')
+          .select('*')
+          .order('name');
+        
+        if (error) {
+          console.error('Error fetching players:', error);
+        } else {
+          setPlayers(data || []);
+        }
+      } catch (error) {
+        console.error('Error fetching players:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlayers();
+  }, []);
+
+  const handlePlayerSelect = (player: Player) => {
     // Store the selected player in localStorage
     const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers') || '{}');
     selectedPlayers[position] = {
       id: player.id,
       name: player.name,
-      image: player.image
+      image: player.image_url || '/placeholder.svg'
     };
     localStorage.setItem('selectedPlayers', JSON.stringify(selectedPlayers));
     
@@ -36,8 +55,13 @@ export default function PickPlayer() {
     navigate('/pick-your-xi');
   };
 
-  // Show all players regardless of position
-  const filteredPlayers = mockPlayers;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-red-900 to-red-800 flex items-center justify-center">
+        <div className="text-white">Loading players...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-900 to-red-800">
@@ -60,7 +84,7 @@ export default function PickPlayer() {
       {/* Player List */}
       <div className="p-4">
         <div className="grid gap-3">
-          {filteredPlayers.map((player) => (
+          {players.map((player) => (
             <button
               key={player.id}
               onClick={() => handlePlayerSelect(player)}
@@ -68,14 +92,14 @@ export default function PickPlayer() {
             >
               <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center overflow-hidden">
                 <img 
-                  src={player.image} 
+                  src={player.image_url || '/placeholder.svg'} 
                   alt={player.name}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 text-left">
                 <h3 className="text-white font-semibold">{player.name}</h3>
-                <p className="text-white/70 text-sm">{player.position}</p>
+                <p className="text-white/70 text-sm">{player.role}</p>
               </div>
             </button>
           ))}
