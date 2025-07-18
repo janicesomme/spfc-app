@@ -7,40 +7,40 @@ import { Play } from 'lucide-react';
 // Mock video data for FUTV videos
 const futvVideos = [
   {
-    id: "WmNZ1L2v7FE",
-    title: "Man United's Transfer Disaster",
-    thumbnailUrl: "https://img.youtube.com/vi/WmNZ1L2v7FE/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=WmNZ1L2v7FE"
+    id: "slL3eAhxjbY",
+    title: "Ratcliffe's Summer Transfer Warning",
+    thumbnailUrl: "https://img.youtube.com/vi/slL3eAhxjbY/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=slL3eAhxjbY"
+  },
+  {
+    id: "O1fOYBoJD94",
+    title: "Mainoo: The Future of United?",
+    thumbnailUrl: "https://img.youtube.com/vi/O1fOYBoJD94/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=O1fOYBoJD94"
+  },
+  {
+    id: "bqARmJylOlU",
+    title: "FUTV Reacts to Man United's New Kit",
+    thumbnailUrl: "https://img.youtube.com/vi/bqARmJylOlU/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=bqARmJylOlU"
   },
   {
     id: "yjMk-PsFjI0",
-    title: "Ten Hag Out? The Debate",
+    title: "Amorim's Press Conference Reaction",
     thumbnailUrl: "https://img.youtube.com/vi/yjMk-PsFjI0/hqdefault.jpg",
     videoUrl: "https://www.youtube.com/watch?v=yjMk-PsFjI0"
   },
   {
     id: "zwr1qRUJCeA",
-    title: "United's Squad Overhaul",
+    title: "FUTV Rant: INEOS vs The Fans",
     thumbnailUrl: "https://img.youtube.com/vi/zwr1qRUJCeA/hqdefault.jpg",
     videoUrl: "https://www.youtube.com/watch?v=zwr1qRUJCeA"
   },
   {
-    id: "slL3eAhxjbY",
-    title: "Rashford's Future at United",
-    thumbnailUrl: "https://img.youtube.com/vi/slL3eAhxjbY/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=slL3eAhxjbY"
-  },
-  {
-    id: "bqARmJylOlU",
-    title: "Match Analysis: What Went Wrong",
-    thumbnailUrl: "https://img.youtube.com/vi/bqARmJylOlU/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=bqARmJylOlU"
-  },
-  {
-    id: "O1fOYBoJD94",
-    title: "New Signings React",
-    thumbnailUrl: "https://img.youtube.com/vi/O1fOYBoJD94/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=O1fOYBoJD94"
+    id: "WmNZ1L2v7FE",
+    title: "Transfer Target Breakdown: Todibo",
+    thumbnailUrl: "https://img.youtube.com/vi/WmNZ1L2v7FE/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=WmNZ1L2v7FE"
   }
 ];
 
