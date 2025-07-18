@@ -107,7 +107,7 @@ export default function PickPlayer() {
             <button
               key={player.id}
               onClick={() => handlePlayerSelect(player)}
-              className="w-full bg-white rounded-lg p-4 flex items-center gap-4 hover:bg-gray-50 transition-colors"
+              className="w-full bg-white rounded-lg p-4 flex items-center gap-4 hover:bg-gray-200 transition-colors"
             >
               <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
                 <img 
