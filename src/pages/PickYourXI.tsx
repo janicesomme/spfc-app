@@ -71,12 +71,12 @@ export default function PickYourXI() {
       />
       
       {/* Dark Overlay for better text visibility */}
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-black/35" />
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
         {/* Header */}
-        <div className="text-center py-4">
+        <div className="text-center pt-2 pb-4">
           <h1 className="text-2xl font-bold text-white mb-2">Pick Your XI</h1>
           <p className="text-white/80 text-sm">Select your starting lineup</p>
         </div>
