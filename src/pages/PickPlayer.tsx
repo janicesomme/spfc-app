@@ -23,8 +23,15 @@ export default function PickPlayer() {
   const position = searchParams.get('position') || '';
 
   const handlePlayerSelect = (player: typeof mockPlayers[0]) => {
-    // Here you would typically update the selected player state
-    // For now, we'll just navigate back
+    // Store the selected player in localStorage
+    const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers') || '{}');
+    selectedPlayers[position] = {
+      id: player.id,
+      name: player.name,
+      image: player.image
+    };
+    localStorage.setItem('selectedPlayers', JSON.stringify(selectedPlayers));
+    
     console.log(`Selected ${player.name} for position ${position}`);
     navigate('/pick-your-xi');
   };

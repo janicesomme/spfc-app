@@ -47,6 +47,14 @@ export default function PickYourXI() {
   const navigate = useNavigate();
   const [selectedPlayers, setSelectedPlayers] = useState<SelectedPlayers>({});
 
+  // Load selected players from localStorage on component mount
+  React.useEffect(() => {
+    const saved = localStorage.getItem('selectedPlayers');
+    if (saved) {
+      setSelectedPlayers(JSON.parse(saved));
+    }
+  }, []);
+
   const handlePositionClick = (position: string) => {
     navigate(`/pick-player?position=${position}`);
   };
