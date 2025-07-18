@@ -22,13 +22,21 @@ export default function PickPlayer() {
       try {
         const { data, error } = await supabase
           .from('player_images' as any)
-          .select('*')
-          .order('player_name');
+          .select('*');
         
         if (error) {
           console.error('Error fetching players:', error);
         } else {
-          setPlayers((data as any) || []);
+          // Remove duplicates client-side based on player_name
+          const uniquePlayers = (data as any[])?.reduce((acc: any[], current: any) => {
+            const exists = acc.find(player => player.player_name === current.player_name);
+            if (!exists) {
+              acc.push(current);
+            }
+            return acc;
+          }, []).sort((a: any, b: any) => a.player_name.localeCompare(b.player_name));
+          
+          setPlayers(uniquePlayers || []);
         }
       } catch (error) {
         console.error('Error fetching players:', error);
