@@ -123,7 +123,7 @@ export default function PickYourXI() {
                 {player && (
                   <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2">
                     <span className="text-white text-xs font-medium bg-black/50 px-2 py-1 rounded">
-                      {player.name}
+                      {player.name.split(' ').pop()}
                     </span>
                   </div>
                 )}
