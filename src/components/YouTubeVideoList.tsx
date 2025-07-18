@@ -62,7 +62,7 @@ export function YouTubeVideoList() {
             FUTV Videos
           </h1>
           <p className="text-muted-foreground">
-            Latest content from The United Stand
+            Latest Content from FUTV
           </p>
         </div>
 
