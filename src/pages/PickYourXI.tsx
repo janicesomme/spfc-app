@@ -19,10 +19,10 @@ const formations = {
     LB: { top: '60%', left: '25%' },
     CB: { top: '60%', left: '50%' },
     RB: { top: '60%', left: '75%' },
-    LM: { top: '34%', left: '18%' },
-    CM1: { top: '34%', left: '38%' },
-    CM2: { top: '34%', left: '62%' },
-    RM: { top: '34%', left: '82%' },
+    LM: { top: '34%', left: '20%' },
+    CM1: { top: '34%', left: '40%' },
+    CM2: { top: '34%', left: '60%' },
+    RM: { top: '34%', left: '80%' },
     LW: { top: '12%', left: '25%' },
     ST: { top: '12%', left: '50%' },
     RW: { top: '12%', left: '75%' },
@@ -71,7 +71,7 @@ export default function PickYourXI() {
       />
       
       {/* Dark Overlay for better text visibility */}
-      <div className="absolute inset-0 bg-black/35" />
+      <div className="absolute inset-0 bg-black/40" />
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
