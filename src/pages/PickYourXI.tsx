@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import cleanPitchImage from '@/assets/clean-football-pitch.jpg';
 
 interface Player {
   id: string;
@@ -75,7 +74,7 @@ export default function PickYourXI() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${cleanPitchImage})`,
+          backgroundImage: `url('/lovable-uploads/84058442-b5f9-45ca-b4e1-bfa7321242a5.png')`,
         }}
       />
       
@@ -84,10 +83,10 @@ export default function PickYourXI() {
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
-        {/* Header - positioned in the upper area above the pitch */}
-        <div className="text-center pt-16 pb-4">
-          <h1 className="text-3xl font-bold text-white mb-2">Pick Your XI</h1>
-          <p className="text-white/90 text-base">Select your starting lineup</p>
+        {/* Header */}
+        <div className="text-center pt-2 pb-8">
+          <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
+          <p className="text-white/80 text-sm">Select your starting lineup</p>
         </div>
 
         {/* Formation Container */}
