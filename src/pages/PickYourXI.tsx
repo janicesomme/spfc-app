@@ -19,10 +19,10 @@ const formations = {
     LB: { top: '60%', left: '25%' },
     CB: { top: '60%', left: '50%' },
     RB: { top: '60%', left: '75%' },
-    LM: { top: '34%', left: '20%' },
-    CM1: { top: '34%', left: '40%' },
-    CM2: { top: '34%', left: '60%' },
-    RM: { top: '34%', left: '80%' },
+    LM: { top: '34%', left: '12.5%' },
+    CM1: { top: '34%', left: '37.5%' },
+    CM2: { top: '34%', left: '62.5%' },
+    RM: { top: '34%', left: '87.5%' },
     LW: { top: '12%', left: '25%' },
     ST: { top: '12%', left: '50%' },
     RW: { top: '12%', left: '75%' },
@@ -76,8 +76,8 @@ export default function PickYourXI() {
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
         {/* Header */}
-        <div className="text-center pt-2 pb-4">
-          <h1 className="text-2xl font-bold text-white mb-2">Pick Your XI</h1>
+        <div className="text-center pt-2 pb-8">
+          <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
           <p className="text-white/80 text-sm">Select your starting lineup</p>
         </div>
 
