@@ -29,17 +29,11 @@ export default function PickPlayer() {
     navigate('/pick-your-xi');
   };
 
-  const filteredPlayers = mockPlayers.filter(player => {
-    // Simple position matching logic - you can make this more sophisticated
-    if (position === 'GK') return player.position === 'GK';
-    if (['LB', 'CB', 'RB'].includes(position)) return ['LB', 'CB', 'RB'].includes(player.position);
-    if (['LM', 'CM1', 'CM2', 'RM'].includes(position)) return player.position === 'CM';
-    if (['LW', 'RW', 'ST'].includes(position)) return ['LW', 'RW', 'ST'].includes(player.position);
-    return true;
-  });
+  // Show all players regardless of position
+  const filteredPlayers = mockPlayers;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+    <div className="min-h-screen bg-gradient-to-b from-red-900 to-red-800">
       {/* Header */}
       <div className="bg-black/50 p-4 flex items-center gap-3">
         <Button
