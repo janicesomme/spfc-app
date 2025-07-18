@@ -15,17 +15,17 @@ interface SelectedPlayers {
 
 const formations = {
   '1-3-4-3': {
-    GK: { top: '85%', left: '50%' },
-    LB: { top: '65%', left: '20%' },
-    CB: { top: '65%', left: '50%' },
-    RB: { top: '65%', left: '80%' },
-    LM: { top: '45%', left: '15%' },
-    CM1: { top: '45%', left: '40%' },
-    CM2: { top: '45%', left: '60%' },
-    RM: { top: '45%', left: '85%' },
-    LW: { top: '25%', left: '25%' },
-    ST: { top: '25%', left: '50%' },
-    RW: { top: '25%', left: '75%' },
+    GK: { top: '88%', left: '50%' },
+    LB: { top: '68%', left: '20%' },
+    CB: { top: '68%', left: '50%' },
+    RB: { top: '68%', left: '80%' },
+    LM: { top: '42%', left: '15%' },
+    CM1: { top: '42%', left: '40%' },
+    CM2: { top: '42%', left: '60%' },
+    RM: { top: '42%', left: '85%' },
+    LW: { top: '20%', left: '25%' },
+    ST: { top: '20%', left: '50%' },
+    RW: { top: '20%', left: '75%' },
   }
 };
 
@@ -61,17 +61,9 @@ export default function PickYourXI() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 relative overflow-hidden">
+    <div className="min-h-screen bg-green-600 relative overflow-hidden">
       {/* Football Pitch Background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
-        style={{
-          backgroundImage: `url('/lovable-uploads/a04227c3-e8a5-418f-b2cc-26abc80a049e.png')`,
-        }}
-      />
-      
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-green-600" />
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
@@ -97,7 +89,7 @@ export default function PickYourXI() {
                 }}
               >
                 {/* Player Circle */}
-                <div className="w-16 h-16 rounded-full border-3 border-white bg-red-600 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                <div className="w-16 h-16 rounded-full border border-white bg-red-600 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
                   {player ? (
                     <div className="w-full h-full rounded-full overflow-hidden">
                       <img 
