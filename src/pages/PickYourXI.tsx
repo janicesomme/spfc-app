@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import cleanPitchImage from '@/assets/clean-football-pitch.jpg';
 
 interface Player {
   id: string;
@@ -74,7 +75,7 @@ export default function PickYourXI() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/lovable-uploads/84058442-b5f9-45ca-b4e1-bfa7321242a5.png')`,
+          backgroundImage: `url(${cleanPitchImage})`,
         }}
       />
       
