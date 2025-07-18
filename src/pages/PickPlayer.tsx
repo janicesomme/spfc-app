@@ -6,9 +6,8 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface Player {
   id: string;
-  name: string;
-  role: string;
-  image_url: string | null;
+  player_name: string;
+  image_url: string;
 }
 
 export default function PickPlayer() {
@@ -22,14 +21,14 @@ export default function PickPlayer() {
     const fetchPlayers = async () => {
       try {
         const { data, error } = await supabase
-          .from('players')
+          .from('player_images' as any)
           .select('*')
-          .order('name');
+          .order('player_name');
         
         if (error) {
           console.error('Error fetching players:', error);
         } else {
-          setPlayers(data || []);
+          setPlayers((data as any) || []);
         }
       } catch (error) {
         console.error('Error fetching players:', error);
@@ -46,12 +45,12 @@ export default function PickPlayer() {
     const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers') || '{}');
     selectedPlayers[position] = {
       id: player.id,
-      name: player.name,
-      image: player.image_url || '/placeholder.svg'
+      name: player.player_name,
+      image: player.image_url
     };
     localStorage.setItem('selectedPlayers', JSON.stringify(selectedPlayers));
     
-    console.log(`Selected ${player.name} for position ${position}`);
+    console.log(`Selected ${player.player_name} for position ${position}`);
     navigate('/pick-your-xi');
   };
 
@@ -90,16 +89,15 @@ export default function PickPlayer() {
               onClick={() => handlePlayerSelect(player)}
               className="bg-white/10 rounded-lg p-4 flex items-center gap-4 hover:bg-white/20 transition-colors"
             >
-              <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
                 <img 
-                  src={player.image_url || '/placeholder.svg'} 
-                  alt={player.name}
+                  src={player.image_url} 
+                  alt={player.player_name}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 text-left">
-                <h3 className="text-white font-semibold">{player.name}</h3>
-                <p className="text-white/70 text-sm">{player.role}</p>
+                <h3 className="text-white font-semibold">{player.player_name}</h3>
               </div>
             </button>
           ))}
