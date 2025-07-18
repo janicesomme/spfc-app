@@ -1,156 +1,101 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
-import { Youtube, Play } from 'lucide-react';
-import { fetchYouTubeVideos, YouTubeVideo } from '@/services/youtube';
-import { useToast } from '@/hooks/use-toast';
+import { Play } from 'lucide-react';
 
-const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@TheUnitedStand";
-
-type TimeFilter = "all" | "week" | "month";
+// Mock video data for FUTV videos
+const futvVideos = [
+  {
+    id: "WmNZ1L2v7FE",
+    title: "Man United's Transfer Disaster",
+    thumbnailUrl: "https://img.youtube.com/vi/WmNZ1L2v7FE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=WmNZ1L2v7FE"
+  },
+  {
+    id: "yjMk-PsFjI0",
+    title: "Ten Hag Out? The Debate",
+    thumbnailUrl: "https://img.youtube.com/vi/yjMk-PsFjI0/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=yjMk-PsFjI0"
+  },
+  {
+    id: "zwr1qRUJCeA",
+    title: "United's Squad Overhaul",
+    thumbnailUrl: "https://img.youtube.com/vi/zwr1qRUJCeA/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=zwr1qRUJCeA"
+  },
+  {
+    id: "slL3eAhxjbY",
+    title: "Rashford's Future at United",
+    thumbnailUrl: "https://img.youtube.com/vi/slL3eAhxjbY/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=slL3eAhxjbY"
+  },
+  {
+    id: "bqARmJylOlU",
+    title: "Match Analysis: What Went Wrong",
+    thumbnailUrl: "https://img.youtube.com/vi/bqARmJylOlU/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=bqARmJylOlU"
+  },
+  {
+    id: "O1fOYBoJD94",
+    title: "New Signings React",
+    thumbnailUrl: "https://img.youtube.com/vi/O1fOYBoJD94/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=O1fOYBoJD94"
+  }
+];
 
 export function YouTubeVideoList() {
-  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [timeFilter, setTimeFilter] = useState<TimeFilter>("all");
-  const { toast } = useToast();
-
-  useEffect(() => {
-    loadVideos();
-  }, []);
-
-  const loadVideos = async () => {
-    try {
-      setLoading(true);
-      const fetchedVideos = await fetchYouTubeVideos();
-      setVideos(fetchedVideos);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load YouTube videos. Please check your API key.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filteredVideos = React.useMemo(() => {
-    if (timeFilter === "all") return videos;
-    
-    const now = new Date();
-    let threshold: Date;
-    
-    if (timeFilter === "week") {
-      threshold = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    } else { // month
-      threshold = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-    }
-    
-    return videos.filter(video => {
-      const publishDate = new Date(video.publishedAt);
-      return publishDate >= threshold;
-    });
-  }, [videos, timeFilter]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6 max-w-2xl mx-auto px-4">
-      {/* Header with YouTube button and filter */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <Button
-          variant="outline"
-          size="lg"
-          className="font-bold text-red-600 border-red-600 hover:bg-red-50 bg-white w-full sm:w-auto"
-          asChild
-        >
-          <a
-            href={YOUTUBE_CHANNEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2"
-          >
-            <Youtube size={24} />
-            YouTube
-          </a>
-        </Button>
-
-        <div className="flex items-center gap-2">
-          <label htmlFor="time-filter" className="text-sm font-medium text-gray-300">
-            Filter:
-          </label>
-          <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as TimeFilter)}>
-            <SelectTrigger id="time-filter" className="w-32 bg-gray-800 border-gray-600 text-white">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-600">
-              <SelectItem value="all" className="text-white hover:bg-gray-700">All Time</SelectItem>
-              <SelectItem value="week" className="text-white hover:bg-gray-700">This Week</SelectItem>
-              <SelectItem value="month" className="text-white hover:bg-gray-700">This Month</SelectItem>
-            </SelectContent>
-          </Select>
+    <div className="min-h-screen bg-black">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            FUTV Videos
+          </h1>
+          <p className="text-muted-foreground">
+            Latest content from The United Stand
+          </p>
         </div>
-      </div>
 
-      {/* Video List */}
-      <div className="space-y-4">
-        {filteredVideos.length === 0 ? (
-          <div className="text-center py-8 text-gray-400">
-            {videos.length === 0 ? "No videos found" : "No videos found for selected time period"}
-          </div>
-        ) : (
-          filteredVideos.map((video) => (
-            <a
-              key={video.id}
-              href={video.videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block transition-transform hover:scale-[1.02] focus:scale-[1.02] focus:outline-none"
+        {/* Video Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {futvVideos.map((video) => (
+            <Card 
+              key={video.id} 
+              className="bg-card border-border hover:bg-muted/50 transition-colors group"
             >
-              <Card className="bg-black border-gray-800 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    {/* Thumbnail */}
-                    <div className="relative flex-shrink-0 w-full sm:w-48 aspect-video bg-gray-800 rounded-lg overflow-hidden">
-                      <img
-                        src={video.thumbnailUrl}
-                        alt={video.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity">
-                        <Play className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-white text-center sm:text-left text-lg leading-tight line-clamp-3 mb-2">
-                        {video.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        {new Date(video.publishedAt).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        })}
-                      </p>
-                    </div>
+              <CardContent className="p-0">
+                {/* Thumbnail */}
+                <div className="relative aspect-video bg-secondary rounded-t-lg overflow-hidden">
+                  <img
+                    src={video.thumbnailUrl}
+                    alt={video.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Play className="h-12 w-12 text-white" />
                   </div>
-                </CardContent>
-              </Card>
-            </a>
-          ))
-        )}
+                </div>
+
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="font-bold text-foreground text-lg leading-tight mb-4 line-clamp-2">
+                    {video.title}
+                  </h3>
+                  
+                  <Button
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                    onClick={() => window.open(video.videoUrl, '_blank')}
+                  >
+                    Watch
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
