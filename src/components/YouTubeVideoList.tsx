@@ -68,10 +68,10 @@ export function YouTubeVideoList() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Header - Same width as thumbnails */}
-        <div className="text-center mb-8">
-          <div className="bg-red-600 py-6 rounded-lg">
+      <div className="px-4 py-8 flex flex-col items-center">
+        {/* Header - Constrained to thumbnail width */}
+        <div className="w-full max-w-sm mb-8">
+          <div className="bg-red-600 py-6 rounded-lg text-center">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Latest Videos
             </h1>
@@ -82,16 +82,16 @@ export function YouTubeVideoList() {
         </div>
 
         {/* Video List - Single Column */}
-        <div className="space-y-8">
+        <div className="space-y-8 w-full max-w-sm">
           {videos.map((video) => (
             <div key={video.id} className="flex flex-col items-center">
               {/* Thumbnail Container */}
-              <div className="relative group cursor-pointer max-w-full mx-auto" onClick={() => window.open(video.youtube_url, '_blank')}>
+              <div className="relative group cursor-pointer w-full" onClick={() => window.open(video.youtube_url, '_blank')}>
                 <div className="relative">
                   <img
                     src={video.thumbnail_url}
                     alt={video.title}
-                    className="rounded-lg shadow-lg max-w-full h-auto border-2 border-red-500 object-contain"
+                    className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
                     loading="lazy"
                     onError={handleImageError}
                   />
@@ -102,7 +102,7 @@ export function YouTubeVideoList() {
               </div>
               
               {/* Title - Same width as thumbnail */}
-              <h3 className="text-white text-xl font-bold text-center mt-1 leading-tight max-w-full">
+              <h3 className="text-white text-xl font-bold text-center mt-1 leading-tight w-full">
                 {video.title}
               </h3>
             </div>
