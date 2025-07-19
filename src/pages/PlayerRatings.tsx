@@ -63,11 +63,30 @@ export default function PlayerRatings() {
         };
       });
 
-      // Sort: starters first, then subs, alphabetically within each group
+      // Sort by position hierarchy: GK -> Defenders -> Midfielders -> Forwards -> Subs
+      const positionOrder: { [key: string]: number } = {
+        'Goalkeeper': 1,
+        'Defender': 2,
+        'Midfielder': 3,
+        'Forward': 4
+      };
+
       const sortedPlayers = playersWithImages.sort((a, b) => {
+        // First separate starters from subs
         if (a.role !== b.role) {
-          return a.role === 'starter' ? -1 : 1;
+          if (a.role === 'starter' && b.role === 'sub') return -1;
+          if (a.role === 'sub' && b.role === 'starter') return 1;
         }
+
+        // Within the same role, sort by position hierarchy
+        const aOrder = positionOrder[a.position] || 999;
+        const bOrder = positionOrder[b.position] || 999;
+        
+        if (aOrder !== bOrder) {
+          return aOrder - bOrder;
+        }
+
+        // If same position, sort alphabetically
         return a.player_name.localeCompare(b.player_name);
       });
 
