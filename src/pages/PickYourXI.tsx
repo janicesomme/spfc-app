@@ -19,12 +19,12 @@ const formations = {
     LB: { top: '60%', left: '25%' },
     CB: { top: '60%', left: '50%' },
     RB: { top: '60%', left: '75%' },
-    LM: { top: '36%', left: '10%' },
+    LM: { top: '38%', left: '7.5%' },
     CM1: { top: '34%', left: '37.5%' },
     CM2: { top: '34%', left: '62.5%' },
-    RM: { top: '36%', left: '90%' },
+    RM: { top: '38%', left: '92.5%' },
     LW: { top: '12%', left: '25%' },
-    ST: { top: '10%', left: '50%' },
+    ST: { top: '8%', left: '50%' },
     RW: { top: '12%', left: '75%' },
   }
 };
