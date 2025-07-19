@@ -18,6 +18,7 @@ import Index from "./pages/Index";
 import PlayerProfile from "./pages/PlayerProfile";
 import PickYourXI from "./pages/PickYourXI";
 import PickPlayer from "./pages/PickPlayer";
+import PlayerRatings from "./pages/PlayerRatings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,7 @@ function App() {
               <Route path="/player-profile" element={<PlayerProfile />} />
               <Route path="/pick-your-xi" element={<PickYourXI />} />
               <Route path="/pick-player" element={<PickPlayer />} />
+              <Route path="/player-ratings" element={<PlayerRatings />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/hot-o-meter" element={<HotOMeter />} />
               <Route path="*" element={<NotFound />} />

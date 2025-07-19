@@ -190,13 +190,15 @@ export default function Index() {
 
         {/* Player Ratings Section */}
         <section className="px-4 pb-8">
-          <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
-            <img 
-              src="/lovable-uploads/d77ea982-c4fe-40a0-a809-94eb66afce8a.png"
-              alt="Rate The Players"
-              className="w-full h-auto object-cover"
-            />
-          </div>
+          <Link to="/player-ratings" className="block">
+            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+              <img 
+                src="/lovable-uploads/d77ea982-c4fe-40a0-a809-94eb66afce8a.png"
+                alt="Rate The Players"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </Link>
         </section>
 
         {/* Bottom Navigation */}
