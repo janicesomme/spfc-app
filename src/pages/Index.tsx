@@ -175,15 +175,17 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Pick Your Team Section */}
+        {/* Pick Your XI Section */}
         <section className="px-4 mb-4">
-          <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
-            <img 
-              src="/lovable-uploads/7cfce8da-566a-45e0-bc3a-54ca1e6e57ee.png"
-              alt="Pick Your Team - XI Selector"
-              className="w-full h-auto object-cover"
-            />
-          </div>
+          <Link to="/pick-your-xi" className="block">
+            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+              <img 
+                src="/lovable-uploads/3d7ffcac-4b66-44ea-93e5-59b0a843477b.png"
+                alt="Pick Your XI - Select your starting lineup"
+                className="w-full h-auto object-cover max-h-64"
+              />
+            </div>
+          </Link>
         </section>
 
         {/* Player Ratings Section */}
