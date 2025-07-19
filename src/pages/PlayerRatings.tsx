@@ -46,6 +46,7 @@ export default function PlayerRatings() {
 
       if (!response.ok) throw new Error('Failed to fetch players');
       const officialXI = await response.json();
+      console.log('Players fetched:', officialXI);
 
       // Fetch player images
       const imageResponse = await fetch('https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/player_images?select=*', {
@@ -58,23 +59,32 @@ export default function PlayerRatings() {
       let imageData: any[] = [];
       if (imageResponse.ok) {
         imageData = await imageResponse.json();
+        console.log('Images fetched:', imageData.length, 'images');
+      } else {
+        console.error('Failed to fetch images:', imageResponse.status);
       }
 
       // Create image lookup map
       const imageMap = new Map();
       imageData.forEach((img: any) => {
+        console.log('Mapping image:', img.player_name, '->', img.image_url);
         imageMap.set(img.player_name, img.image_url);
       });
 
       // Combine data and add images
-      const playersWithImages: Player[] = officialXI.map((player: any) => ({
-        id: player.id,
-        player_name: player.player_name,
-        position: player.position || 'Unknown',
-        role: player.role || 'starter',
-        match_id: player.match_id || matchId,
-        image_url: imageMap.get(player.player_name)
-      }));
+      const playersWithImages: Player[] = officialXI.map((player: any) => {
+        const imageUrl = imageMap.get(player.player_name);
+        console.log('Player:', player.player_name, 'Image URL:', imageUrl);
+        
+        return {
+          id: player.id,
+          player_name: player.player_name,
+          position: player.position || 'Unknown',
+          role: player.role || 'starter',
+          match_id: player.match_id || matchId,
+          image_url: imageUrl
+        };
+      });
 
       // Sort: starters first, then subs, alphabetically within each group
       const sortedPlayers = playersWithImages.sort((a, b) => {
@@ -84,6 +94,7 @@ export default function PlayerRatings() {
         return a.player_name.localeCompare(b.player_name);
       });
 
+      console.log('Final players with images:', sortedPlayers);
       setPlayers(sortedPlayers);
     } catch (error) {
       console.error('Error fetching players:', error);
