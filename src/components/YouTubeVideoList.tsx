@@ -82,14 +82,14 @@ export function YouTubeVideoList() {
         {/* Video List - Single Column */}
         <div className="space-y-8">
           {videos.map((video) => (
-            <div key={video.id} className="flex flex-col items-center">
+            <div key={video.id} className="flex flex-col items-center px-4">
               {/* Thumbnail Container */}
-              <div className="relative group cursor-pointer" onClick={() => window.open(video.youtube_url, '_blank')}>
+              <div className="relative group cursor-pointer w-full" onClick={() => window.open(video.youtube_url, '_blank')}>
                 <div className="relative">
                   <img
                     src={video.thumbnail_url}
                     alt={video.title}
-                    className="rounded-lg shadow-lg max-w-full h-auto"
+                    className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500"
                     style={{ maxHeight: '300px' }}
                     loading="lazy"
                     onError={handleImageError}
@@ -101,9 +101,11 @@ export function YouTubeVideoList() {
               </div>
               
               {/* Title */}
-              <h3 className="text-yellow-400 text-xl font-bold text-center mt-4 px-4 leading-tight">
-                {video.title}
-              </h3>
+              <div className="w-[95%] mt-1">
+                <h3 className="text-white text-xl font-bold text-center leading-tight">
+                  {video.title}
+                </h3>
+              </div>
             </div>
           ))}
         </div>
