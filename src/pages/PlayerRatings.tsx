@@ -244,13 +244,13 @@ export default function PlayerRatings() {
 
       {/* Submit Button */}
       {allPlayersRated && (
-        <div className="sticky bottom-0 bg-black border-t border-gray-800 p-4">
+        <div className="sticky bottom-0 bg-black border-t border-red-600 p-4">
           <Button
             onClick={handleSubmit}
             disabled={submitting}
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3"
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 text-lg uppercase tracking-wide"
           >
-            {submitting ? 'Submitting Ratings...' : `Submit All ${ratings.length} Ratings`}
+            {submitting ? 'Submitting Your Ratings...' : 'Submit Your Ratings'}
           </Button>
         </div>
       )}
