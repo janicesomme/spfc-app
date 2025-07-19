@@ -18,12 +18,14 @@ export default function PickPlayer() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Helper function to get last name for sorting
-  const getLastName = (playerName: string): string => {
-    if (playerName === 'Matthijs de Ligt') return 'de Ligt';
-    if (playerName === 'Chidozie Obi-Martin') return 'Obi-Martin';
-    const nameParts = playerName.split(' ');
-    return nameParts[nameParts.length - 1];
+  // Helper function to get position order for sorting
+  const getPositionOrder = (position: string): number => {
+    const positionLower = position?.toLowerCase() || '';
+    if (positionLower.includes('goalkeeper') || positionLower.includes('gk')) return 1;
+    if (positionLower.includes('defender') || positionLower.includes('defence') || positionLower.includes('cb') || positionLower.includes('lb') || positionLower.includes('rb')) return 2;
+    if (positionLower.includes('midfielder') || positionLower.includes('midfield') || positionLower.includes('cm') || positionLower.includes('dm') || positionLower.includes('am')) return 3;
+    if (positionLower.includes('forward') || positionLower.includes('striker') || positionLower.includes('winger') || positionLower.includes('lw') || positionLower.includes('rw')) return 4;
+    return 5; // Unknown positions last
   };
 
   useEffect(() => {
@@ -44,9 +46,16 @@ export default function PickPlayer() {
             }
             return acc;
           }, []).sort((a: any, b: any) => {
-            const lastNameA = getLastName(a.player_name);
-            const lastNameB = getLastName(b.player_name);
-            return lastNameA.localeCompare(lastNameB);
+            const positionOrderA = getPositionOrder(a.position);
+            const positionOrderB = getPositionOrder(b.position);
+            
+            // First sort by position category
+            if (positionOrderA !== positionOrderB) {
+              return positionOrderA - positionOrderB;
+            }
+            
+            // Then sort alphabetically within each position category
+            return a.player_name.localeCompare(b.player_name);
           });
           
           setPlayers(uniquePlayers || []);
