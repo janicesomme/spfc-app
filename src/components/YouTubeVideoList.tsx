@@ -70,8 +70,8 @@ export function YouTubeVideoList() {
     <div className="min-h-screen bg-black">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-8 mx-2">
-          <div className="bg-red-600 py-6 rounded-lg max-w-sm mx-auto">
+        <div className="text-center mb-8 px-4">
+          <div className="bg-red-600 py-6 rounded-lg max-w-full mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Latest Videos
             </h1>
@@ -101,10 +101,12 @@ export function YouTubeVideoList() {
                 </div>
               </div>
               
-              {/* Title */}
-              <h3 className="text-white text-xl font-bold text-center mt-1 leading-tight max-w-full">
-                {video.title}
-              </h3>
+              {/* Title - Same width as thumbnail */}
+              <div className="max-w-full mx-auto mt-1">
+                <h3 className="text-white text-xl font-bold text-center leading-tight">
+                  {video.title}
+                </h3>
+              </div>
             </div>
           ))}
         </div>
