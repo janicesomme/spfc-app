@@ -166,7 +166,7 @@ export default function PlayerRatings() {
               className={`w-6 h-6 ${
                 star <= currentRating
                   ? 'fill-yellow-400 text-yellow-400'
-                  : 'text-gray-600 hover:text-yellow-300'
+                  : 'text-white hover:text-yellow-300'
               }`}
             />
           </button>
@@ -202,7 +202,7 @@ export default function PlayerRatings() {
           const playerRating = ratings.find(r => r.player_id === player.id)?.rating || 0;
           
           return (
-            <div key={player.id} className="bg-black rounded-lg p-4 border border-gray-700">
+            <div key={player.id} className="bg-black rounded-lg p-4 border border-red-600">
               <div className="flex items-center justify-between">
                 {/* Player Info */}
                 <div className="flex items-center gap-3">
