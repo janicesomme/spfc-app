@@ -22,6 +22,7 @@ interface PlayerRating {
 export default function PlayerRatings() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [ratings, setRatings] = useState<PlayerRating[]>([]);
+  const [motmPlayerId, setMotmPlayerId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
@@ -98,9 +99,14 @@ export default function PlayerRatings() {
   };
 
   const allPlayersRated = players.length > 0 && ratings.length === players.length;
+  const canSubmit = allPlayersRated && motmPlayerId !== null;
+
+  const handleMotmSelection = (playerId: string) => {
+    setMotmPlayerId(motmPlayerId === playerId ? null : playerId);
+  };
 
   const handleSubmit = async () => {
-    if (!allPlayersRated) return;
+    if (!canSubmit) return;
 
     setSubmitting(true);
     
@@ -234,6 +240,20 @@ export default function PlayerRatings() {
                   </div>
                 </div>
 
+                {/* MOTM Button */}
+                <div className="flex items-center">
+                  <button
+                    onClick={() => handleMotmSelection(player.id)}
+                    className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors ${
+                      motmPlayerId === player.id
+                        ? 'bg-yellow-500 text-red-600'
+                        : 'bg-red-600 text-white hover:bg-red-700'
+                    }`}
+                  >
+                    MOTM
+                  </button>
+                </div>
+
                 {/* Star Rating */}
                 <StarRating playerId={player.id} currentRating={playerRating} />
               </div>
@@ -243,7 +263,7 @@ export default function PlayerRatings() {
       </div>
 
       {/* Submit Button */}
-      {allPlayersRated && (
+      {canSubmit && (
         <div className="sticky bottom-0 bg-black border-t border-red-600 p-4">
           <Button
             onClick={handleSubmit}
