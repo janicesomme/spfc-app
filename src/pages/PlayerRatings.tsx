@@ -186,7 +186,7 @@ export default function PlayerRatings() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="sticky top-0 bg-black border-b border-gray-800 z-10">
+      <div className="sticky top-0 bg-red-600 border-b border-gray-800 z-10">
         <div className="flex items-center justify-between p-4">
           <Link to="/" className="text-white hover:text-red-400 transition-colors">
             <ArrowLeft className="w-6 h-6" />
