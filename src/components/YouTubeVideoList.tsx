@@ -1,50 +1,55 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
-// Mock video data for FUTV videos
-const futvVideos = [
-  {
-    id: "slL3eAhxjbY",
-    title: "Ratcliffe's Summer Transfer Warning",
-    thumbnailUrl: "https://img.youtube.com/vi/slL3eAhxjbY/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=slL3eAhxjbY"
-  },
-  {
-    id: "O1fOYBoJD94",
-    title: "Mainoo: The Future of United?",
-    thumbnailUrl: "https://img.youtube.com/vi/O1fOYBoJD94/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=O1fOYBoJD94"
-  },
-  {
-    id: "bqARmJylOlU",
-    title: "FUTV Reacts to Man United's New Kit",
-    thumbnailUrl: "https://img.youtube.com/vi/bqARmJylOlU/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=bqARmJylOlU"
-  },
-  {
-    id: "yjMk-PsFjI0",
-    title: "Amorim's Press Conference Reaction",
-    thumbnailUrl: "https://img.youtube.com/vi/yjMk-PsFjI0/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=yjMk-PsFjI0"
-  },
-  {
-    id: "zwr1qRUJCeA",
-    title: "FUTV Rant: INEOS vs The Fans",
-    thumbnailUrl: "https://img.youtube.com/vi/zwr1qRUJCeA/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=zwr1qRUJCeA"
-  },
-  {
-    id: "WmNZ1L2v7FE",
-    title: "Transfer Target Breakdown: Todibo",
-    thumbnailUrl: "https://img.youtube.com/vi/WmNZ1L2v7FE/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=WmNZ1L2v7FE"
-  }
-];
+interface LatestVideo {
+  id: number;
+  video_id: string;
+  title: string;
+  thumbnail_url: string;
+  youtube_url: string;
+  description?: string;
+  channel_title?: string;
+  published_at?: string;
+  channel_id?: string;
+  embed_url?: string;
+  thumbnail_width?: number;
+  thumbnail_height?: number;
+  published_at_formatted?: string;
+  created_at?: string;
+  updated_at?: string;
+  fetched_at?: string;
+}
 
 export function YouTubeVideoList() {
+  const [videos, setVideos] = useState<LatestVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLatestVideos();
+  }, []);
+
+  const fetchLatestVideos = async () => {
+    try {
+      // Use any to bypass TypeScript until types are regenerated
+      const { data, error } = await (supabase as any)
+        .from('latest_videos')
+        .select('*')
+        .order('published_at', { ascending: false })
+        .limit(5);
+
+      if (error) throw error;
+      setVideos(data || []);
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
     // Try fallback to a different resolution
@@ -53,58 +58,61 @@ export function YouTubeVideoList() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading videos...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-black">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            FUTV Videos
+            Latest Videos
           </h1>
           <p className="text-muted-foreground">
-            Latest Content from FUTV
+            Latest Content from Our Channel
           </p>
         </div>
 
-        {/* Video Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {futvVideos.map((video) => (
-            <Card 
-              key={video.id} 
-              className="bg-card border-border hover:bg-muted/50 transition-colors group"
-            >
-              <CardContent className="p-0">
-                {/* Thumbnail */}
-                <div className="relative aspect-video bg-secondary rounded-t-lg overflow-hidden">
+        {/* Video List - Single Column */}
+        <div className="space-y-8">
+          {videos.map((video) => (
+            <div key={video.id} className="flex flex-col items-center">
+              {/* Thumbnail Container */}
+              <div className="relative group cursor-pointer" onClick={() => window.open(video.youtube_url, '_blank')}>
+                <div className="relative">
                   <img
-                    src={video.thumbnailUrl}
+                    src={video.thumbnail_url}
                     alt={video.title}
-                    className="w-full h-full object-cover"
+                    className="rounded-lg shadow-lg max-w-full h-auto"
+                    style={{ maxHeight: '300px' }}
                     loading="lazy"
                     onError={handleImageError}
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Play className="h-12 w-12 text-white" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                    <Play className="h-16 w-16 text-white drop-shadow-lg" />
                   </div>
                 </div>
-
-                {/* Content */}
-                <div className="p-4">
-                  <h3 className="font-bold text-foreground text-lg leading-tight mb-4 line-clamp-2">
-                    {video.title}
-                  </h3>
-                  
-                  <Button
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                    onClick={() => window.open(video.videoUrl, '_blank')}
-                  >
-                    Watch
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+              
+              {/* Title */}
+              <h3 className="text-yellow-400 text-xl font-bold text-center mt-4 px-4 leading-tight">
+                {video.title}
+              </h3>
+            </div>
           ))}
         </div>
+
+        {videos.length === 0 && (
+          <div className="text-center text-white">
+            <p>No videos found.</p>
+          </div>
+        )}
       </div>
     </div>
   );
