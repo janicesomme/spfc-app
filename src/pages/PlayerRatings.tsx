@@ -48,33 +48,9 @@ export default function PlayerRatings() {
       const officialXI = await response.json();
       console.log('Players fetched:', officialXI);
 
-      // Fetch player images
-      const imageResponse = await fetch('https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/player_images?select=*', {
-        headers: {
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
-        }
-      });
-
-      let imageData: any[] = [];
-      if (imageResponse.ok) {
-        imageData = await imageResponse.json();
-        console.log('Images fetched:', imageData.length, 'images');
-      } else {
-        console.error('Failed to fetch images:', imageResponse.status);
-      }
-
-      // Create image lookup map
-      const imageMap = new Map();
-      imageData.forEach((img: any) => {
-        console.log('Mapping image:', img.player_name, '->', img.image_url);
-        imageMap.set(img.player_name, img.image_url);
-      });
-
-      // Combine data and add images
+      // Use images directly from official_xi table
       const playersWithImages: Player[] = officialXI.map((player: any) => {
-        const imageUrl = imageMap.get(player.player_name);
-        console.log('Player:', player.player_name, 'Image URL:', imageUrl);
+        console.log('Player:', player.player_name, 'Image URL from official_xi:', player.image_url);
         
         return {
           id: player.id,
@@ -82,7 +58,7 @@ export default function PlayerRatings() {
           position: player.position || 'Unknown',
           role: player.role || 'starter',
           match_id: player.match_id || matchId,
-          image_url: imageUrl
+          image_url: player.image_url
         };
       });
 
@@ -226,7 +202,7 @@ export default function PlayerRatings() {
           const playerRating = ratings.find(r => r.player_id === player.id)?.rating || 0;
           
           return (
-            <div key={player.id} className="bg-gray-900 rounded-lg p-4 border border-gray-800">
+            <div key={player.id} className="bg-black rounded-lg p-4 border border-gray-700">
               <div className="flex items-center justify-between">
                 {/* Player Info */}
                 <div className="flex items-center gap-3">
