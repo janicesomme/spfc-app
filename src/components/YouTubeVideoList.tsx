@@ -69,9 +69,9 @@ export function YouTubeVideoList() {
   return (
     <div className="min-h-screen bg-black">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8 px-4">
-          <div className="bg-red-600 py-6 rounded-lg max-w-full mx-auto">
+        {/* Header - Same width as thumbnails */}
+        <div className="text-center mb-8">
+          <div className="bg-red-600 py-6 rounded-lg">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Latest Videos
             </h1>
@@ -84,7 +84,7 @@ export function YouTubeVideoList() {
         {/* Video List - Single Column */}
         <div className="space-y-8">
           {videos.map((video) => (
-            <div key={video.id} className="flex flex-col items-center px-4">
+            <div key={video.id} className="flex flex-col items-center">
               {/* Thumbnail Container */}
               <div className="relative group cursor-pointer max-w-full mx-auto" onClick={() => window.open(video.youtube_url, '_blank')}>
                 <div className="relative">
@@ -102,11 +102,9 @@ export function YouTubeVideoList() {
               </div>
               
               {/* Title - Same width as thumbnail */}
-              <div className="max-w-full mx-auto mt-1">
-                <h3 className="text-white text-xl font-bold text-center leading-tight">
-                  {video.title}
-                </h3>
-              </div>
+              <h3 className="text-white text-xl font-bold text-center mt-1 leading-tight max-w-full">
+                {video.title}
+              </h3>
             </div>
           ))}
         </div>
