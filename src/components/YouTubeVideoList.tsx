@@ -70,12 +70,12 @@ export function YouTubeVideoList() {
     <div className="min-h-screen bg-black">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 bg-red-600 py-6 rounded-lg">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
             Latest Videos
           </h1>
-          <p className="text-muted-foreground">
-            Latest Content from Our Channel
+          <p className="text-white">
+            Latest Content from FUTV
           </p>
         </div>
 
@@ -84,13 +84,12 @@ export function YouTubeVideoList() {
           {videos.map((video) => (
             <div key={video.id} className="flex flex-col items-center px-4">
               {/* Thumbnail Container */}
-              <div className="relative group cursor-pointer w-full" onClick={() => window.open(video.youtube_url, '_blank')}>
+              <div className="relative group cursor-pointer max-w-full mx-auto" onClick={() => window.open(video.youtube_url, '_blank')}>
                 <div className="relative">
                   <img
                     src={video.thumbnail_url}
                     alt={video.title}
-                    className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500"
-                    style={{ maxHeight: '300px' }}
+                    className="rounded-lg shadow-lg max-w-full h-auto border-2 border-red-500 object-contain"
                     loading="lazy"
                     onError={handleImageError}
                   />
