@@ -178,11 +178,11 @@ export default function Index() {
         {/* Pick Your XI Section */}
         <section className="px-4 mb-4">
           <Link to="/pick-your-xi" className="block">
-            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-64">
               <img 
                 src="/lovable-uploads/3d7ffcac-4b66-44ea-93e5-59b0a843477b.png"
                 alt="Pick Your XI - Select your starting lineup"
-                className="w-full h-auto object-cover max-h-64"
+                className="w-full h-full object-cover"
               />
             </div>
           </Link>
@@ -191,11 +191,11 @@ export default function Index() {
         {/* Player Ratings Section */}
         <section className="px-4 pb-8">
           <Link to="/player-ratings" className="block">
-            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity">
+            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-64 border-2 border-red-600">
               <img 
-                src="/lovable-uploads/bd079055-f299-492c-812f-20738c2684b1.png"
+                src="/lovable-uploads/cb0492ff-0d00-460d-8b7e-b093752ae09a.png"
                 alt="Rate The Players - Player Rating Interface"
-                className="w-full h-auto object-cover max-h-64"
+                className="w-full h-full object-cover"
               />
             </div>
           </Link>
