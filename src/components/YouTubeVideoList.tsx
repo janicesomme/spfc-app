@@ -68,21 +68,21 @@ export function YouTubeVideoList() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="px-4 py-8 flex flex-col items-center">
-        {/* Header - Constrained to thumbnail width */}
-        <div className="w-full max-w-sm mb-8">
-          <div className="bg-red-600 py-6 rounded-lg text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+      <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
+        {/* Header - Mobile optimized width */}
+        <div className="w-full max-w-[340px] sm:max-w-md mb-6 sm:mb-8">
+          <div className="bg-red-600 py-4 sm:py-6 px-3 sm:px-4 rounded-lg text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
               Latest Videos
             </h1>
-            <p className="text-white">
+            <p className="text-white text-sm sm:text-base">
               Latest Content from FUTV
             </p>
           </div>
         </div>
 
-        {/* Video List - Single Column */}
-        <div className="space-y-8 w-full max-w-sm">
+        {/* Video List - Single Column, Mobile optimized */}
+        <div className="space-y-6 sm:space-y-8 w-full max-w-[340px] sm:max-w-md">
           {videos.map((video) => (
             <div key={video.id} className="flex flex-col items-center">
               {/* Thumbnail Container */}
@@ -102,7 +102,7 @@ export function YouTubeVideoList() {
               </div>
               
               {/* Title - Same width as thumbnail */}
-              <h3 className="text-white text-xl font-bold text-center mt-1 leading-tight w-full">
+              <h3 className="text-white text-lg sm:text-xl font-bold text-center mt-1 leading-tight w-full px-1">
                 {video.title}
               </h3>
             </div>
