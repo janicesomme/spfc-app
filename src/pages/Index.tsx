@@ -191,11 +191,11 @@ export default function Index() {
         {/* Player Ratings Section */}
         <section className="px-4 pb-8">
           <Link to="/player-ratings" className="block">
-            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-64 border-2 border-red-600">
+            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-auto border-2 border-red-600">
               <img 
                 src="/lovable-uploads/abf9ac46-7360-4320-9f80-f72d866e8f9b.png"
                 alt="Rate The Players - Player Rating Interface with player photos and star ratings"
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain"
               />
             </div>
           </Link>
