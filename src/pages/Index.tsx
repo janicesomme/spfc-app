@@ -193,7 +193,7 @@ export default function Index() {
           <Link to="/player-ratings" className="block">
             <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-64 border-2 border-red-600">
               <img 
-                src="/lovable-uploads/cb0492ff-0d00-460d-8b7e-b093752ae09a.png"
+                src="/lovable-uploads/1351f8f9-a328-4de5-900b-dce6df52f81b.png"
                 alt="Rate The Players - Player Rating Interface"
                 className="w-full h-full object-cover"
               />
