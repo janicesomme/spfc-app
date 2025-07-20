@@ -5,7 +5,6 @@ import { ArrowRight, Play, Users, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import ratePlayersImage from "@/assets/rate-players-with-images-and-stars.jpg";
 
 interface NewsArticle {
   id: string;
@@ -194,7 +193,7 @@ export default function Index() {
           <Link to="/player-ratings" className="block">
             <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-64 border-2 border-red-600">
               <img 
-                src={ratePlayersImage}
+                src="/lovable-uploads/abf9ac46-7360-4320-9f80-f72d866e8f9b.png"
                 alt="Rate The Players - Player Rating Interface with player photos and star ratings"
                 className="w-full h-full object-cover"
               />
