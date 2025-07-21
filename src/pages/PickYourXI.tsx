@@ -69,12 +69,7 @@ export default function PickYourXI() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Football Pitch Background */}
-      <div 
-        className="absolute inset-0 bg-green-500"
-      />
-      
+    <div className="min-h-screen w-full" style={{ backgroundColor: '#22c55e' }}>
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
         {/* Header */}
