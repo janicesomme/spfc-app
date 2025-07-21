@@ -15,14 +15,14 @@ interface SelectedPlayers {
 
 const formations = {
   '1-3-4-3': {
-    GK: { top: '80%', left: '50%' },
-    LB: { top: '60%', left: '25%' },
-    CB: { top: '60%', left: '50%' },
-    RB: { top: '60%', left: '75%' },
-    LM: { top: '38%', left: '7.5%' },
-    CM1: { top: '34%', left: '37.5%' },
-    CM2: { top: '34%', left: '62.5%' },
-    RM: { top: '38%', left: '92.5%' },
+    GK: { top: '75%', left: '50%' },
+    LB: { top: '55%', left: '25%' },
+    CB: { top: '55%', left: '50%' },
+    RB: { top: '55%', left: '75%' },
+    LM: { top: '33%', left: '7.5%' },
+    CM1: { top: '29%', left: '37.5%' },
+    CM2: { top: '29%', left: '62.5%' },
+    RM: { top: '33%', left: '92.5%' },
     LW: { top: '12%', left: '25%' },
     ST: { top: '8%', left: '50%' },
     RW: { top: '12%', left: '75%' },
@@ -74,7 +74,7 @@ export default function PickYourXI() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/lovable-uploads/84dea335-36db-4f8d-92b8-b654b08b0243.png')`,
+          backgroundImage: `url('/src/assets/football-pitch-no-banner.jpg')`,
         }}
       />
       
