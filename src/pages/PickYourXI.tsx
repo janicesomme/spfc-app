@@ -74,12 +74,9 @@ export default function PickYourXI() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/football-pitch-clean.jpg')`,
+          backgroundImage: `url('/football-pitch-mobile.jpg')`,
         }}
       />
-      
-      {/* Light Overlay for text visibility */}
-      <div className="absolute inset-0 bg-black/10" />
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
