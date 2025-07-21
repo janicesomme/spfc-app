@@ -69,7 +69,25 @@ export default function PickYourXI() {
   };
 
   return (
-    <div className="min-h-screen w-full fixed inset-0" style={{ backgroundColor: '#22c55e' }}>
+    <div 
+      className="min-h-screen w-full" 
+      style={{ 
+        backgroundColor: '#22c55e !important',
+        background: '#22c55e !important',
+        position: 'relative',
+        zIndex: 1
+      }}
+    >
+      {/* Force background with multiple methods */}
+      <div 
+        className="absolute inset-0" 
+        style={{
+          backgroundColor: '#22c55e',
+          background: '#22c55e',
+          zIndex: -1
+        }}
+      />
+      
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
         {/* Header */}
