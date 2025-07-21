@@ -72,11 +72,32 @@ export default function PickYourXI() {
     <div className="min-h-screen relative overflow-hidden">
       {/* Football Pitch Background */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0"
         style={{
-          backgroundImage: `url('/src/assets/football-pitch-no-banner.jpg')`,
+          background: 'linear-gradient(135deg, #2d5016 0%, #4a7c59 50%, #2d5016 100%)',
         }}
       />
+      
+      {/* Pitch Markings */}
+      <div className="absolute inset-0">
+        {/* Center Circle */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border-2 border-white rounded-full"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-white rounded-full"></div>
+        
+        {/* Goal Areas */}
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-16 border-2 border-white border-t-0"></div>
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-16 border-2 border-white border-b-0"></div>
+        
+        {/* Penalty Areas */}
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-40 h-28 border-2 border-white border-t-0"></div>
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-40 h-28 border-2 border-white border-b-0"></div>
+        
+        {/* Center Line */}
+        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-white"></div>
+        
+        {/* Outer Border */}
+        <div className="absolute inset-4 border-2 border-white"></div>
+      </div>
       
       {/* Dark Overlay for better text visibility */}
       <div className="absolute inset-0 bg-black/40" />
