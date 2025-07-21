@@ -78,8 +78,8 @@ export default function PickYourXI() {
         }}
       />
       
-      {/* Dark Overlay for better text visibility */}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* Light Overlay for text visibility */}
+      <div className="absolute inset-0 bg-black/10" />
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
