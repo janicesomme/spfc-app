@@ -72,10 +72,7 @@ export default function PickYourXI() {
     <div className="min-h-screen relative overflow-hidden">
       {/* Football Pitch Background */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('/football-pitch-mobile.jpg')`,
-        }}
+        className="absolute inset-0 bg-green-500"
       />
       
       {/* Content */}
