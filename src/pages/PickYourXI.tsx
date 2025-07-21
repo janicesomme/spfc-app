@@ -72,10 +72,7 @@ export default function PickYourXI() {
     <div 
       className="min-h-screen w-full relative"
       style={{
-        backgroundImage: 'url(/lovable-uploads/a23edec5-8655-4d73-9fd4-d2fa58006cc7.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundColor: '#22c55e'
       }}
     >
       {/* Content */}
