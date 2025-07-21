@@ -74,7 +74,7 @@ export default function PickYourXI() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/football-pitch-no-banner.jpg')`,
+          backgroundImage: `url('/football-pitch-original.png')`,
         }}
       />
       
