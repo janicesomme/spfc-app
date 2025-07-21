@@ -70,17 +70,14 @@ export default function PickYourXI() {
 
   return (
     <div 
-      className="min-h-screen w-full" 
-      style={{ 
+      className="min-h-screen w-full relative"
+      style={{
         backgroundImage: 'url(/lovable-uploads/a23edec5-8655-4d73-9fd4-d2fa58006cc7.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        position: 'relative',
-        zIndex: 1
+        backgroundRepeat: 'no-repeat'
       }}
     >
-      
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
         {/* Header */}
@@ -98,22 +95,20 @@ export default function PickYourXI() {
               <button
                 key={position}
                 onClick={() => handlePositionClick(position)}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2 group"
+                className="absolute transform -translate-x-1/2 -translate-y-1/2"
                 style={{
                   top: coords.top,
                   left: coords.left,
                 }}
               >
-                {/* Player Circle */}
-                <div className="w-16 h-16 rounded-full border border-white bg-red-600 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                {/* Single Player Circle */}
+                <div className="w-16 h-16 rounded-full border-2 border-white bg-red-600 flex items-center justify-center shadow-lg">
                   {player ? (
-                    <div className="w-full h-full rounded-full overflow-hidden">
-                      <img 
-                        src={player.image} 
-                        alt={player.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                    <img 
+                      src={player.image} 
+                      alt={player.name}
+                      className="w-full h-full object-cover rounded-full"
+                    />
                   ) : (
                     <Plus className="w-8 h-8 text-white" />
                   )}
@@ -128,7 +123,7 @@ export default function PickYourXI() {
                   </div>
                 )}
                 
-                {/* Position Label (when no player selected) */}
+                {/* Position Label */}
                 {!player && (
                   <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2">
                     <span className="text-white/70 text-xs bg-black/50 px-2 py-1 rounded">
