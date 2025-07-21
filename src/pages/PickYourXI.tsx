@@ -72,21 +72,14 @@ export default function PickYourXI() {
     <div 
       className="min-h-screen w-full" 
       style={{ 
-        backgroundColor: '#22c55e !important',
-        background: '#22c55e !important',
+        backgroundImage: 'url(/lovable-uploads/a23edec5-8655-4d73-9fd4-d2fa58006cc7.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         position: 'relative',
         zIndex: 1
       }}
     >
-      {/* Force background with multiple methods */}
-      <div 
-        className="absolute inset-0" 
-        style={{
-          backgroundColor: '#22c55e',
-          background: '#22c55e',
-          zIndex: -1
-        }}
-      />
       
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
