@@ -72,7 +72,7 @@ export default function PickYourXI() {
     <div 
       className="min-h-screen w-full relative"
       style={{
-        backgroundImage: 'url(/football-pitch-bg.jpg)',
+        backgroundImage: 'url(/pitch-background.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
