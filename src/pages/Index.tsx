@@ -15,7 +15,7 @@ interface SelectedPlayers {
 
 const formations = {
   '1-3-4-3': {
-    GK: { top: '75%', left: '50%' },
+    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
     LB: { top: '55%', left: '25%' },
     CB: { top: '55%', left: '50%' },
     RB: { top: '55%', left: '75%' },
@@ -23,9 +23,9 @@ const formations = {
     CM1: { top: '29%', left: '37.5%' },
     CM2: { top: '29%', left: '62.5%' },
     RM: { top: '33%', left: '92.5%' },
-    LW: { top: '12%', left: '25%' },
-    ST: { top: '8%', left: '50%' },
-    RW: { top: '12%', left: '75%' },
+    LW: { top: 'calc(12% - 0.5cm)', left: '25%' },
+    ST: { top: 'calc(8% - 0.5cm)', left: '50%' },
+    RW: { top: 'calc(12% - 0.5cm)', left: '75%' },
   }
 };
 
