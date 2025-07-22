@@ -113,12 +113,12 @@ export default function PickYourXI() {
         </div>
 
         {allPositionsFilled && (
-          <div className="pb-6 px-4">
+          <div className="pb-6 px-4 flex justify-center">
             <Button
               onClick={handleSubmitXI}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg"
             >
-              Submit XI
+              Submit Your Starting XI
             </Button>
           </div>
         )}
