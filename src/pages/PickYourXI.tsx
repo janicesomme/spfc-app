@@ -72,7 +72,7 @@ export default function PickYourXI() {
     <div 
       className="min-h-screen w-full relative"
    style={{
-    backgroundImage: 'url(https://i.imgur.com/YbgLrKZ.png)',
+    backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAKACAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAXAcEbQAAAANQTFRFAAAApqamZ2dnYmJif39/Y2NjgICAs7OzpKSkZmZmqqqqtra2i4uLvb29oaGhjY2NzMzMgoKCv7+/s7OzpqampiYmMbW1tj4+Po6OjvLy8oKCgpKSkubm5qqqqgoKCxsbGwsLCubm5ra2tv7+/mpqawcHB4eHhrq6uXl5eMjIyQEBAlpaWrKysnJycAAAAq6hqWgAAADV0Uk5T/////////////////////////////////////////////////////////////wA7GIGoAAAGNUlEQVR4nO3dyW7rOBhG4VgbIsxiAysZzvr/v4XpFqXRFLnqdvJXOqTN0Z75IXygEAAAAAAAAAAAAAAAAAADgM7VZ5Xg33ulS+lfX06sXDbXD8nL3U/hVXD3P9VQv3xUdzvqn08qnl6yns+y3dN7Vz+cFbfaL3uVuMPbR27aXxV27Q+Mr/wq+fg75cpn4//fFHt19UX3m8OpZpP/vHHD1fZl65+78r+nH97qvbyzUPzeofv4FZ7++X7fvWXed+XPf0WcuHf2t47FL/M07qfP/z+zv/rvfPw/XL1tHR/p5uPwjeaY4dv5VcP6P/Wv/uvPZ7+FzM/7jy+vhlzvta38cPPN38p5+X6z/uT++fP35VNPVz+XL0d//8XlqTzUfbKqnb49R5++fDzvrP/VuRzuX+j2zqvt9r+vnC2+fX3ez5e33n/wfNj66U1YJvdP96vhf3P8O/5A6TAAAAAAAAAAAAAAAAAAB8g/8AGExkuNscVFoAAAAASUVORK5CYII=')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'
