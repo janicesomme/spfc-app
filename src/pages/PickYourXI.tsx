@@ -72,11 +72,11 @@ export default function PickYourXI() {
     <div 
       className="min-h-screen w-full relative"
    style={{
-  backgroundImage: 'url(https://i.imgur.com/w91Mc9f.png)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat'
-}}
+    backgroundImage: 'url(https://i.imgur.com/YbgLrKZ.png)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  }}
     >
       {/* Content */}
       <div className="relative z-10 p-4 h-screen flex flex-col">
