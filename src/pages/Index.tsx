@@ -113,10 +113,10 @@ export default function PickYourXI() {
         </div>
 
         {allPositionsFilled && (
-          <div className="pb-6 px-4 flex justify-center">
+          <div className="pb-6 px-4 flex justify-center" style={{ marginTop: '-0.75cm' }}>
             <Button
               onClick={handleSubmitXI}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg border border-white"
             >
               Submit Your Starting XI
             </Button>
