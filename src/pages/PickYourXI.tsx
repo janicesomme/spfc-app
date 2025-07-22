@@ -92,7 +92,7 @@ export default function PickYourXI() {
                 className="absolute transform -translate-x-1/2 -translate-y-1/2"
                 style={{ top: coords.top, left: coords.left }}
               >
-                <div className="w-16 h-16 rounded-full border-[3px] border-white bg-red-600 shadow-xl ring-2 ring-white/70 flex items-center justify-center">
+                <<div className="w-16 h-16 rounded-full border border-white bg-red-600 flex items-center justify-center shadow-lg">
                   {player ? (
                     <img
                       src={player.image}
