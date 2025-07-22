@@ -79,10 +79,10 @@ export default function PickYourXI() {
       <div className="relative z-10 p-4 h-screen flex flex-col">
         <div className="text-center pt-2 pb-8">
           <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
-          <p className="text-white/80 text-sm">Select your starting lineup</p>
+          <p className="text-white/80 text-sm" style={{ marginTop: '1cm' }}>Select your starting lineup</p>
         </div>
 
-        <div className="flex-1 relative max-w-md mx-auto w-full">
+        <div className="flex-1 relative max-w-md mx-auto w-full" style={{ marginTop: '0.75cm' }}>
           {Object.entries(formations['1-3-4-3']).map(([position, coords]) => {
             const player = selectedPlayers[position];
             return (
