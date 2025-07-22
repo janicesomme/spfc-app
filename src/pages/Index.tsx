@@ -1,210 +1,128 @@
-import React, { useEffect, useState } from "react";
-import { HomeBottomNav } from "@/components/HomeBottomNav";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Users, ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { formatDistanceToNow, parseISO } from "date-fns";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-interface NewsArticle {
+interface Player {
   id: string;
-  title: string;
-  description: string | null;
-  url: string | null;
-  image_url: string | null;
-  source: string | null;
-  published_at: string | null;
+  name: string;
+  image: string;
 }
 
-// Countdown timer component
-function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 2,
-    hours: 9,
-    minutes: 31,
-    seconds: 0
-  });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        let { days, hours, minutes, seconds } = prev;
-        
-        if (seconds > 0) {
-          seconds--;
-        } else {
-          seconds = 59;
-          if (minutes > 0) {
-            minutes--;
-          } else {
-            minutes = 59;
-            if (hours > 0) {
-              hours--;
-            } else {
-              hours = 23;
-              if (days > 0) {
-                days--;
-              }
-            }
-          }
-        }
-        
-        return { days, hours, minutes, seconds };
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <div className="text-3xl font-bold text-black">
-      {timeLeft.days} days {timeLeft.hours} hours {timeLeft.minutes} minutes
-    </div>
-  );
+interface SelectedPlayers {
+  [position: string]: Player | null;
 }
 
-// Main homepage component
-export default function Index() {
-  const [topNews, setTopNews] = useState<NewsArticle[]>([]);
+const formations = {
+  '1-3-4-3': {
+    GK: { top: '75%', left: '50%' },
+    LB: { top: '55%', left: '25%' },
+    CB: { top: '55%', left: '50%' },
+    RB: { top: '55%', left: '75%' },
+    LM: { top: '33%', left: '7.5%' },
+    CM1: { top: '29%', left: '37.5%' },
+    CM2: { top: '29%', left: '62.5%' },
+    RM: { top: '33%', left: '92.5%' },
+    LW: { top: '12%', left: '25%' },
+    ST: { top: '8%', left: '50%' },
+    RW: { top: '12%', left: '75%' },
+  }
+};
+
+const positionNames = {
+  GK: 'Goalkeeper',
+  LB: 'Left Back',
+  CB: 'Centre Back',
+  RB: 'Right Back',
+  LM: 'Left Midfielder',
+  CM1: 'Centre Midfielder',
+  CM2: 'Centre Midfielder',
+  RM: 'Right Midfielder',
+  LW: 'Left Winger',
+  ST: 'Striker',
+  RW: 'Right Winger',
+};
+
+export default function PickYourXI() {
+  const navigate = useNavigate();
+  const [selectedPlayers, setSelectedPlayers] = useState<SelectedPlayers>({});
 
   useEffect(() => {
-    const fetchTopNews = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("man_utd_news")
-          .select("id, title, description, url, image_url, source, published_at")
-          .eq("is_active", true)
-          .order("rank", { ascending: true, nullsFirst: false })
-          .order("relevance_score", { ascending: false, nullsFirst: false })
-          .order("published_at", { ascending: false, nullsFirst: false })
-          .limit(3);
-
-        if (error) throw error;
-        setTopNews(data || []);
-      } catch (err) {
-        console.error("Error fetching top news:", err);
-      }
-    };
-
-    fetchTopNews();
-  }, []);
-
-  const getRelativeTime = (dateString: string | null): string => {
-    if (!dateString) return "";
-    try {
-      const date = typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
-      return formatDistanceToNow(date, { addSuffix: true }).replace("about ", "");
-    } catch {
-      return "";
+    const saved = localStorage.getItem('selectedPlayers');
+    if (saved) {
+      setSelectedPlayers(JSON.parse(saved));
     }
+  }, []);
+
+  const handlePositionClick = (position: string) => {
+    navigate(`/pick-player?position=${position}`);
   };
+
+  const allPositionsFilled = Object.keys(formations['1-3-4-3']).every(
+    position => selectedPlayers[position]
+  );
+
+  const handleSubmitXI = () => {
+    console.log('Submitting XI:', selectedPlayers);
+  };
+
   return (
     <div 
-      className="relative min-h-screen w-full max-w-md mx-auto pb-24 overflow-hidden bg-black"
+      className="min-h-screen w-full relative"
+      style={{
+        backgroundImage: "url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
     >
-      
-      {/* Main Content */}
-      <div className="relative z-10 flex flex-col min-h-screen">
-        {/* YouTube Video Thumbnail */}
-        <div className="px-4 pt-4 mb-6">
-          <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
-            <img 
-              src="/lovable-uploads/9d59c50e-3dcd-4ecb-a539-0445a08e3552.png"
-              alt="BEST & FINAL - Transfer News YouTube Video"
-              className="w-full h-full object-cover"
-            />
-            {/* YouTube Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black/80 rounded-full p-4 hover:bg-black/60 transition-colors">
-                <Play className="w-12 h-12 text-white fill-white" />
-              </div>
-            </div>
-          </div>
+      <div className="relative z-10 p-4 h-screen flex flex-col">
+        <div className="text-center pt-2 pb-8">
+          <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
+          <p className="text-white/80 text-sm">Select your starting lineup</p>
         </div>
 
-        {/* Latest News Section */}
-        <section className="px-4 mb-8">
-          <h2 className="text-white text-lg font-bold mb-4">Latest News</h2>
-          <div className="space-y-2">
-            {topNews.map((article) => (
-              <div key={article.id} className="bg-black rounded-lg p-3">
-                {article.url ? (
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block group"
-                  >
-                    <div className="flex items-start gap-3">
-                      {article.image_url && (
-                        <div className="w-16 h-12 flex-shrink-0 rounded overflow-hidden">
-                          <img 
-                            src={article.image_url} 
-                            alt={article.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-white text-sm font-semibold leading-tight group-hover:text-red-400 transition-colors line-clamp-2">
-                          {article.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </a>
-                ) : (
-                  <div className="flex items-start gap-3">
-                    {article.image_url && (
-                      <div className="w-16 h-12 flex-shrink-0 rounded overflow-hidden">
-                        <img 
-                          src={article.image_url} 
-                          alt={article.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-white text-sm font-semibold leading-tight line-clamp-2">
-                        {article.title}
-                      </h3>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Pick Your XI Section */}
-        <section className="px-4 mb-4">
-          <Link to="/pick-your-xi" className="block">
-            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-64">
-              <img 
-                src="/lovable-uploads/3d7ffcac-4b66-44ea-93e5-59b0a843477b.png"
-                alt="Pick Your XI - Select your starting lineup"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </Link>
-        </section>
-
-        {/* Player Ratings Section */}
-        <section className="px-4 pb-8">
-          <Link to="/player-ratings" className="block">
-            <div className="relative w-full rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity h-auto border-2 border-red-600">
-              <img 
-                src="/lovable-uploads/abf9ac46-7360-4320-9f80-f72d866e8f9b.png"
-                alt="Rate The Players - Player Rating Interface with player photos and star ratings"
-                className="w-full h-auto object-contain"
-              />
-            </div>
-          </Link>
-        </section>
-
-        {/* Bottom Navigation */}
-        <div className="mt-auto">
-          <HomeBottomNav />
+        <div className="flex-1 relative max-w-md mx-auto w-full">
+          {Object.entries(formations['1-3-4-3']).map(([position, coords]) => {
+            const player = selectedPlayers[position];
+            return (
+              <button
+                key={position}
+                onClick={() => handlePositionClick(position)}
+                className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                style={{ top: coords.top, left: coords.left }}
+              >
+                <div className="w-16 h-16 rounded-full border border-white bg-red-600 flex items-center justify-center shadow-lg">
+                  {player ? (
+                    <img
+                      src={player.image}
+                      alt={player.name}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <Plus className="w-8 h-8 text-white" />
+                  )}
+                </div>
+                <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2">
+                  <span className="text-white text-xs font-medium bg-black/50 px-2 py-1 rounded">
+                    {player ? player.name.split(' ').pop() : position}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
         </div>
+
+        {allPositionsFilled && (
+          <div className="pb-6 px-4">
+            <Button
+              onClick={handleSubmitXI}
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg"
+            >
+              Submit XI
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
