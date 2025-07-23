@@ -203,7 +203,7 @@ export default function HomePage() {
         >
           <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-4">
             <img 
-              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots/pick%20xi%20image%20for%20app%20homepage"
+              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots/pick%20xi%20image%20for%20app%20homepage.png"
               alt="Pick Your XI"
               className="w-full h-full object-contain scale-[1.33]"
             />
