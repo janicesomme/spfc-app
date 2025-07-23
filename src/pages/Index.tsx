@@ -122,7 +122,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* Video Title - Now OUTSIDE the thumbnail */}
+          {/* Video Title - Below thumbnail with gap */}
           {latestVideo && (
             <div className="px-4" style={{marginTop: '0.25cm'}}>
               <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
@@ -130,6 +130,8 @@ export default function HomePage() {
               </p>
             </div>
           )}
+        </button>
+      </div>
           </div>
         </button>
       </div>
