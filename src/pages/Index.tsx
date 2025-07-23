@@ -122,15 +122,15 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* Video Title - Below thumbnail with gap */}
-          {latestVideo && (
-            <div className="px-4" style={{marginTop: '0.25cm'}}>
-              <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
-                {latestVideo.title}
-              </p>
-            </div>
-          )}
         </button>
+        {/* Video Title - Below thumbnail with gap */}
+        {latestVideo && (
+          <div className="px-4" style={{marginTop: '0.25cm'}}>
+            <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
+              {latestVideo.title}
+            </p>
+          </div>
+        )}
       </div>
           </div>
         </button>
