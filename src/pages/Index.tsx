@@ -111,7 +111,7 @@ export default function HomePage() {
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
               alt={latestVideo?.title || "Best Final Video"}
-              className="w-full h-full object-contain scale-[3]"
+              className="w-full h-full object-contain scale-[2]"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
