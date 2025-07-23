@@ -121,14 +121,15 @@ export default function HomePage() {
                 </svg>
               </div>
             </div>
-            {/* Video Title */}
-            {latestVideo && (
-              <div className="absolute bottom-1 left-4 right-4" style={{marginBottom: '2cm'}}>
-                <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
-                  {latestVideo.title}
-                </p>
-              </div>
-            )}
+          </div>
+          {/* Video Title - Now OUTSIDE the thumbnail */}
+          {latestVideo && (
+            <div className="px-4" style={{marginTop: '0.25cm'}}>
+              <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
+                {latestVideo.title}
+              </p>
+            </div>
+          )}
           </div>
         </button>
       </div>
