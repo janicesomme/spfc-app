@@ -107,7 +107,7 @@ export default function HomePage() {
           onClick={() => navigate('/youtube')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-4">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
               alt={latestVideo?.title || "Best Final Video"}
@@ -201,7 +201,7 @@ export default function HomePage() {
           onClick={() => navigate('/pick-your-xi')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-4">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//pick%20xi%20image%20for%20app%20homepage%207.23.png"
               alt="Pick Your XI"
@@ -220,7 +220,7 @@ export default function HomePage() {
           onClick={() => navigate('/player-ratings')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-4">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//rate%20teh%20players%20homepage%20image%20link%207.23.png"
               alt="Player Ratings"
