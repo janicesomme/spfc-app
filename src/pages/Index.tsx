@@ -224,7 +224,7 @@ export default function HomePage() {
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
               alt="Player Ratings"
-              className="w-full h-full object-contain scale-[0.8]"
+              className="w-full h-full object-contain scale-[1.75]"
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
               <h3 className="text-white text-xl font-bold drop-shadow-lg">Player Ratings</h3>
