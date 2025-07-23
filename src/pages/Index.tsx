@@ -128,8 +128,8 @@ export default function HomePage() {
             </div>
             {/* Video Title */}
             {latestVideo && (
-              <div className="absolute bottom-4 left-4 right-4">
-                <p className="text-white text-sm font-medium drop-shadow-lg line-clamp-2">
+              <div className="absolute bottom-1 left-4 right-4" style={{marginBottom: '0.75cm'}}>
+                <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
                   {latestVideo.title}
                 </p>
               </div>
