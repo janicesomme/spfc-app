@@ -107,11 +107,11 @@ export default function HomePage() {
           onClick={() => navigate('/youtube')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden h-32">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-20">
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
               alt={latestVideo?.title || "Best Final Video"}
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
