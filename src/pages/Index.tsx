@@ -222,7 +222,7 @@ export default function HomePage() {
         >
           <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
             <img 
-              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//rate%20teh%20players%20homepage%20image%20link%207.23.png"
+              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
               alt="Player Ratings"
               className="w-full h-full object-contain scale-[1.33]"
             />
