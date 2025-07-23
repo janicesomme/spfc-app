@@ -15,7 +15,7 @@ interface SelectedPlayers {
 
 const formations = {
   '1-3-4-3': {
-    GK: { top: '75%', left: '50%' },
+    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
     LB: { top: '55%', left: '25%' },
     CB: { top: '55%', left: '50%' },
     RB: { top: '55%', left: '75%' },
@@ -23,9 +23,9 @@ const formations = {
     CM1: { top: '29%', left: '37.5%' },
     CM2: { top: '29%', left: '62.5%' },
     RM: { top: '33%', left: '92.5%' },
-    LW: { top: '12%', left: '25%' },
-    ST: { top: '8%', left: '50%' },
-    RW: { top: '12%', left: '75%' },
+    LW: { top: 'calc(12% - 0.5cm)', left: '25%' },
+    ST: { top: 'calc(8% - 0.5cm)', left: '50%' },
+    RW: { top: 'calc(12% - 0.5cm)', left: '75%' },
   }
 };
 
@@ -70,7 +70,7 @@ export default function PickYourXI() {
     <div 
       className="min-h-screen w-full relative"
       style={{
-        backgroundImage: "url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//Screenshot%202025-07-18%20095309.png')",
+        backgroundImage: "url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -79,10 +79,9 @@ export default function PickYourXI() {
       <div className="relative z-10 p-4 h-screen flex flex-col">
         <div className="text-center pt-2 pb-8">
           <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
-          <p className="text-white/80 text-sm">Select your starting lineup</p>
         </div>
 
-        <div className="flex-1 relative max-w-md mx-auto w-full">
+        <div className="flex-1 relative max-w-md mx-auto w-full" style={{ marginTop: '0.75cm' }}>
           {Object.entries(formations['1-3-4-3']).map(([position, coords]) => {
             const player = selectedPlayers[position];
             return (
@@ -114,12 +113,12 @@ export default function PickYourXI() {
         </div>
 
         {allPositionsFilled && (
-          <div className="pb-6 px-4">
+          <div className="pb-6 px-4 flex justify-center" style={{ marginTop: '-0.75cm' }}>
             <Button
               onClick={handleSubmitXI}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg border border-white"
             >
-              Submit XI
+              Submit Your Starting XI
             </Button>
           </div>
         )}
