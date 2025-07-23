@@ -100,7 +100,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-black">
       {/* YouTube Video Section */}
       <div className="px-4 pt-4 pb-6">
         <button 
@@ -121,14 +121,9 @@ export default function HomePage() {
                 </svg>
               </div>
             </div>
-            {/* "BEST FINAL" Text Overlay */}
-            <div className="absolute top-4 left-4">
-              <h2 className="text-white font-bold text-2xl drop-shadow-lg">BEST</h2>
-              <h2 className="text-white font-bold text-2xl drop-shadow-lg">FINAL</h2>
-            </div>
             {/* Video Title */}
             {latestVideo && (
-              <div className="absolute bottom-1 left-4 right-4" style={{marginBottom: '0.75cm'}}>
+              <div className="absolute bottom-1 left-4 right-4" style={{marginBottom: '2cm'}}>
                 <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
                   {latestVideo.title}
                 </p>
