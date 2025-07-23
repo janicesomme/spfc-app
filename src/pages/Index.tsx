@@ -36,6 +36,8 @@ export default function HomePage() {
 
   const fetchData = async () => {
     try {
+      console.log('Fetching data...');
+      
       // Fetch latest video
       const { data: videoData, error: videoError } = await supabase
         .from('latest_videos')
@@ -47,6 +49,7 @@ export default function HomePage() {
       if (videoError) {
         console.error('Error fetching video:', videoError);
       } else {
+        console.log('Video data:', videoData);
         setLatestVideo(videoData);
       }
 
@@ -54,13 +57,13 @@ export default function HomePage() {
       const { data: newsData, error: newsError } = await supabase
         .from('man_utd_news')
         .select('*')
-        .eq('is_active', true)
         .order('published_at', { ascending: false })
         .limit(3);
 
       if (newsError) {
         console.error('Error fetching news:', newsError);
       } else {
+        console.log('News data:', newsData);
         setNewsArticles(newsData || []);
       }
     } catch (error) {
@@ -102,7 +105,7 @@ export default function HomePage() {
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
               alt={latestVideo?.title || "Best Final Video"}
-              className="w-full h-48 object-cover"
+              className="w-full h-40 object-cover"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
