@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+=import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 
@@ -107,7 +107,7 @@ export default function HomePage() {
           onClick={() => navigate('/youtube')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden h-48">
+          <div className="relative bg-black rounded-lg overflow-hidden h-32">
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
               alt={latestVideo?.title || "Best Final Video"}
