@@ -53,18 +53,24 @@ export default function HomePage() {
         setLatestVideo(videoData);
       }
 
-      // Fetch latest 3 news articles
-      const { data: newsData, error: newsError } = await supabase
+      // Fetch latest 3 news articles - try multiple approaches
+      console.log('Attempting to fetch news...');
+      
+      // First, let's see what's in the table
+      const { data: allNews, error: allNewsError } = await supabase
         .from('man_utd_news')
-        .select('*')
-        .order('published_at', { ascending: false })
-        .limit(3);
-
-      if (newsError) {
-        console.error('Error fetching news:', newsError);
+        .select('*');
+      
+      console.log('All news in table:', allNews);
+      console.log('Total news count:', allNews?.length);
+      
+      if (allNews && allNews.length > 0) {
+        // Take the first 3 articles
+        const latestNews = allNews.slice(0, 3);
+        setNewsArticles(latestNews);
+        console.log('Set news articles:', latestNews);
       } else {
-        console.log('News data:', newsData);
-        setNewsArticles(newsData || []);
+        console.log('No news articles found in table');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -105,7 +111,7 @@ export default function HomePage() {
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
               alt={latestVideo?.title || "Best Final Video"}
-              className="w-full h-40 object-cover"
+              className="w-full h-24 object-cover"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
