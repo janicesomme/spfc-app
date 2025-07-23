@@ -107,7 +107,7 @@ export default function HomePage() {
           onClick={() => navigate('/youtube')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-40">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-48">
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
               alt={latestVideo?.title || "Best Final Video"}
