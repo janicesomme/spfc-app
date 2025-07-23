@@ -218,58 +218,16 @@ export default function HomePage() {
       <div className="px-4 pb-6">
         <button 
           onClick={() => navigate('/player-ratings')}
-          className="w-full"
+          className="w-full relative"
         >
-          <div className="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-colors">
-            <h3 className="text-white text-lg font-semibold mb-4">Player Ratings</h3>
-            
-            {/* Sample Player Rating Rows */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between bg-gray-700 rounded p-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">P1</span>
-                  </div>
-                  <span className="text-white">Bruno Fernandes</span>
-                </div>
-                <div className="flex space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-between bg-gray-700 rounded p-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">P2</span>
-                  </div>
-                  <span className="text-white">Marcus Rashford</span>
-                </div>
-                <div className="flex space-x-1">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  ))}
-                  <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-between bg-gray-700 rounded p-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">P3</span>
-                  </div>
-                  <span className="text-white">Casemiro</span>
-                </div>
-                <div className="flex space-x-1">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  ))}
-                  {[...Array(2)].map((_, i) => (
-                    <div key={i} className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                  ))}
-                </div>
-              </div>
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-4">
+            <img 
+              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//rate%20teh%20players%20homepage%20image%20link%207.23.png"
+              alt="Player Ratings"
+              className="w-full h-full object-contain scale-[1.33]"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
+              <h3 className="text-white text-xl font-bold drop-shadow-lg">Player Ratings</h3>
             </div>
           </div>
         </button>
