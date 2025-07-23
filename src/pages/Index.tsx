@@ -93,7 +93,7 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white text-lg">Loading...</div>
       </div>
     );
@@ -131,9 +131,6 @@ export default function HomePage() {
             </p>
           </div>
         )}
-      </div>
-          </div>
-        </button>
       </div>
 
       {/* Latest News Section */}
