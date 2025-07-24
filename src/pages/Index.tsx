@@ -233,20 +233,18 @@ export default function HomePage() {
 
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
+        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Submit Your Player Ratings</h3>
+        <p className="text-gray-300 text-base sm:text-lg text-center mb-1 sm:mb-4">Rate the Players After Every Match</p>
         <button 
           onClick={() => navigate('/player-ratings')}
-          className="w-full relative max-w-4xl mx-auto block"
+          className="w-full relative max-w-4xl mx-auto block mt-2.5"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-64 sm:h-80 md:h-96 lg:h-[28rem]">
+          <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
             <img 
-              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
-              alt="Player Ratings"
-              className="w-full h-full object-contain scale-110 sm:scale-125 md:scale-[1.5]"
-              style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
+              src="/lovable-uploads/1ac24f1f-bbc5-490a-bd5c-81af00afbe24.png"
+              alt="Submit Your Player Ratings"
+              className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <h3 className="text-white text-lg sm:text-xl lg:text-2xl font-bold drop-shadow-lg">Player Ratings</h3>
-            </div>
           </div>
         </button>
       </div>
