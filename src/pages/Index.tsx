@@ -239,11 +239,11 @@ export default function HomePage() {
           onClick={() => navigate('/player-ratings')}
           className="w-full relative max-w-4xl mx-auto block -mt-4 sm:mt-2.5"
         >
-          <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
+          <div className="relative rounded-lg overflow-hidden w-full h-[200px] sm:h-[300px] md:h-[350px] lg:h-[400px]">
             <img 
-              src="/lovable-uploads/2a69cc2f-a322-4a64-8782-1b27922f477b.png"
+              src="/lovable-uploads/3a1ec57a-3de8-4631-bbfe-3379391f9c2b.png"
               alt="Submit Your Player Ratings"
-              className="w-full h-full object-contain px-2"
+              className="w-full h-full object-cover"
             />
           </div>
         </button>

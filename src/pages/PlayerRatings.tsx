@@ -235,11 +235,17 @@ export default function PlayerRatings() {
                   <div className="flex items-start">
                     {/* Player Image */}
                     <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
-                      <img 
-                        src="/lovable-uploads/3a1ec57a-3de8-4631-bbfe-3379391f9c2b.png"
-                        alt={player.player_name}
-                        className="w-full h-full object-cover"
-                      />
+                      {player.image_url ? (
+                        <img 
+                          src={player.image_url}
+                          alt={player.player_name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                          {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </div>
+                      )}
                     </div>
                     
                     {/* Player Details - Name, Position, Role inline */}
@@ -297,11 +303,17 @@ export default function PlayerRatings() {
                 <div className="flex items-center gap-3">
                   {/* Player Image */}
                   <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
-                    <img 
-                      src="/lovable-uploads/3a1ec57a-3de8-4631-bbfe-3379391f9c2b.png"
-                      alt={player.player_name}
-                      className="w-full h-full object-cover"
-                    />
+                    {player.image_url ? (
+                      <img 
+                        src={player.image_url}
+                        alt={player.player_name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                        {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                      </div>
+                    )}
                   </div>
                   
                   {/* Player Details */}
