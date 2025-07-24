@@ -252,14 +252,6 @@ export default function PlayerRatings() {
                       {/* Player Details */}
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-white text-sm leading-tight">{player.player_name}</h3>
-                        <div className="text-xs text-gray-400">
-                          <span>{player.position}</span>
-                        </div>
-                        <div className="text-xs text-gray-400 mt-0.5">
-                          <span className={`capitalize ${player.role === 'starter' ? 'text-green-400' : 'text-blue-400'}`}>
-                            {player.role}
-                          </span>
-                        </div>
                       </div>
                     </div>
 
@@ -278,8 +270,19 @@ export default function PlayerRatings() {
                     </div>
                   </div>
 
-                  {/* Bottom Row: Star Rating aligned with position text */}
-                  <div className="flex justify-center mt-2">
+                  {/* Center Row: Position and Role */}
+                  <div className="flex justify-center mt-1">
+                    <div className="text-xs text-gray-400 flex items-center gap-2">
+                      <span>{player.position}</span>
+                      <span>•</span>
+                      <span className={`capitalize ${player.role === 'starter' ? 'text-green-400' : 'text-blue-400'}`}>
+                        {player.role}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Bottom Row: Star Rating */}
+                  <div className="flex justify-center mt-1 -mt-2.5">
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -288,7 +291,7 @@ export default function PlayerRatings() {
                           className="focus:outline-none transition-colors"
                         >
                           <Star
-                            className={`w-6 h-7 ${
+                            className={`w-7 h-8 ${
                               star <= playerRating
                                 ? 'fill-yellow-400 text-yellow-400'
                                 : 'text-white hover:text-yellow-300'
