@@ -243,7 +243,7 @@ export default function HomePage() {
             <img 
               src="/lovable-uploads/2a69cc2f-a322-4a64-8782-1b27922f477b.png"
               alt="Submit Your Player Ratings"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain px-2"
             />
           </div>
         </button>
