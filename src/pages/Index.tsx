@@ -2,6 +2,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 
+interface Video {
+  video_id: string;
+  title: string;
+  description: string;
+  thumbnail_url: string;
+  youtube_url: string;
+  published_at: string;
+}
+
 interface NewsArticle {
   id: string;
   title: string;
@@ -16,6 +25,7 @@ interface NewsArticle {
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [latestVideo, setLatestVideo] = useState<Video | null>(null);
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,6 +37,25 @@ export default function HomePage() {
     try {
       console.log('Fetching data...');
       
+      // Fetch latest video using direct fetch
+      try {
+        const response = await fetch('https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/latest_videos?select=video_id,title,description,thumbnail_url,youtube_url,published_at&order=published_at.desc&limit=1', {
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8'
+          }
+        });
+        const data = await response.json();
+        if (data && data.length > 0) {
+          setLatestVideo(data[0]);
+          console.log('Set latest video via direct query:', data[0]);
+        } else {
+          console.log('No videos found in table');
+        }
+      } catch (error) {
+        console.error('Error fetching video:', error);
+      }
+
       // Fetch latest 3 news articles
       console.log('Attempting to fetch news...');
       
@@ -78,26 +107,34 @@ export default function HomePage() {
     <div className="min-h-screen bg-black">
       {/* YouTube Video Section */}
       <div className="px-4 pt-4 pb-6">
-        <button 
-          onClick={() => navigate('/youtube')}
-          className="w-full relative"
+        <button
+          className="w-full"
+          onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
         >
           <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
             <img 
-              src="https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"
-              alt="Latest Video"
+              src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
+              alt={latestVideo?.title || "Latest Video"}
               className="w-full h-full object-contain scale-[1.33]"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-red-600 rounded-full p-3 hover:bg-red-700 transition-colors">
-                <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <div className="bg-red-600 rounded-full p-4 shadow-lg hover:bg-red-700 transition-colors">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
               </div>
             </div>
           </div>
         </button>
+        {/* Video Title - Below thumbnail with gap */}
+        {latestVideo && (
+          <div className="px-4 text-center" style={{marginTop: '0.25cm'}}>
+            <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
+              {latestVideo.title}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Latest News Section */}
