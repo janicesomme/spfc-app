@@ -216,7 +216,7 @@ export default function HomePage() {
       {/* Pick Your XI Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
         <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
-        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Climb the Weekly Leaderboard!</p>
+        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Pick It, Share It, Discuss It</p>
         <button 
           onClick={() => navigate('/pick-your-xi')}
           className="w-full relative max-w-4xl mx-auto block mt-2.5"
