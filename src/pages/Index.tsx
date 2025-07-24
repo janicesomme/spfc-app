@@ -170,42 +170,32 @@ export default function HomePage() {
               <div 
                 key={article.id}
                 onClick={() => article.url && window.open(article.url, '_blank')}
-                className="bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-700 transition-colors"
+                className="bg-black border border-red-600 rounded-lg cursor-pointer hover:border-red-500 transition-colors h-24 mx-8"
+                style={{
+                  marginLeft: 'calc(2rem + 1cm + 70px + 75px)', 
+                  marginRight: 'calc(2rem + 1cm + 70px + 75px)'
+                }}
               >
-                <div className="flex space-x-3">
+                <div className="flex h-full">
                   {article.image_url && (
                     <img 
                       src={article.image_url}
                       alt={article.title}
-                      className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                      className="w-24 h-24 object-cover rounded-l-lg flex-shrink-0"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                       }}
                     />
                   )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-1">
-                      <h4 className="text-white text-sm font-medium line-clamp-2 flex-1">
+                  <div className="flex-1 min-w-0 p-3 flex flex-col justify-between">
+                    <div>
+                      <h4 className="text-white text-base font-medium line-clamp-2 flex-1">
                         {article.title}
                       </h4>
-                      {(article.is_breaking || article.is_transfer) && (
-                        <div className="ml-2 flex-shrink-0">
-                          {article.is_breaking && (
-                            <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">
-                              BREAKING
-                            </span>
-                          )}
-                          {article.is_transfer && (
-                            <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded">
-                              TRANSFER
-                            </span>
-                          )}
-                        </div>
-                      )}
+                      <p className="text-gray-400 text-xs line-clamp-1 mt-1">
+                        {article.description}
+                      </p>
                     </div>
-                    <p className="text-gray-400 text-xs line-clamp-2 mb-2">
-                      {article.description}
-                    </p>
                     <div className="flex items-center justify-end text-xs text-gray-500">
                       <span>{formatTimeAgo(article.published_at || '')}</span>
                     </div>
