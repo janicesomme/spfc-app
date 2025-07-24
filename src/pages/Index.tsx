@@ -237,13 +237,13 @@ export default function HomePage() {
         <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
         <button 
           onClick={() => navigate('/player-ratings')}
-          className="w-full relative max-w-4xl mx-auto block -mt-4 sm:mt-2.5"
+          className="w-full relative max-w-4xl mx-auto block mt-2.5"
         >
-          <div className="relative rounded-lg overflow-hidden w-full h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px]">
+          <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
             <img 
               src="/lovable-uploads/3a1ec57a-3de8-4631-bbfe-3379391f9c2b.png"
               alt="Submit Your Player Ratings"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
         </button>
