@@ -304,11 +304,8 @@ export default function News() {
                         </p>
                       )}
 
-                      {/* Source and published date */}
-                      <div className="flex items-center justify-between text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
-                        <span className="truncate max-w-[120px] font-medium">
-                          {article.source || "Unknown"}
-                        </span>
+                      {/* Published date */}
+                      <div className="flex items-center justify-end text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
                         <span>{getRelativeTime(article.published_at || article.created_at)}</span>
                       </div>
                     </div>
@@ -363,11 +360,8 @@ export default function News() {
                         </p>
                       )}
 
-                      {/* Source and published date */}
-                      <div className="flex items-center justify-between text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
-                        <span className="truncate max-w-[120px] font-medium">
-                          {article.source || "Unknown"}
-                        </span>
+                      {/* Published date */}
+                      <div className="flex items-center justify-end text-xs text-[#A0A0A0] pt-2 border-t border-[#333]">
                         <span>{getRelativeTime(article.published_at || article.created_at)}</span>
                       </div>
                     </div>

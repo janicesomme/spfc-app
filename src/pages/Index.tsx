@@ -206,8 +206,7 @@ export default function HomePage() {
                     <p className="text-gray-400 text-xs line-clamp-2 mb-2">
                       {article.description}
                     </p>
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <span>{article.source}</span>
+                    <div className="flex items-center justify-end text-xs text-gray-500">
                       <span>{formatTimeAgo(article.published_at || '')}</span>
                     </div>
                   </div>
