@@ -220,7 +220,7 @@ export default function HomePage() {
           onClick={() => navigate('/player-ratings')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8" style={{paddingLeft: 'calc(2rem + 150px)', paddingRight: 'calc(2rem + 150px)'}}>
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
               alt="Player Ratings"
