@@ -135,30 +135,38 @@ export default function HomePage() {
           className="w-full max-w-4xl mx-auto block"
           onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-[212px] sm:h-[276px] md:h-[340px] lg:h-[404px] border-2 border-red-500">
+          <div className="relative bg-red-500 rounded-lg overflow-hidden w-full h-[212px] sm:h-[276px] md:h-[340px] lg:h-[404px] border-2 border-red-500">
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
               alt={latestVideo?.title || "Latest Video"}
-              className="w-full h-full object-contain scale-115"
+              className="w-full h-full object-contain scale-115 -translate-y-[25px] sm:translate-y-0"
             />
             {/* YouTube Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center -translate-y-[25px] sm:translate-y-0">
               <div className="bg-red-600 rounded-full p-3 sm:p-4 shadow-lg hover:bg-red-700 transition-colors">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
               </div>
             </div>
-            {/* Video Title Overlay */}
+            {/* Video Title Overlay - Hidden on mobile, shown on larger screens */}
             {latestVideo && (
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                <p className="text-white text-xs sm:text-base lg:text-lg font-bold drop-shadow-lg line-clamp-2">
+              <div className="hidden sm:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                <p className="text-white text-base lg:text-lg font-bold drop-shadow-lg line-clamp-2">
                   {latestVideo.title}
                 </p>
               </div>
             )}
           </div>
         </button>
+        {/* Video Title - Below thumbnail on mobile, hidden on larger screens */}
+        {latestVideo && (
+          <div className="block sm:hidden px-4 text-center mt-2">
+            <p className="text-white text-sm font-bold drop-shadow-lg line-clamp-2">
+              {latestVideo.title}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Latest News Section */}
