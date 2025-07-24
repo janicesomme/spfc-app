@@ -67,15 +67,29 @@ export default function PickYourXI() {
   };
 
   return (
-    <div 
-      className="min-h-screen w-full relative"
-      style={{
-        backgroundImage: "url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
+    <div className="min-h-screen w-full relative pitch-background">
+      {/* Desktop and tablet background */}
+      <div 
+        className="absolute inset-0 hidden sm:block"
+        style={{
+          backgroundImage: "url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+      
+      {/* Mobile background with fallback */}
+      <div 
+        className="absolute inset-0 block sm:hidden"
+        style={{
+          backgroundImage: "url('/football-pitch-mobile.jpg'), url('/football-pitch-clean.jpg'), url('/pitch-background.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#2d5a2d' // Fallback green color
+        }}
+      />
       <div className="relative z-10 p-4 h-screen flex flex-col">
         <div className="text-center pt-2 pb-8">
           <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
