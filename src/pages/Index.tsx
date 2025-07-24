@@ -37,12 +37,12 @@ export default function HomePage() {
     try {
       console.log('Fetching data...');
       
-      // Fetch latest video using proper Supabase client
+      // Fetch latest video using the same approach as YouTubeVideoList
       try {
-        const { data: videoData, error: videoError } = await supabase
-          .from('youtube_videos')
-          .select('id, title, video_url, thumbnail_url, publish_date')
-          .order('publish_date', { ascending: false })
+        const { data: videoData, error: videoError } = await (supabase as any)
+          .from('latest_videos')
+          .select('*')
+          .order('published_at', { ascending: false })
           .limit(1)
           .maybeSingle();
 
@@ -51,12 +51,12 @@ export default function HomePage() {
         } else if (videoData) {
           // Transform the data to match our Video interface
           const transformedVideo: Video = {
-            video_id: videoData.id || '',
+            video_id: videoData.video_id || '',
             title: videoData.title || '',
-            description: '',
+            description: videoData.description || '',
             thumbnail_url: videoData.thumbnail_url || '',
-            youtube_url: videoData.video_url || '',
-            published_at: videoData.publish_date || ''
+            youtube_url: videoData.youtube_url || '',
+            published_at: videoData.published_at || ''
           };
           setLatestVideo(transformedVideo);
           console.log('Set latest video:', transformedVideo);
