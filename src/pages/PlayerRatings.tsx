@@ -230,70 +230,73 @@ export default function PlayerRatings() {
             <div key={player.id} className="bg-black rounded-lg p-3 sm:p-4 border border-red-600">
               {/* Mobile Layout */}
               <div className="block sm:hidden">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-2">
-                    {/* Player Image */}
-                    <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
-                      {player.image_url ? (
-                        <img 
-                          src={player.image_url}
-                          alt={player.player_name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                          {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Player Details */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-white text-sm leading-tight">{player.player_name}</h3>
-                      <div className="text-xs text-gray-400">
-                        <span>{player.position}</span>
+                <div className="flex flex-col">
+                  {/* Top Row: Player info and MOTM button */}
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-2 flex-1">
+                      {/* Player Image */}
+                      <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
+                        {player.image_url ? (
+                          <img 
+                            src={player.image_url}
+                            alt={player.player_name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                            {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </div>
+                        )}
                       </div>
-                      <div className="text-xs text-gray-400 mt-0.5">
-                        <span className={`capitalize ${player.role === 'starter' ? 'text-green-400' : 'text-blue-400'}`}>
-                          {player.role}
-                        </span>
+                      
+                      {/* Player Details */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-white text-sm leading-tight">{player.player_name}</h3>
+                        <div className="text-xs text-gray-400">
+                          <span>{player.position}</span>
+                        </div>
+                        <div className="text-xs text-gray-400 mt-0.5">
+                          <span className={`capitalize ${player.role === 'starter' ? 'text-green-400' : 'text-blue-400'}`}>
+                            {player.role}
+                          </span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Star Rating - Mobile */}
-                    <div className="ml-5 mt-1">
-                      <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <button
-                            key={star}
-                            onClick={() => handleRating(player.id, star)}
-                            className="focus:outline-none transition-colors"
-                          >
-                            <Star
-                              className={`w-6 h-7 ${
-                                star <= playerRating
-                                  ? 'fill-yellow-400 text-yellow-400'
-                                  : 'text-white hover:text-yellow-300'
-                              }`}
-                            />
-                          </button>
-                        ))}
-                      </div>
+                    {/* MOTM Button - Mobile */}
+                    <div className="mt-3.5">
+                      <button
+                        onClick={() => handleMotmSelection(player.id)}
+                        className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
+                          motmPlayerId === player.id
+                            ? 'bg-yellow-500 text-red-600'
+                            : 'bg-red-600 text-white hover:bg-red-700'
+                        }`}
+                      >
+                        MOTM
+                      </button>
                     </div>
                   </div>
 
-                  {/* MOTM Button - Mobile */}
-                  <div className="mr-6 mt-1">
-                    <button
-                      onClick={() => handleMotmSelection(player.id)}
-                      className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
-                        motmPlayerId === player.id
-                          ? 'bg-yellow-500 text-red-600'
-                          : 'bg-red-600 text-white hover:bg-red-700'
-                      }`}
-                    >
-                      MOTM
-                    </button>
+                  {/* Bottom Row: Star Rating aligned with position text */}
+                  <div className="flex justify-center mt-2">
+                    <div className="flex gap-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          onClick={() => handleRating(player.id, star)}
+                          className="focus:outline-none transition-colors"
+                        >
+                          <Star
+                            className={`w-6 h-7 ${
+                              star <= playerRating
+                                ? 'fill-yellow-400 text-yellow-400'
+                                : 'text-white hover:text-yellow-300'
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
