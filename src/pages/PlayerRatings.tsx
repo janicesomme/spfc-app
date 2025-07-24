@@ -260,7 +260,7 @@ export default function PlayerRatings() {
                   </div>
 
                   {/* MOTM Button - Mobile */}
-                  <div className="ml-12">
+                  <div className="ml-16 mt-5">
                     <button
                       onClick={() => handleMotmSelection(player.id)}
                       className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
@@ -274,7 +274,7 @@ export default function PlayerRatings() {
                   </div>
 
                   {/* Star Rating - Mobile */}
-                  <div className="ml-12">
+                  <div className="ml-6 mt-2">
                     <div className="flex gap-0.5">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -283,7 +283,7 @@ export default function PlayerRatings() {
                           className="focus:outline-none transition-colors"
                         >
                           <Star
-                            className={`w-4 h-4 ${
+                            className={`w-6 h-6 ${
                               star <= playerRating
                                 ? 'fill-yellow-400 text-yellow-400'
                                 : 'text-white hover:text-yellow-300'
