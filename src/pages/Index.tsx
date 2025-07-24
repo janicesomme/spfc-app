@@ -241,7 +241,7 @@ export default function HomePage() {
         >
           <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px] border border-red-500">
             <img 
-              src="/lovable-uploads/3a1ec57a-3de8-4631-bbfe-3379391f9c2b.png"
+              src="/lovable-uploads/2fd0f491-ae05-4be2-bb8c-10194730ef07.png"
               alt="Submit Your Player Ratings"
               className="w-full h-full object-contain"
             />
