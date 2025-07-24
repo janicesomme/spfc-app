@@ -135,11 +135,11 @@ export default function HomePage() {
           className="w-full max-w-4xl mx-auto block"
           onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
         >
-          <div className="relative bg-red-500 rounded-lg overflow-hidden w-full h-[212px] sm:h-[276px] md:h-[340px] lg:h-[404px] border-2 border-red-500">
+          <div className="relative overflow-hidden w-full h-[212px] sm:h-[276px] md:h-[340px] lg:h-[404px] border-2 border-red-500" style={{backgroundColor: '#fe1a18'}}>
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
               alt={latestVideo?.title || "Latest Video"}
-              className="w-full h-full object-contain scale-115 -translate-y-[25px] sm:translate-y-0"
+              className="w-full h-full object-contain scale-[1.8] sm:scale-115 -translate-y-[25px] sm:translate-y-0"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center -translate-y-[25px] sm:translate-y-0">
