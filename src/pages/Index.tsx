@@ -1,264 +1,194 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../integrations/supabase/client';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-interface Video {
-  video_id: string;
-  title: string;
-  description: string;
-  thumbnail_url: string;
-  youtube_url: string;
-  published_at: string;
-}
-
-interface NewsArticle {
+interface Player {
   id: string;
-  title: string;
-  description: string | null;
-  url: string;
-  source: string;
-  published_at: string | null;
-  image_url: string | null;
-  is_breaking: boolean | null;
-  is_transfer: boolean | null;
+  name: string;
+  image: string;
 }
 
-export default function HomePage() {
+interface SelectedPlayers {
+  [position: string]: Player | null;
+}
+
+const formations = {
+  '1-3-4-3': {
+    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
+    LB: { top: '55%', left: '25%' },
+    CB: { top: '55%', left: '50%' },
+    RB: { top: '55%', left: '75%' },
+    LM: { top: '33%', left: '7.5%' },
+    CM1: { top: '29%', left: '37.5%' },
+    CM2: { top: '29%', left: '62.5%' },
+    RM: { top: '33%', left: '92.5%' },
+    LW: { top: 'calc(12% - 0.5cm)', left: '25%' },
+    ST: { top: 'calc(8% - 0.5cm)', left: '50%' },
+    RW: { top: 'calc(12% - 0.5cm)', left: '75%' },
+  }
+};
+
+const positionNames = {
+  GK: 'Goalkeeper',
+  LB: 'Left Back',
+  CB: 'Centre Back',
+  RB: 'Right Back',
+  LM: 'Left Midfielder',
+  CM1: 'Centre Midfielder',
+  CM2: 'Centre Midfielder',
+  RM: 'Right Midfielder',
+  LW: 'Left Winger',
+  ST: 'Striker',
+  RW: 'Right Winger',
+};
+
+export default function PickYourXI() {
   const navigate = useNavigate();
-  const [latestVideo, setLatestVideo] = useState<Video | null>(null);
-  const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedPlayers, setSelectedPlayers] = useState<SelectedPlayers>({});
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    fetchData();
+    const saved = localStorage.getItem('selectedPlayers');
+    if (saved) {
+      setSelectedPlayers(JSON.parse(saved));
+    }
   }, []);
 
-  const fetchData = async () => {
-    try {
-      console.log('Fetching data...');
-      
-      // Fetch latest video using the same approach as YouTubeVideoList
-      try {
-        const { data: videoData, error: videoError } = await (supabase as any)
-          .from('latest_videos')
-          .select('*')
-          .order('published_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
-
-        if (videoError) {
-          console.error('Error fetching video:', videoError);
-        } else if (videoData) {
-          // Transform the data to match our Video interface
-          const transformedVideo: Video = {
-            video_id: videoData.video_id || '',
-            title: videoData.title || '',
-            description: videoData.description || '',
-            thumbnail_url: videoData.thumbnail_url || '',
-            youtube_url: videoData.youtube_url || '',
-            published_at: videoData.published_at || ''
-          };
-          setLatestVideo(transformedVideo);
-          console.log('Set latest video:', transformedVideo);
-        } else {
-          console.log('No videos found in table');
-        }
-      } catch (error) {
-        console.error('Error fetching video:', error);
-      }
-
-      // Fetch latest 3 news articles
-      console.log('Attempting to fetch news...');
-      
-      const { data: newsData, error: newsError } = await supabase
-        .from('man_utd_news')
-        .select('id, title, description, url, source, published_at, image_url, is_breaking, is_transfer')
-        .eq('is_active', true)
-        .order('rank', { ascending: true, nullsFirst: false })
-        .order('relevance_score', { ascending: false, nullsFirst: false })
-        .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(10); // Fetch more to allow for deduplication
-      
-      if (newsError) {
-        console.error('Error fetching news:', newsError);
-      } else if (newsData && newsData.length > 0) {
-        // Remove duplicates based on title and URL
-        const uniqueArticles = newsData.reduce((acc: NewsArticle[], current) => {
-          const isDuplicate = acc.some(article => 
-            article.title === current.title || 
-            (article.url && current.url && article.url === current.url)
-          );
-          if (!isDuplicate) {
-            acc.push(current);
-          }
-          return acc;
-        }, []).slice(0, 3); // Take only first 3 unique articles
-        
-        setNewsArticles(uniqueArticles);
-        console.log('Set unique news articles:', uniqueArticles);
-      } else {
-        console.log('No news articles found in table');
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
+  const handlePositionClick = (position: string) => {
+    navigate(`/pick-player?position=${position}`);
   };
 
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    return date.toLocaleDateString();
-  };
+  const allPositionsFilled = Object.keys(formations['1-3-4-3']).every(
+    position => selectedPlayers[position]
+  );
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-lg">Loading...</div>
-      </div>
-    );
-  }
+  const handleSubmitXI = () => {
+    console.log('Submitting XI:', selectedPlayers);
+  };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* YouTube Video Section */}
-      <div className="px-4 pt-4 pb-6">
-        <button
-          className="w-full"
-          onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
-        >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
-            <img 
-              src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
-              alt={latestVideo?.title || "Latest Video"}
-              className="w-full h-full object-contain scale-[1.33]"
-            />
-            {/* YouTube Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-red-600 rounded-full p-4 shadow-lg hover:bg-red-700 transition-colors">
-                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </button>
-        {/* Video Title - Below thumbnail with gap */}
-        {latestVideo && (
-          <div className="px-4 text-center" style={{marginTop: '0.25cm'}}>
-            <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
-              {latestVideo.title}
-            </p>
-          </div>
-        )}
+    <div className="min-h-screen w-full relative pitch-background">
+      {/* High-quality responsive background */}
+      <div 
+        className="absolute inset-0 transition-opacity duration-300"
+        style={{
+          backgroundImage: `url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: imageLoaded ? 1 : 0
+        }}
+        onLoad={() => setImageLoaded(true)}
+      />
+      
+      {/* Enhanced fallback with gradient overlay */}
+      <div 
+        className={`absolute inset-0 transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
+        style={{
+          background: `
+            linear-gradient(135deg, 
+              #4a7c59 0%, 
+              #2d5a2d 25%, 
+              #5d8a6b 50%, 
+              #2d5a2d 75%, 
+              #4a7c59 100%
+            )
+          `
+        }}
+      >
+        {/* CSS-only pitch markings fallback */}
+        <div className="absolute inset-0">
+          {/* Center circle */}
+          <div 
+            className="absolute border-2 border-white/30 rounded-full"
+            style={{
+              width: '20%',
+              height: '20%',
+              top: '40%',
+              left: '40%',
+              aspectRatio: '1'
+            }}
+          />
+          {/* Center line */}
+          <div 
+            className="absolute bg-white/30"
+            style={{
+              width: '100%',
+              height: '2px',
+              top: '50%',
+              left: '0'
+            }}
+          />
+          {/* Goal areas */}
+          <div 
+            className="absolute border-2 border-white/30"
+            style={{
+              width: '40%',
+              height: '15%',
+              top: '5%',
+              left: '30%'
+            }}
+          />
+          <div 
+            className="absolute border-2 border-white/30"
+            style={{
+              width: '40%',
+              height: '15%',
+              bottom: '5%',
+              left: '30%'
+            }}
+          />
+        </div>
       </div>
 
-      {/* Latest News Section */}
-      <div className="px-4 pb-4">
-        <h3 className="text-white text-lg font-semibold mb-4 text-center uppercase">Latest News</h3>
-        
-        {newsArticles.length > 0 ? (
-          <div className="space-y-3">
-            {newsArticles.map((article) => (
-              <div 
-                key={article.id}
-                onClick={() => article.url && window.open(article.url, '_blank')}
-                className="bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-700 transition-colors"
+      <div className="relative z-10 p-4 h-screen flex flex-col">
+        <div className="text-center pt-2 pb-8">
+          <h1 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Pick Your XI</h1>
+        </div>
+
+        <div className="flex-1 relative max-w-md mx-auto w-full" style={{ marginTop: '0.75cm' }}>
+          {Object.entries(formations['1-3-4-3']).map(([position, coords]) => {
+            const player = selectedPlayers[position];
+            return (
+              <button
+                key={position}
+                onClick={() => handlePositionClick(position)}
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 hover:scale-105 transition-transform duration-200"
+                style={{ top: coords.top, left: coords.left }}
               >
-                <div className="flex space-x-3">
-                  {article.image_url && (
-                    <img 
-                      src={article.image_url}
-                      alt={article.title}
-                      className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
+                <div className="w-16 h-16 rounded-full border-2 border-white bg-red-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                  {player ? (
+                    <img
+                      src={player.image}
+                      alt={player.name}
+                      className="w-full h-full object-cover rounded-full"
+                      loading="lazy"
                     />
+                  ) : (
+                    <Plus className="w-8 h-8 text-white" />
                   )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-1">
-                      <h4 className="text-white text-sm font-medium line-clamp-2 flex-1">
-                        {article.title}
-                      </h4>
-                      {(article.is_breaking || article.is_transfer) && (
-                        <div className="ml-2 flex-shrink-0">
-                          {article.is_breaking && (
-                            <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">
-                              BREAKING
-                            </span>
-                          )}
-                          {article.is_transfer && (
-                            <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded">
-                              TRANSFER
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-gray-400 text-xs line-clamp-2 mb-2">
-                      {article.description}
-                    </p>
-                    <div className="flex items-center justify-end text-xs text-gray-500">
-                      <span>{formatTimeAgo(article.published_at || '')}</span>
-                    </div>
-                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-gray-400 text-center py-4">
-            No news articles available
+                <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2">
+                  <span className="text-white text-xs font-medium bg-black/70 px-2 py-1 rounded backdrop-blur-sm">
+                    {player ? player.name.split(' ').pop() : position}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {allPositionsFilled && (
+          <div className="pb-6 px-4 flex justify-center" style={{ marginTop: '-0.75cm' }}>
+            <Button
+              onClick={handleSubmitXI}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg border-2 border-white shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              Submit Your Starting XI
+            </Button>
           </div>
         )}
-      </div>
-
-      {/* Pick Your XI Section */}
-      <div className="px-4 pb-6">
-        <button 
-          onClick={() => navigate('/pick-your-xi')}
-          className="w-full relative"
-        >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full px-8" style={{height: 'calc(24rem + 50px)', paddingLeft: 'calc(2rem + 1cm + 70px + 75px)', paddingRight: 'calc(2rem + 1cm + 70px + 75px)'}}>
-            <img 
-              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//pick%20xi%20image%20for%20app%20homepage%207.23.png"
-              alt="Pick Your XI"
-              className="w-full h-full object-contain scale-[1.5]"
-              style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <h3 className="text-white text-xl font-bold drop-shadow-lg">Pick Your XI</h3>
-            </div>
-          </div>
-        </button>
-      </div>
-
-      {/* Player Ratings Section */}
-      <div className="px-4 pb-6">
-        <button 
-          onClick={() => navigate('/player-ratings')}
-          className="w-full relative"
-        >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full px-8" style={{height: 'calc(24rem + 50px)', paddingLeft: 'calc(2rem + 150px + 0.35px + 40px)', paddingRight: 'calc(2rem + 150px + 0.35px + 40px)'}}>
-            <img 
-              src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
-              alt="Player Ratings"
-              className="w-full h-full object-contain scale-[1.5]"
-              style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <h3 className="text-white text-xl font-bold drop-shadow-lg">Player Ratings</h3>
-            </div>
-          </div>
-        </button>
       </div>
     </div>
   );
