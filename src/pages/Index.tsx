@@ -6,12 +6,10 @@ interface Video {
   id: number;
   video_id: string;
   title: string;
-  description: string | null;
-  thumbnail_url: string | null;
-  youtube_url: string | null;
-  published_at: string | null;
-  channel_title: string | null;
-  channel_id: string | null;
+  description: string;
+  thumbnail_url: string;
+  youtube_url: string;
+  published_at: string;
 }
 
 interface NewsArticle {
@@ -42,17 +40,17 @@ export default function HomePage() {
       
       // Fetch latest video
       const { data: videoData, error: videoError } = await supabase
-        .from('latest_videos' as any)
+        .from('latest_videos')
         .select('*')
         .order('published_at', { ascending: false })
         .limit(1)
-        .maybeSingle();
+        .single();
 
       if (videoError) {
         console.error('Error fetching video:', videoError);
-      } else if (videoData) {
+      } else {
         console.log('Video data:', videoData);
-        setLatestVideo(videoData as unknown as Video);
+        setLatestVideo(videoData);
       }
 
       // Fetch latest 3 news articles - try multiple approaches
@@ -222,7 +220,7 @@ export default function HomePage() {
           onClick={() => navigate('/player-ratings')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8" style={{paddingLeft: 'calc(2rem + 150px)', paddingRight: 'calc(2rem + 150px)'}}>
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8" style={{paddingLeft: 'calc(2rem + 150px + 0.35px)', paddingRight: 'calc(2rem + 150px + 0.35px)'}}>
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
               alt="Player Ratings"
