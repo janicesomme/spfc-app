@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
-import pickYourXIImage from '../assets/pick-your-xi-new.jpg';
+import { PickYourXISection } from '../components/PickYourXISection';
 
 interface Video {
   video_id: string;
@@ -221,13 +221,7 @@ export default function HomePage() {
           onClick={() => navigate('/pick-your-xi')}
           className="w-full relative max-w-4xl mx-auto block"
         >
-          <div className="relative rounded-lg overflow-hidden w-full h-64 sm:h-80 md:h-96 lg:h-[28rem]">
-            <img 
-              src={pickYourXIImage}
-              alt="Pick Your XI - Select Your Starting XI"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <PickYourXISection />
         </button>
       </div>
 
