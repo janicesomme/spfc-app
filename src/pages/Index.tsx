@@ -1,472 +1,256 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { CurrencyInput } from "@/components/ui/currency-input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { useToast } from "@/hooks/use-toast";
-import { Trophy, ChevronRight, Calculator, MessageSquare, CircleDot, Crown, UserRound, Target } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../integrations/supabase/client';
 
-const Predict = () => {
-  const [homeScore, setHomeScore] = useState("");
-  const [awayScore, setAwayScore] = useState("");
-  const [firstScorer, setFirstScorer] = useState("marcus-rashford");
-  const [possession, setPossession] = useState([55]);
-  const [shotsOnTarget, setShotsOnTarget] = useState("7");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  
-  // Bet amounts
-  const [scoreBet, setScoreBet] = useState("");
-  const [scorerBet, setScorerBet] = useState("");
-  const [possessionBet, setPossessionBet] = useState("");
-  const [shotsBet, setShotsBet] = useState("");
-  
-  const { toast } = useToast();
+interface Video {
+  video_id: string;
+  title: string;
+  description: string;
+  thumbnail_url: string;
+  youtube_url: string;
+  published_at: string;
+}
 
-  // Calculate total bet and remaining budget
-  const totalBet = (parseFloat(scoreBet) || 0) + (parseFloat(scorerBet) || 0) + (parseFloat(possessionBet) || 0) + (parseFloat(shotsBet) || 0);
-  const remainingBudget = 100 - totalBet;
-  const canSubmit = totalBet === 100;
+interface NewsArticle {
+  id: string;
+  title: string;
+  description: string | null;
+  snippet: string | null;
+  url: string;
+  source: string;
+  published_at: string | null;
+  image_url: string | null;
+  is_breaking: boolean | null;
+  is_transfer: boolean | null;
+}
 
-  const unitedPlayers = [
-    { value: "marcus-rashford", label: "Marcus Rashford" },
-    { value: "bruno-fernandes", label: "Bruno Fernandes" },
-    { value: "casemiro", label: "Casemiro" },
-    { value: "antony", label: "Antony" },
-    { value: "mason-mount", label: "Mason Mount" },
-    { value: "rasmus-hojlund", label: "Rasmus Højlund" }
-  ];
+export default function HomePage() {
+  const navigate = useNavigate();
+  const [latestVideo, setLatestVideo] = useState<Video | null>(null);
+  const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleSubmit = () => {
-    if (!homeScore || !awayScore) {
-      toast({
-        title: "Missing scores!",
-        description: "Please enter scores for both teams.",
-        variant: "destructive",
-      });
-      return;
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      console.log('Fetching data...');
+      
+      // Fetch latest video using the same approach as YouTubeVideoList
+      try {
+        const { data: videoData, error: videoError } = await (supabase as any)
+          .from('latest_videos')
+          .select('*')
+          .order('published_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (videoError) {
+          console.error('Error fetching video:', videoError);
+        } else if (videoData) {
+          // Transform the data to match our Video interface
+          const transformedVideo: Video = {
+            video_id: videoData.video_id || '',
+            title: videoData.title || '',
+            description: videoData.description || '',
+            thumbnail_url: videoData.thumbnail_url || '',
+            youtube_url: videoData.youtube_url || '',
+            published_at: videoData.published_at || ''
+          };
+          setLatestVideo(transformedVideo);
+          console.log('Set latest video:', transformedVideo);
+        } else {
+          console.log('No videos found in table');
+        }
+      } catch (error) {
+        console.error('Error fetching video:', error);
+      }
+
+      // Fetch latest 3 news articles
+      console.log('Attempting to fetch news...');
+      
+      const { data: newsData, error: newsError } = await supabase
+        .from('man_utd_news')
+        .select('id, title, description, snippet, url, source, published_at, image_url, is_breaking, is_transfer')
+        .eq('is_active', true)
+        .order('rank', { ascending: true, nullsFirst: false })
+        .order('relevance_score', { ascending: false, nullsFirst: false })
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .limit(10); // Fetch more to allow for deduplication
+      
+      if (newsError) {
+        console.error('Error fetching news:', newsError);
+      } else if (newsData && newsData.length > 0) {
+        // Remove duplicates based on title and URL
+        const uniqueArticles = newsData.reduce((acc: NewsArticle[], current) => {
+          const isDuplicate = acc.some(article => 
+            article.title === current.title || 
+            (article.url && current.url && article.url === current.url)
+          );
+          if (!isDuplicate) {
+            acc.push(current);
+          }
+          return acc;
+        }, []).slice(0, 3); // Take only first 3 unique articles
+        
+        setNewsArticles(uniqueArticles);
+        console.log('Set unique news articles:', uniqueArticles);
+      } else {
+        console.log('No news articles found in table');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
-
-    // Simulate saving prediction
-    localStorage.setItem("currentPrediction", JSON.stringify({
-      homeScore: parseInt(homeScore),
-      awayScore: parseInt(awayScore),
-      firstScorer,
-      possession: possession[0],
-      shotsOnTarget: parseInt(shotsOnTarget),
-      timestamp: new Date().toISOString()
-    }));
-
-    setIsSubmitted(true);
-    toast({
-      title: "Prediction submitted!",
-      description: "You're locked in! Good luck! 🔥",
-    });
   };
 
-  if (isSubmitted) {
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-man-utd-red to-man-utd-dark-red pb-20 md:pb-0">
-        <div className="container mx-auto px-4 py-8 max-w-sm">
-          <div className="text-center space-y-6 text-white">
-            <div className="text-6xl">🎉</div>
-            <div>
-              <h3 className="text-2xl font-bold mb-2">You're locked in!</h3>
-              <p className="text-lg mb-4">All predictions submitted!</p>
-              <p className="font-semibold">Good luck! 🍀</p>
-            </div>
-            
-            <Button
-              onClick={() => setIsSubmitted(false)}
-              variant="outline"
-              className="w-full h-12 bg-white text-man-utd-red border-white hover:bg-white/90"
-            >
-              Change Predictions
-            </Button>
-          </div>
-        </div>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0 relative bg-[url('/lovable-uploads/5645fe5f-d11b-47bf-b2be-ebb0eb20f54a.png')] bg-no-repeat bg-cover bg-center">
-
-      {/* Live Tracker - Responsive positioning */}
-      <div className="fixed top-4 right-4 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-2xl border-2 border-black max-w-[280px] md:max-w-xs md:top-6 md:right-6 md:p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-lg md:text-2xl">💰</span>
-            <span className="font-bold text-sm md:text-lg text-red-600">Total Bets</span>
+    <div className="min-h-screen bg-black">
+      {/* YouTube Video Section */}
+      <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
+        <button
+          className="w-full max-w-[340px] sm:max-w-4xl mx-auto block"
+          onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
+        >
+          <div className="relative group cursor-pointer w-full">
+            <img 
+              src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
+              alt={latestVideo?.title || "Latest Video"}
+              className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
+              loading="lazy"
+            />
+            {/* YouTube Play Button Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+              <div className="bg-red-600 rounded-full p-3 sm:p-4 shadow-lg">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
           </div>
-        <div className={`text-lg md:text-2xl font-extrabold ${canSubmit ? 'text-green-600' : totalBet > 100 ? 'text-red-600' : 'text-red-600'}`}>
-          £{totalBet.toFixed(0)}/£100
-        </div>
-        <p className="text-xs text-gray-600 mt-1">
-          You must bet exactly £100 to lock in!
-        </p>
+        </button>
+        {/* Video Title - Below thumbnail with same width */}
+        {latestVideo && (
+          <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto">
+            <h3 className="text-white text-lg sm:text-xl font-bold text-center mt-1 leading-tight px-1">
+              {latestVideo.title}
+            </h3>
+          </div>
+        )}
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-md relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Manchester United vs Arsenal</h1>
-          <h2 className="text-xl font-bold mb-4">Old Trafford — Aug 10, 3:00pm</h2>
-          
-          {/* Top Scorer Banner */}
-          <div className="bg-yellow-400 rounded-2xl p-4 mb-8 border-2 border-black">
-            <p className="text-black font-bold text-base">
-              🎉 Last Week's Winner: <span className="text-red-600 font-extrabold">TUSFan123</span> — £74 Won
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          {/* Predict the Score */}
-          <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-white border-4 border-black">
-            <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
-              <CardTitle className="text-2xl font-extrabold text-center flex items-center justify-between">
-                <span>PREDICT THE SCORE</span>
-                <CircleDot className="w-8 h-8" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              {/* Score Inputs */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  🏆 Final Score Prediction
-                </label>
-                <div className="flex items-center gap-4 justify-center">
-                  <div className="flex-1">
-                    <Input
-                      type="number"
-                      value={homeScore}
-                      onChange={(e) => setHomeScore(e.target.value)}
-                      className="text-center !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl"
-                      placeholder="3"
-                      min="0"
-                      max="10"
-                    />
-                  </div>
-                  <div className="text-2xl font-bold text-gray-600 px-2">-</div>
-                  <div className="flex-1">
-                    <Input
-                      type="number"
-                      value={awayScore}
-                      onChange={(e) => setAwayScore(e.target.value)}
-                      className="text-center !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl"
-                      placeholder="1"
-                      min="0"
-                      max="10"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Preset Bet Buttons */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  💰 Quick Bet Amounts
-                </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {[5, 10, 20, 50, 100].map((amount) => (
-                    <Button
-                      key={amount}
-                      onClick={() => setScoreBet(amount.toString())}
-                      variant={scoreBet === amount.toString() ? "default" : "outline"}
-                      className="h-12 text-sm font-bold rounded-xl border-2 border-black"
-                    >
-                      £{amount}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bet Amount Input */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  💸 Your Bet Amount
-                </label>
-                <CurrencyInput
-                  placeholder="Enter amount"
-                  value={scoreBet}
-                  onChange={(e) => setScoreBet(e.target.value)}
-                  className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl"
-                />
-              </div>
-
-              {/* Odds Display */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  📊 Current Odds
-                </label>
-                <div className="bg-gray-100 border-2 border-gray-300 rounded-xl h-16 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-gray-600">3/1</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* First United Scorer */}
-          <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-white border-4 border-black">
-            <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
-              <CardTitle className="text-2xl font-extrabold text-center flex items-center justify-between">
-                <span>FIRST UNITED SCORER</span>
-                <Crown className="w-8 h-8" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              {/* Player Selection */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  🔴 Who scores first for United?
-                </label>
-                <Select value={firstScorer} onValueChange={setFirstScorer}>
-                  <SelectTrigger className="h-16 text-2xl font-bold shadow-lg border-2 border-gray-300 rounded-xl">
-                    <SelectValue placeholder="Select player" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white z-50">
-                    {unitedPlayers.map((player) => (
-                      <SelectItem key={player.value} value={player.value} className="text-xl font-bold">
-                        {player.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Preset Bet Buttons */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  💰 Quick Bet Amounts
-                </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {[5, 10, 20, 50, 100].map((amount) => (
-                    <Button
-                      key={amount}
-                      onClick={() => setScorerBet(amount.toString())}
-                      variant={scorerBet === amount.toString() ? "default" : "outline"}
-                      className="h-12 text-sm font-bold rounded-xl border-2 border-black"
-                    >
-                      £{amount}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bet Amount Input */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  💸 Your Bet Amount
-                </label>
-                <CurrencyInput
-                  placeholder="Enter amount"
-                  value={scorerBet}
-                  onChange={(e) => setScorerBet(e.target.value)}
-                  className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl"
-                />
-              </div>
-
-              {/* Odds Display */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  📊 Current Odds
-                </label>
-                <div className="bg-gray-100 border-2 border-gray-300 rounded-xl h-16 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-gray-600">3/1</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Man Utd Possession % */}
-          <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-white border-4 border-black">
-            <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
-              <CardTitle className="text-2xl font-extrabold text-center flex items-center justify-between">
-                <span>MAN UTD POSSESSION %</span>
-                <UserRound className="w-8 h-8" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              {/* Possession Visual and Slider */}
-              <div className="space-y-4">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  ⚽ What % of possession will United have?
-                </label>
-                {/* Possession Arc Visual */}
-                <div className="relative flex justify-center">
-                  <div className="w-40 h-20 relative">
-                    <div className="absolute inset-0 border-8 border-gray-200 rounded-t-full"></div>
-                    <div 
-                      className="absolute inset-0 border-8 border-green-500 rounded-t-full"
-                      style={{
-                        clipPath: `polygon(0 100%, ${possession[0]}% 100%, ${possession[0]}% 0, 100% 0, 100% 100%)`
-                      }}
-                    ></div>
-                    <div className="absolute inset-0 flex items-end justify-center pb-2">
-                      <span className="text-3xl font-bold">{possession[0]}%</span>
+      {/* Latest News Section */}
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-4">
+        <h3 className="text-youtube-yellow text-lg font-semibold mb-4 text-center uppercase">Latest News</h3>
+        
+        {newsArticles.length > 0 ? (
+          <div className="space-y-3 max-w-4xl mx-auto">
+            {newsArticles.map((article) => (
+              <div 
+                key={article.id}
+                onClick={() => article.url && window.open(article.url, '_blank')}
+                className="bg-black rounded-lg cursor-pointer hover:bg-gray-900 transition-colors"
+              >
+                <div className="flex flex-col sm:flex-row min-h-32 sm:min-h-40">
+                  {article.image_url && (
+                    <div className="w-full h-48 sm:w-32 sm:h-32 md:w-40 md:h-40 flex-shrink-0">
+                      <img 
+                        src={article.image_url}
+                        alt={article.title}
+                        className="w-full h-full object-cover rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col justify-start overflow-hidden">
+                    <h4 className="text-white text-lg sm:text-xl md:text-2xl font-medium mb-2 sm:mb-3 leading-tight break-words hyphens-auto">
+                      {article.title}
+                    </h4>
+                    <div className="text-gray-400 text-sm sm:text-base leading-relaxed break-words hyphens-auto flex-1">
+                      <p className="mb-2 line-clamp-3 sm:line-clamp-none">
+                        {article.description}
+                      </p>
+                      {article.snippet && article.snippet !== article.description && (
+                        <p className="line-clamp-2 sm:line-clamp-none">
+                          {article.snippet}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
-                
-                <Slider
-                  value={possession}
-                  onValueChange={setPossession}
-                  max={80}
-                  min={30}
-                  step={1}
-                  className="w-full"
-                />
               </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-gray-400 text-center py-4">
+            No news articles available
+          </div>
+        )}
+      </div>
 
-              {/* Preset Bet Buttons */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  💰 Quick Bet Amounts
-                </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {[5, 10, 20, 50, 100].map((amount) => (
-                    <Button
-                      key={amount}
-                      onClick={() => setPossessionBet(amount.toString())}
-                      variant={possessionBet === amount.toString() ? "default" : "outline"}
-                      className="h-12 text-sm font-bold rounded-xl border-2 border-black"
-                    >
-                      £{amount}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+      {/* Pick Your XI Section */}
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
+        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
+        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Climb the Weekly Leaderboard!</p>
+        <button 
+          onClick={() => navigate('/pick-your-xi')}
+          className="w-full relative max-w-4xl mx-auto block mt-2.5"
+        >
+          <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
+            <img 
+              src="/lovable-uploads/0f3f8042-8468-4f58-a444-404003a1b24c.png"
+              alt="Pick Your XI"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </button>
+      </div>
 
-              {/* Bet Amount Input */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  💸 Your Bet Amount
-                </label>
-                <CurrencyInput
-                  placeholder="Enter amount"
-                  value={possessionBet}
-                  onChange={(e) => setPossessionBet(e.target.value)}
-                  className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl"
-                />
-              </div>
-
-              {/* Odds Display */}
-              <div className="space-y-3">
-                <label className="block text-lg font-bold text-center text-gray-700">
-                  📊 Current Odds
-                </label>
-                <div className="bg-gray-100 border-2 border-gray-300 rounded-xl h-16 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-gray-600">3/1</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Man Utd Shots on Target */}
-        <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-white border-4 border-black mb-6">
-          <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
-            <CardTitle className="text-2xl font-extrabold text-center flex items-center justify-between">
-              <span>MAN UTD SHOTS ON TARGET</span>
-              <Target className="w-8 h-8" />
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 space-y-6">
-            {/* Shots Selection */}
-            <div className="space-y-3">
-              <label className="block text-lg font-bold text-center text-gray-700">
-                🔢 How many shots on target?
-              </label>
-              <Select value={shotsOnTarget} onValueChange={setShotsOnTarget}>
-                <SelectTrigger className="h-16 text-2xl font-bold shadow-lg border-2 border-gray-300 rounded-xl">
-                  <SelectValue placeholder="Select shots" />
-                </SelectTrigger>
-                <SelectContent className="bg-white z-50">
-                  {Array.from({ length: 16 }, (_, i) => (
-                    <SelectItem key={i} value={i.toString()} className="text-xl font-bold">
-                      {i} shots
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Preset Bet Buttons */}
-            <div className="space-y-3">
-              <label className="block text-lg font-bold text-center text-gray-700">
-                💰 Quick Bet Amounts
-              </label>
-              <div className="grid grid-cols-5 gap-2">
-                {[5, 10, 20, 50, 100].map((amount) => (
-                  <Button
-                    key={amount}
-                    onClick={() => setShotsBet(amount.toString())}
-                    variant={shotsBet === amount.toString() ? "default" : "outline"}
-                    className="h-12 text-sm font-bold rounded-xl border-2 border-black"
-                  >
-                    £{amount}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Bet Amount Input */}
-            <div className="space-y-3">
-              <label className="block text-lg font-bold text-center text-gray-700">
-                💸 Your Bet Amount
-              </label>
-              <CurrencyInput
-                placeholder="Enter amount"
-                value={shotsBet}
-                onChange={(e) => setShotsBet(e.target.value)}
-                className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl"
-              />
-            </div>
-
-            {/* Odds Display */}
-            <div className="space-y-3">
-              <label className="block text-lg font-bold text-center text-gray-700">
-                📊 Current Odds
-              </label>
-              <div className="bg-gray-100 border-2 border-gray-300 rounded-xl h-16 flex items-center justify-center">
-                <span className="text-2xl font-bold text-gray-600">3/1</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        </div>
-
-        {/* Submit Bets Button */}
-        <div className="mt-12 mb-6">
-          <Button
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            className="w-full h-16 text-xl font-bold bg-green-600 text-white hover:bg-green-700 shadow-lg rounded-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border-2 border-black"
-            size="lg"
-          >
-            Submit Bets 🔥
-          </Button>
-        </div>
-          
-        {/* Discord Join Button */}
-        <div className="mb-6">
-          <Button
-            className="w-full h-16 text-lg font-bold text-white hover:opacity-90 hover:shadow-2xl rounded-xl shadow-lg transition-all duration-200 border-2 border-black hover:border-yellow-400 flex items-center justify-center gap-2"
-            style={{ backgroundColor: '#1e52f1' }}
-          >
-            <MessageSquare size={24} />
-            📢 Join Our Fan Discord
-          </Button>
-        </div>
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-white/80">
-            ⚠️ Risky choices bring big rewards! 🏆 Go for glory!
-          </p>
-        </div>
+      {/* Player Ratings Section */}
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
+        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
+        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
+        <button 
+          onClick={() => navigate('/player-ratings')}
+          className="w-full relative max-w-4xl mx-auto block mt-2.5"
+        >
+          <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
+            <img 
+              src="/lovable-uploads/2fd0f491-ae05-4be2-bb8c-10194730ef07.png"
+              alt="Submit Your Player Ratings"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </button>
+        
+        {/* Match Predictions Game Section */}
+        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Play Our Match Predictions Game</h3>
       </div>
     </div>
   );
-};
-
-export default Predict;
+}
