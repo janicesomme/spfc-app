@@ -216,16 +216,16 @@ export default function HomePage() {
       {/* Pick Your XI Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
         <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
-        <p className="text-gray-300 text-base sm:text-lg text-center mb-4">Climb the Weekly Leaderboard!</p>
+        <p className="text-gray-300 text-base sm:text-lg text-center mb-1 sm:mb-4">Climb the Weekly Leaderboard!</p>
         <button 
           onClick={() => navigate('/pick-your-xi')}
-          className="w-full relative max-w-4xl mx-auto block"
+          className="w-full relative max-w-4xl mx-auto block -mt-20"
         >
-          <div className="relative rounded-lg overflow-hidden w-full h-72 sm:h-96 md:h-[28rem] lg:h-[32rem]">
+          <div className="relative rounded-lg overflow-hidden w-full h-[388px] sm:h-[484px] md:h-[548px] lg:h-[612px]">
             <img 
               src="/lovable-uploads/0f3f8042-8468-4f58-a444-404003a1b24c.png"
               alt="Pick Your XI"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
         </button>
