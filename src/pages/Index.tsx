@@ -130,41 +130,34 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* YouTube Video Section */}
-      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pt-4 pb-6">
+      <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
         <button
-          className="w-full max-w-4xl mx-auto block"
+          className="w-full max-w-[340px] sm:max-w-4xl mx-auto block"
           onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
         >
-          <div className="relative overflow-hidden w-full h-[212px] sm:h-[276px] md:h-[340px] lg:h-[404px] border-2 border-red-500" style={{backgroundColor: '#fe1a18'}}>
+          <div className="relative group cursor-pointer w-full">
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
               alt={latestVideo?.title || "Latest Video"}
-              className="w-full h-full object-contain scale-90 sm:scale-105 md:scale-110 lg:scale-115 -translate-y-[25px] sm:translate-y-0"
+              className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
+              loading="lazy"
             />
             {/* YouTube Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center -translate-y-[25px] sm:translate-y-0">
-              <div className="bg-red-600 rounded-full p-3 sm:p-4 shadow-lg hover:bg-red-700 transition-colors">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+              <div className="bg-red-600 rounded-full p-3 sm:p-4 shadow-lg">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
               </div>
             </div>
-            {/* Video Title Overlay - Hidden on mobile, shown on larger screens */}
-            {latestVideo && (
-              <div className="hidden sm:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                <p className="text-white text-base lg:text-lg font-bold drop-shadow-lg line-clamp-2">
-                  {latestVideo.title}
-                </p>
-              </div>
-            )}
           </div>
         </button>
-        {/* Video Title - Below thumbnail on mobile, hidden on larger screens */}
+        {/* Video Title - Below thumbnail with same width */}
         {latestVideo && (
-          <div className="block sm:hidden px-4 text-center mt-2">
-            <p className="text-white text-sm font-bold drop-shadow-lg line-clamp-2">
+          <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto">
+            <h3 className="text-white text-lg sm:text-xl font-bold text-center mt-1 leading-tight px-1">
               {latestVideo.title}
-            </p>
+            </h3>
           </div>
         )}
       </div>
