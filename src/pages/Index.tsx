@@ -219,7 +219,7 @@ export default function HomePage() {
         <p className="text-gray-300 text-base sm:text-lg text-center mb-1 sm:mb-4">Climb the Weekly Leaderboard!</p>
         <button 
           onClick={() => navigate('/pick-your-xi')}
-          className="w-full relative max-w-4xl mx-auto block -mt-1"
+          className="w-full relative max-w-4xl mx-auto block mt-2.5"
         >
           <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
             <img 
