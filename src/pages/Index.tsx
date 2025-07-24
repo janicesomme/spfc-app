@@ -215,20 +215,18 @@ export default function HomePage() {
 
       {/* Pick Your XI Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
+        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-4 uppercase">Select Your Starting XI</h3>
         <button 
           onClick={() => navigate('/pick-your-xi')}
           className="w-full relative max-w-4xl mx-auto block"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-64 sm:h-80 md:h-96 lg:h-[28rem]">
+          <div className="relative bg-youtube-yellow rounded-lg overflow-hidden w-full h-64 sm:h-80 md:h-96 lg:h-[28rem]">
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//pick%20xi%20image%20for%20app%20homepage%207.23.png"
               alt="Pick Your XI"
               className="w-full h-full object-contain scale-110 sm:scale-125 md:scale-[1.5]"
               style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
             />
-            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <h3 className="text-white text-lg sm:text-xl lg:text-2xl font-bold drop-shadow-lg">Pick Your XI</h3>
-            </div>
           </div>
         </button>
       </div>
