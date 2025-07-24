@@ -201,7 +201,7 @@ export default function HomePage() {
           onClick={() => navigate('/pick-your-xi')}
           className="w-full relative"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8" style={{paddingLeft: 'calc(2rem + 1cm)', paddingRight: 'calc(2rem + 1cm)'}}>
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//pick%20xi%20image%20for%20app%20homepage%207.23.png"
               alt="Pick Your XI"
