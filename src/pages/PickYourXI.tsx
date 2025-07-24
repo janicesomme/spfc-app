@@ -46,7 +46,6 @@ const positionNames = {
 export default function PickYourXI() {
   const navigate = useNavigate();
   const [selectedPlayers, setSelectedPlayers] = useState<SelectedPlayers>({});
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('selectedPlayers');
@@ -69,82 +68,31 @@ export default function PickYourXI() {
 
   return (
     <div className="min-h-screen w-full relative pitch-background">
-      {/* High-quality responsive background */}
+      {/* Desktop and tablet background */}
       <div 
-        className="absolute inset-0 transition-opacity duration-300"
+        className="absolute inset-0 hidden sm:block"
         style={{
-          backgroundImage: `url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')`,
+          backgroundImage: "url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+      
+      {/* Mobile background with fallback */}
+      <div 
+        className="absolute inset-0 block sm:hidden"
+        style={{
+          backgroundImage: "url('/football-pitch-mobile.jpg'), url('/football-pitch-clean.jpg'), url('/pitch-background.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: imageLoaded ? 1 : 0
+          backgroundColor: '#2d5a2d' // Fallback green color
         }}
-        onLoad={() => setImageLoaded(true)}
       />
-      
-      {/* Enhanced fallback with gradient overlay */}
-      <div 
-        className={`absolute inset-0 transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
-        style={{
-          background: `
-            linear-gradient(135deg, 
-              #4a7c59 0%, 
-              #2d5a2d 25%, 
-              #5d8a6b 50%, 
-              #2d5a2d 75%, 
-              #4a7c59 100%
-            )
-          `
-        }}
-      >
-        {/* CSS-only pitch markings fallback */}
-        <div className="absolute inset-0">
-          {/* Center circle */}
-          <div 
-            className="absolute border-2 border-white/30 rounded-full"
-            style={{
-              width: '20%',
-              height: '20%',
-              top: '40%',
-              left: '40%',
-              aspectRatio: '1'
-            }}
-          />
-          {/* Center line */}
-          <div 
-            className="absolute bg-white/30"
-            style={{
-              width: '100%',
-              height: '2px',
-              top: '50%',
-              left: '0'
-            }}
-          />
-          {/* Goal areas */}
-          <div 
-            className="absolute border-2 border-white/30"
-            style={{
-              width: '40%',
-              height: '15%',
-              top: '5%',
-              left: '30%'
-            }}
-          />
-          <div 
-            className="absolute border-2 border-white/30"
-            style={{
-              width: '40%',
-              height: '15%',
-              bottom: '5%',
-              left: '30%'
-            }}
-          />
-        </div>
-      </div>
-
       <div className="relative z-10 p-4 h-screen flex flex-col">
         <div className="text-center pt-2 pb-8">
-          <h1 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Pick Your XI</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
         </div>
 
         <div className="flex-1 relative max-w-md mx-auto w-full" style={{ marginTop: '0.75cm' }}>
@@ -154,23 +102,22 @@ export default function PickYourXI() {
               <button
                 key={position}
                 onClick={() => handlePositionClick(position)}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2 hover:scale-105 transition-transform duration-200"
+                className="absolute transform -translate-x-1/2 -translate-y-1/2"
                 style={{ top: coords.top, left: coords.left }}
               >
-                <div className="w-16 h-16 rounded-full border-2 border-white bg-red-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                <div className="w-16 h-16 rounded-full border border-white bg-red-600 flex items-center justify-center shadow-lg">
                   {player ? (
                     <img
                       src={player.image}
                       alt={player.name}
                       className="w-full h-full object-cover rounded-full"
-                      loading="lazy"
                     />
                   ) : (
                     <Plus className="w-8 h-8 text-white" />
                   )}
                 </div>
                 <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2">
-                  <span className="text-white text-xs font-medium bg-black/70 px-2 py-1 rounded backdrop-blur-sm">
+                  <span className="text-white text-xs font-medium bg-black/50 px-2 py-1 rounded">
                     {player ? player.name.split(' ').pop() : position}
                   </span>
                 </div>
@@ -183,7 +130,7 @@ export default function PickYourXI() {
           <div className="pb-6 px-4 flex justify-center" style={{ marginTop: '-0.75cm' }}>
             <Button
               onClick={handleSubmitXI}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg border-2 border-white shadow-lg hover:shadow-xl transition-all duration-200"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg border border-white"
             >
               Submit Your Starting XI
             </Button>
