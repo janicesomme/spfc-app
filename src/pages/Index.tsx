@@ -206,6 +206,7 @@ export default function HomePage() {
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//pick%20xi%20image%20for%20app%20homepage%207.23.png"
               alt="Pick Your XI"
               className="w-full h-full object-contain scale-[1.33]"
+              style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
               <h3 className="text-white text-xl font-bold drop-shadow-lg">Pick Your XI</h3>
@@ -225,6 +226,7 @@ export default function HomePage() {
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
               alt="Player Ratings"
               className="w-full h-full object-contain scale-[1.33]"
+              style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
               <h3 className="text-white text-xl font-bold drop-shadow-lg">Player Ratings</h3>
