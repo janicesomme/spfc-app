@@ -79,10 +79,35 @@ export default function News() {
 
       const articles = data || [];
       
+      // Remove duplicates based on title and URL
+      const uniqueArticles = articles.reduce((acc: NewsArticle[], current) => {
+        const isDuplicate = acc.some(article => 
+          article.title === current.title || 
+          (article.url && current.url && article.url === current.url)
+        );
+        if (!isDuplicate) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
+      
       if (reset) {
-        setNews(articles);
+        setNews(uniqueArticles);
       } else {
-        setNews(prev => [...prev, ...articles]);
+        // Also check for duplicates against existing articles when loading more
+        setNews(prev => {
+          const combined = [...prev, ...uniqueArticles];
+          return combined.reduce((acc: NewsArticle[], current) => {
+            const isDuplicate = acc.some(article => 
+              article.title === current.title || 
+              (article.url && current.url && article.url === current.url)
+            );
+            if (!isDuplicate) {
+              acc.push(current);
+            }
+            return acc;
+          }, []);
+        });
       }
       
       setHasMore(articles.length === ARTICLES_PER_PAGE);

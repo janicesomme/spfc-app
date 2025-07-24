@@ -77,13 +77,25 @@ export default function HomePage() {
         .order('rank', { ascending: true, nullsFirst: false })
         .order('relevance_score', { ascending: false, nullsFirst: false })
         .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(3);
+        .limit(10); // Fetch more to allow for deduplication
       
       if (newsError) {
         console.error('Error fetching news:', newsError);
       } else if (newsData && newsData.length > 0) {
-        setNewsArticles(newsData);
-        console.log('Set news articles:', newsData);
+        // Remove duplicates based on title and URL
+        const uniqueArticles = newsData.reduce((acc: NewsArticle[], current) => {
+          const isDuplicate = acc.some(article => 
+            article.title === current.title || 
+            (article.url && current.url && article.url === current.url)
+          );
+          if (!isDuplicate) {
+            acc.push(current);
+          }
+          return acc;
+        }, []).slice(0, 3); // Take only first 3 unique articles
+        
+        setNewsArticles(uniqueArticles);
+        console.log('Set unique news articles:', uniqueArticles);
       } else {
         console.log('No news articles found in table');
       }
