@@ -125,7 +125,7 @@ export default function HomePage() {
         </button>
         {/* Video Title - Below thumbnail with gap */}
         {latestVideo && (
-          <div className="px-4" style={{marginTop: '0.25cm'}}>
+          <div className="px-4 text-center" style={{marginTop: '0.25cm'}}>
             <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
               {latestVideo.title}
             </p>
@@ -135,7 +135,7 @@ export default function HomePage() {
 
       {/* Latest News Section */}
       <div className="px-4 pb-4">
-        <h3 className="text-white text-lg font-semibold mb-4">Latest News</h3>
+        <h3 className="text-white text-lg font-semibold mb-4 text-center uppercase">Latest News</h3>
         
         {newsArticles.length > 0 ? (
           <div className="space-y-3">
