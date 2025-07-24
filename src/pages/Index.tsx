@@ -170,11 +170,10 @@ export default function HomePage() {
               <div 
                 key={article.id}
                 onClick={() => article.url && window.open(article.url, '_blank')}
-                className="bg-black border border-red-600 rounded-lg cursor-pointer hover:border-red-500 transition-colors h-32 mx-auto"
+                className="bg-black rounded-lg cursor-pointer hover:bg-gray-900 transition-colors h-32 mx-auto"
                 style={{
-                  width: 'calc(100% - 2 * (2rem + 1cm + 70px + 75px))',
-                  marginLeft: 'calc(2rem + 1cm + 70px + 75px)',
-                  marginRight: 'calc(2rem + 1cm + 70px + 75px)'
+                  marginLeft: 'calc(2rem + 1cm + 70px + 75px - 150px)',
+                  marginRight: 'calc(2rem + 1cm + 70px + 75px - 150px)'
                 }}
               >
                 <div className="flex h-full">
@@ -190,18 +189,13 @@ export default function HomePage() {
                       />
                     </div>
                   )}
-                  <div className="flex-1 min-w-0 p-4 flex flex-col justify-between overflow-hidden">
-                    <div className="flex-1 min-h-0">
-                      <h4 className="text-white text-base font-medium line-clamp-2 mb-2">
-                        {article.title}
-                      </h4>
-                      <p className="text-gray-400 text-xs line-clamp-2">
-                        {article.description}
-                      </p>
-                    </div>
-                    <div className="flex items-center justify-end text-xs text-gray-500 mt-2 flex-shrink-0">
-                      <span>{formatTimeAgo(article.published_at || '')}</span>
-                    </div>
+                  <div className="flex-1 min-w-0 p-4 flex flex-col justify-center">
+                    <h4 className="text-white text-base font-medium line-clamp-2 mb-2">
+                      {article.title}
+                    </h4>
+                    <p className="text-gray-400 text-xs line-clamp-3">
+                      {article.description}
+                    </p>
                   </div>
                 </div>
               </div>
