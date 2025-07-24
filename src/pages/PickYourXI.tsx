@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, Share } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Player {
@@ -66,6 +66,23 @@ export default function PickYourXI() {
     console.log('Submitting XI:', selectedPlayers);
   };
 
+  const handleShare = async () => {
+    const shareData = {
+      text: "Here's who I'm starting for United this weekend ⚽🔥 #FUTVXI",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (error) {
+        console.log('Share cancelled or failed');
+      }
+    } else {
+      alert("Sharing isn't supported on this device.");
+    }
+  };
+
   return (
     <div 
       className="min-h-screen w-full relative"
@@ -77,8 +94,18 @@ export default function PickYourXI() {
       }}
     >
       <div className="relative z-10 p-4 h-screen flex flex-col">
-        <div className="text-center pt-2 pb-8">
+        <div className="relative text-center pt-2 pb-8">
           <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
+          
+          {/* Share Button */}
+          <Button
+            onClick={handleShare}
+            className="absolute top-0 right-0 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg border border-white shadow-lg"
+            size="sm"
+          >
+            <Share className="w-4 h-4 mr-2" />
+            Share
+          </Button>
         </div>
 
         <div className="flex-1 relative max-w-md mx-auto w-full" style={{ marginTop: '0.75cm' }}>
