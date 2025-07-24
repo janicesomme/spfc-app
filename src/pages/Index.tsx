@@ -215,8 +215,8 @@ export default function HomePage() {
 
       {/* Pick Your XI Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
-        <p className="text-gray-300 text-base sm:text-lg text-center mb-1 sm:mb-4">Climb the Weekly Leaderboard!</p>
+        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
+        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Climb the Weekly Leaderboard!</p>
         <button 
           onClick={() => navigate('/pick-your-xi')}
           className="w-full relative max-w-4xl mx-auto block mt-2.5"
@@ -233,11 +233,11 @@ export default function HomePage() {
 
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Submit Your Player Ratings</h3>
-        <p className="text-gray-300 text-base sm:text-lg text-center mb-1 sm:mb-4">Rate the Players After Every Match</p>
+        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
+        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Rate the Players After Every Match</p>
         <button 
           onClick={() => navigate('/player-ratings')}
-          className="w-full relative max-w-4xl mx-auto block mt-2.5"
+          className="w-full relative max-w-4xl mx-auto block mt-1 sm:mt-2.5"
         >
           <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
             <img 
