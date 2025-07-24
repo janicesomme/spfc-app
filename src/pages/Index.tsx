@@ -167,34 +167,40 @@ export default function HomePage() {
         {newsArticles.length > 0 ? (
           <div className="space-y-3">
             {newsArticles.map((article) => (
-              <div key={article.id} className="px-8" style={{paddingLeft: 'calc(2rem + 1cm + 70px + 75px)', paddingRight: 'calc(2rem + 1cm + 70px + 75px)'}}>
-                <div 
-                  onClick={() => article.url && window.open(article.url, '_blank')}
-                  className="bg-black border border-red-600 rounded-lg cursor-pointer hover:border-red-500 transition-colors h-32 w-full"
-                >
-                  <div className="flex h-full">
-                    {article.image_url && (
+              <div 
+                key={article.id}
+                onClick={() => article.url && window.open(article.url, '_blank')}
+                className="bg-black border border-red-600 rounded-lg cursor-pointer hover:border-red-500 transition-colors h-32 mx-auto"
+                style={{
+                  width: 'calc(100% - 2 * (2rem + 1cm + 70px + 75px))',
+                  marginLeft: 'calc(2rem + 1cm + 70px + 75px)',
+                  marginRight: 'calc(2rem + 1cm + 70px + 75px)'
+                }}
+              >
+                <div className="flex h-full">
+                  {article.image_url && (
+                    <div className="w-32 h-32 flex-shrink-0">
                       <img 
                         src={article.image_url}
                         alt={article.title}
-                        className="w-32 h-32 object-cover rounded-l-lg flex-shrink-0"
+                        className="w-full h-full object-cover rounded-l-lg"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
                       />
-                    )}
-                    <div className="flex-1 min-w-0 p-4 flex flex-col justify-between">
-                      <div className="flex-1">
-                        <h4 className="text-white text-base font-medium line-clamp-2">
-                          {article.title}
-                        </h4>
-                        <p className="text-gray-400 text-xs line-clamp-2 mt-2">
-                          {article.description}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-end text-xs text-gray-500 mt-2">
-                        <span>{formatTimeAgo(article.published_at || '')}</span>
-                      </div>
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0 p-4 flex flex-col justify-between overflow-hidden">
+                    <div className="flex-1 min-h-0">
+                      <h4 className="text-white text-base font-medium line-clamp-2 mb-2">
+                        {article.title}
+                      </h4>
+                      <p className="text-gray-400 text-xs line-clamp-2">
+                        {article.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-end text-xs text-gray-500 mt-2 flex-shrink-0">
+                      <span>{formatTimeAgo(article.published_at || '')}</span>
                     </div>
                   </div>
                 </div>
