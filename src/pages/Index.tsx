@@ -2,31 +2,20 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 
-interface Video {
-  id: number;
-  video_id: string;
-  title: string;
-  description: string;
-  thumbnail_url: string;
-  youtube_url: string;
-  published_at: string;
-}
-
 interface NewsArticle {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   url: string;
   source: string;
-  published_at: string;
-  image_url: string;
-  is_breaking: boolean;
-  is_transfer: boolean;
+  published_at: string | null;
+  image_url: string | null;
+  is_breaking: boolean | null;
+  is_transfer: boolean | null;
 }
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [latestVideo, setLatestVideo] = useState<Video | null>(null);
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,37 +27,23 @@ export default function HomePage() {
     try {
       console.log('Fetching data...');
       
-      // Fetch latest video
-      const { data: videoData, error: videoError } = await supabase
-        .from('latest_videos')
-        .select('*')
-        .order('published_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (videoError) {
-        console.error('Error fetching video:', videoError);
-      } else {
-        console.log('Video data:', videoData);
-        setLatestVideo(videoData);
-      }
-
-      // Fetch latest 3 news articles - try multiple approaches
+      // Fetch latest 3 news articles
       console.log('Attempting to fetch news...');
       
-      // First, let's see what's in the table
-      const { data: allNews, error: allNewsError } = await supabase
+      const { data: newsData, error: newsError } = await supabase
         .from('man_utd_news')
-        .select('*');
+        .select('id, title, description, url, source, published_at, image_url, is_breaking, is_transfer')
+        .eq('is_active', true)
+        .order('rank', { ascending: true, nullsFirst: false })
+        .order('relevance_score', { ascending: false, nullsFirst: false })
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .limit(3);
       
-      console.log('All news in table:', allNews);
-      console.log('Total news count:', allNews?.length);
-      
-      if (allNews && allNews.length > 0) {
-        // Take the first 3 articles
-        const latestNews = allNews.slice(0, 3);
-        setNewsArticles(latestNews);
-        console.log('Set news articles:', latestNews);
+      if (newsError) {
+        console.error('Error fetching news:', newsError);
+      } else if (newsData && newsData.length > 0) {
+        setNewsArticles(newsData);
+        console.log('Set news articles:', newsData);
       } else {
         console.log('No news articles found in table');
       }
@@ -109,8 +84,8 @@ export default function HomePage() {
         >
           <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
             <img 
-              src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"} 
-              alt={latestVideo?.title || "Best Final Video"}
+              src="https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"
+              alt="Latest Video"
               className="w-full h-full object-contain scale-[1.33]"
             />
             {/* YouTube Play Button Overlay */}
@@ -123,14 +98,6 @@ export default function HomePage() {
             </div>
           </div>
         </button>
-        {/* Video Title - Below thumbnail with gap */}
-        {latestVideo && (
-          <div className="px-4 text-center" style={{marginTop: '0.25cm'}}>
-            <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
-              {latestVideo.title}
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Latest News Section */}
@@ -142,7 +109,7 @@ export default function HomePage() {
             {newsArticles.map((article) => (
               <div 
                 key={article.id}
-                onClick={() => window.open(article.url, '_blank')}
+                onClick={() => article.url && window.open(article.url, '_blank')}
                 className="bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-700 transition-colors"
               >
                 <div className="flex space-x-3">
@@ -181,7 +148,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center justify-between text-xs text-gray-500">
                       <span>{article.source}</span>
-                      <span>{formatTimeAgo(article.published_at)}</span>
+                      <span>{formatTimeAgo(article.published_at || '')}</span>
                     </div>
                   </div>
                 </div>
