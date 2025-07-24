@@ -234,7 +234,7 @@ export default function HomePage() {
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
         <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
-        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Rate the Players After Every Match</p>
+        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
         <button 
           onClick={() => navigate('/player-ratings')}
           className="w-full relative max-w-4xl mx-auto block mt-0 sm:mt-2.5"
