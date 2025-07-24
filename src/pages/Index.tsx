@@ -153,8 +153,8 @@ export default function HomePage() {
         </button>
         {/* Video Title - Below thumbnail with gap */}
         {latestVideo && (
-          <div className="px-4 text-center mt-2 sm:mt-4">
-            <p className="text-white text-lg sm:text-xl lg:text-2xl font-bold drop-shadow-lg line-clamp-2">
+          <div className="px-4 text-center -mt-2 sm:mt-4">
+            <p className="text-white text-sm sm:text-xl lg:text-2xl font-bold drop-shadow-lg line-clamp-2">
               {latestVideo.title}
             </p>
           </div>
@@ -163,7 +163,7 @@ export default function HomePage() {
 
       {/* Latest News Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-4">
-        <h3 className="text-white text-lg font-semibold mb-4 text-center uppercase">Latest News</h3>
+        <h3 className="text-youtube-yellow text-lg font-semibold mb-4 text-center uppercase">Latest News</h3>
         
         {newsArticles.length > 0 ? (
           <div className="space-y-3 max-w-4xl mx-auto">

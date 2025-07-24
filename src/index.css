@@ -43,6 +43,9 @@
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 0 0% 14%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* YouTube/Video Colors */
+    --youtube-yellow: 45 100% 51%;
   }
 
   body {
