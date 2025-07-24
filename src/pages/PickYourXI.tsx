@@ -103,7 +103,6 @@ export default function PickYourXI() {
             className="absolute top-0 right-0 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg border border-white shadow-lg"
             size="sm"
           >
-            <Share className="w-4 h-4 mr-2" />
             Share
           </Button>
         </div>
