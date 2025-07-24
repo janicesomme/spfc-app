@@ -6,10 +6,12 @@ interface Video {
   id: number;
   video_id: string;
   title: string;
-  description: string;
-  thumbnail_url: string;
-  youtube_url: string;
-  published_at: string;
+  description: string | null;
+  thumbnail_url: string | null;
+  youtube_url: string | null;
+  published_at: string | null;
+  channel_title: string | null;
+  channel_id: string | null;
 }
 
 interface NewsArticle {
@@ -40,17 +42,17 @@ export default function HomePage() {
       
       // Fetch latest video
       const { data: videoData, error: videoError } = await supabase
-        .from('latest_videos')
+        .from('latest_videos' as any)
         .select('*')
         .order('published_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (videoError) {
         console.error('Error fetching video:', videoError);
-      } else {
+      } else if (videoData) {
         console.log('Video data:', videoData);
-        setLatestVideo(videoData);
+        setLatestVideo(videoData as unknown as Video);
       }
 
       // Fetch latest 3 news articles - try multiple approaches
