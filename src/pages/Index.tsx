@@ -130,21 +130,21 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* YouTube Video Section */}
-      <div className="px-4 pt-4 pb-6">
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pt-4 pb-6">
         <button
-          className="w-full"
+          className="w-full max-w-4xl mx-auto block"
           onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full h-96 px-8">
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-48 sm:h-64 md:h-80 lg:h-96">
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
               alt={latestVideo?.title || "Latest Video"}
-              className="w-full h-full object-contain scale-[1.33]"
+              className="w-full h-full object-contain scale-110 sm:scale-125 md:scale-[1.33]"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-red-600 rounded-full p-4 shadow-lg hover:bg-red-700 transition-colors">
-                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <div className="bg-red-600 rounded-full p-3 sm:p-4 shadow-lg hover:bg-red-700 transition-colors">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
               </div>
@@ -153,8 +153,8 @@ export default function HomePage() {
         </button>
         {/* Video Title - Below thumbnail with gap */}
         {latestVideo && (
-          <div className="px-4 text-center" style={{marginTop: '0.25cm'}}>
-            <p className="text-white text-xl font-bold drop-shadow-lg line-clamp-2">
+          <div className="px-4 text-center mt-2 sm:mt-4">
+            <p className="text-white text-lg sm:text-xl lg:text-2xl font-bold drop-shadow-lg line-clamp-2">
               {latestVideo.title}
             </p>
           </div>
@@ -162,44 +162,40 @@ export default function HomePage() {
       </div>
 
       {/* Latest News Section */}
-      <div className="px-4 pb-4">
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-4">
         <h3 className="text-white text-lg font-semibold mb-4 text-center uppercase">Latest News</h3>
         
         {newsArticles.length > 0 ? (
-          <div className="space-y-3">
+          <div className="space-y-3 max-w-4xl mx-auto">
             {newsArticles.map((article) => (
               <div 
                 key={article.id}
                 onClick={() => article.url && window.open(article.url, '_blank')}
-                className="bg-black rounded-lg cursor-pointer hover:bg-gray-900 transition-colors min-h-40 mx-auto"
-                style={{
-                  marginLeft: 'calc(2rem + 1cm + 70px + 75px - 100px)',
-                  marginRight: 'calc(2rem + 1cm + 70px + 75px - 100px)'
-                }}
+                className="bg-black rounded-lg cursor-pointer hover:bg-gray-900 transition-colors"
               >
-                <div className="flex min-h-40">
+                <div className="flex flex-col sm:flex-row min-h-32 sm:min-h-40">
                   {article.image_url && (
-                    <div className="w-40 h-40 flex-shrink-0">
+                    <div className="w-full h-48 sm:w-32 sm:h-32 md:w-40 md:h-40 flex-shrink-0">
                       <img 
                         src={article.image_url}
                         alt={article.title}
-                        className="w-full h-full object-cover rounded-l-lg"
+                        className="w-full h-full object-cover rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
                       />
                     </div>
                   )}
-                  <div className="flex-1 min-w-0 p-4 flex flex-col justify-start overflow-hidden">
-                    <h4 className="text-white text-2xl font-medium mb-3 leading-tight break-words hyphens-auto">
+                  <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col justify-start overflow-hidden">
+                    <h4 className="text-white text-lg sm:text-xl md:text-2xl font-medium mb-2 sm:mb-3 leading-tight break-words hyphens-auto">
                       {article.title}
                     </h4>
-                    <div className="text-gray-400 text-base leading-relaxed break-words hyphens-auto flex-1">
-                      <p className="mb-2">
+                    <div className="text-gray-400 text-sm sm:text-base leading-relaxed break-words hyphens-auto flex-1">
+                      <p className="mb-2 line-clamp-3 sm:line-clamp-none">
                         {article.description}
                       </p>
                       {article.snippet && article.snippet !== article.description && (
-                        <p>
+                        <p className="line-clamp-2 sm:line-clamp-none">
                           {article.snippet}
                         </p>
                       )}
@@ -217,40 +213,40 @@ export default function HomePage() {
       </div>
 
       {/* Pick Your XI Section */}
-      <div className="px-4 pb-6">
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
         <button 
           onClick={() => navigate('/pick-your-xi')}
-          className="w-full relative"
+          className="w-full relative max-w-4xl mx-auto block"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full px-8" style={{height: 'calc(24rem + 50px)', paddingLeft: 'calc(2rem + 1cm + 70px + 75px)', paddingRight: 'calc(2rem + 1cm + 70px + 75px)'}}>
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-64 sm:h-80 md:h-96 lg:h-[28rem]">
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//pick%20xi%20image%20for%20app%20homepage%207.23.png"
               alt="Pick Your XI"
-              className="w-full h-full object-contain scale-[1.5]"
+              className="w-full h-full object-contain scale-110 sm:scale-125 md:scale-[1.5]"
               style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <h3 className="text-white text-xl font-bold drop-shadow-lg">Pick Your XI</h3>
+              <h3 className="text-white text-lg sm:text-xl lg:text-2xl font-bold drop-shadow-lg">Pick Your XI</h3>
             </div>
           </div>
         </button>
       </div>
 
       {/* Player Ratings Section */}
-      <div className="px-4 pb-6">
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
         <button 
           onClick={() => navigate('/player-ratings')}
-          className="w-full relative"
+          className="w-full relative max-w-4xl mx-auto block"
         >
-          <div className="relative bg-black rounded-lg overflow-hidden w-full px-8" style={{height: 'calc(24rem + 50px)', paddingLeft: 'calc(2rem + 150px + 0.35px + 40px)', paddingRight: 'calc(2rem + 150px + 0.35px + 40px)'}}>
+          <div className="relative bg-black rounded-lg overflow-hidden w-full h-64 sm:h-80 md:h-96 lg:h-[28rem]">
             <img 
               src="https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20player%20ratings%20homepage%20image%207.23.png"
               alt="Player Ratings"
-              className="w-full h-full object-contain scale-[1.5]"
+              className="w-full h-full object-contain scale-110 sm:scale-125 md:scale-[1.5]"
               style={{filter: 'brightness(1.1) contrast(1.15) saturate(1.2)'}}
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <h3 className="text-white text-xl font-bold drop-shadow-lg">Player Ratings</h3>
+              <h3 className="text-white text-lg sm:text-xl lg:text-2xl font-bold drop-shadow-lg">Player Ratings</h3>
             </div>
           </div>
         </button>
