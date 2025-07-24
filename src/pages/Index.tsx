@@ -139,7 +139,7 @@ export default function HomePage() {
             <img 
               src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
               alt={latestVideo?.title || "Latest Video"}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain scale-115"
             />
             {/* YouTube Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
@@ -149,16 +149,16 @@ export default function HomePage() {
                 </svg>
               </div>
             </div>
+            {/* Video Title Overlay */}
+            {latestVideo && (
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                <p className="text-white text-xs sm:text-base lg:text-lg font-bold drop-shadow-lg line-clamp-2">
+                  {latestVideo.title}
+                </p>
+              </div>
+            )}
           </div>
         </button>
-        {/* Video Title - Below thumbnail with gap */}
-        {latestVideo && (
-          <div className="px-4 text-center -mt-2 sm:mt-4">
-            <p className="text-white text-sm sm:text-xl lg:text-2xl font-bold drop-shadow-lg line-clamp-2">
-              {latestVideo.title}
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Latest News Section */}
