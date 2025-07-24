@@ -126,6 +126,63 @@ export type Database = {
         }
         Relationships: []
       }
+      latest_videos: {
+        Row: {
+          channel_id: string | null
+          channel_title: string | null
+          created_at: string | null
+          description: string | null
+          embed_url: string | null
+          fetched_at: string | null
+          id: number
+          published_at: string | null
+          published_at_formatted: string | null
+          thumbnail_height: number | null
+          thumbnail_url: string | null
+          thumbnail_width: number | null
+          title: string
+          updated_at: string | null
+          video_id: string
+          youtube_url: string | null
+        }
+        Insert: {
+          channel_id?: string | null
+          channel_title?: string | null
+          created_at?: string | null
+          description?: string | null
+          embed_url?: string | null
+          fetched_at?: string | null
+          id?: number
+          published_at?: string | null
+          published_at_formatted?: string | null
+          thumbnail_height?: number | null
+          thumbnail_url?: string | null
+          thumbnail_width?: number | null
+          title: string
+          updated_at?: string | null
+          video_id: string
+          youtube_url?: string | null
+        }
+        Update: {
+          channel_id?: string | null
+          channel_title?: string | null
+          created_at?: string | null
+          description?: string | null
+          embed_url?: string | null
+          fetched_at?: string | null
+          id?: number
+          published_at?: string | null
+          published_at_formatted?: string | null
+          thumbnail_height?: number | null
+          thumbnail_url?: string | null
+          thumbnail_width?: number | null
+          title?: string
+          updated_at?: string | null
+          video_id?: string
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
       leaderboard: {
         Row: {
           created_at: string | null
@@ -178,6 +235,7 @@ export type Database = {
           timestamp: string | null
           title: string
           url: string
+          user_id: string | null
         }
         Insert: {
           category?: string | null
@@ -203,6 +261,7 @@ export type Database = {
           timestamp?: string | null
           title: string
           url: string
+          user_id?: string | null
         }
         Update: {
           category?: string | null
@@ -228,6 +287,31 @@ export type Database = {
           timestamp?: string | null
           title?: string
           url?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      motm_votes: {
+        Row: {
+          fixture_id: string
+          id: string
+          player_id: string
+          timestamp: string | null
+          user_id: string | null
+        }
+        Insert: {
+          fixture_id: string
+          id?: string
+          player_id: string
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          fixture_id?: string
+          id?: string
+          player_id?: string
+          timestamp?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -382,17 +466,32 @@ export type Database = {
         Row: {
           fixture_id: string
           id: string
-          player_ids: string[]
+          image_url: string | null
+          match_id: string | null
+          player_ids: string[] | null
+          player_name: string | null
+          position: string | null
+          role: string | null
         }
         Insert: {
           fixture_id: string
           id?: string
-          player_ids: string[]
+          image_url?: string | null
+          match_id?: string | null
+          player_ids?: string[] | null
+          player_name?: string | null
+          position?: string | null
+          role?: string | null
         }
         Update: {
           fixture_id?: string
           id?: string
-          player_ids?: string[]
+          image_url?: string | null
+          match_id?: string | null
+          player_ids?: string[] | null
+          player_name?: string | null
+          position?: string | null
+          role?: string | null
         }
         Relationships: [
           {
@@ -416,6 +515,54 @@ export type Database = {
         Update: {
           total_perfect_matches?: number | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      player_images: {
+        Row: {
+          id: string
+          image_url: string
+          player_name: string
+          position: string | null
+        }
+        Insert: {
+          id?: string
+          image_url: string
+          player_name: string
+          position?: string | null
+        }
+        Update: {
+          id?: string
+          image_url?: string
+          player_name?: string
+          position?: string | null
+        }
+        Relationships: []
+      }
+      player_ratings: {
+        Row: {
+          id: number
+          match_id: string
+          player_id: string
+          rating: number
+          timestamp: string
+          user_id: string | null
+        }
+        Insert: {
+          id?: number
+          match_id: string
+          player_id: string
+          rating: number
+          timestamp: string
+          user_id?: string | null
+        }
+        Update: {
+          id?: number
+          match_id?: string
+          player_id?: string
+          rating?: number
+          timestamp?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -488,6 +635,51 @@ export type Database = {
           report_created_at?: string | null
           snapshot?: string | null
           source_insights?: string | null
+        }
+        Relationships: []
+      }
+      thumbnail_history: {
+        Row: {
+          created_at: string | null
+          generated_at: string
+          headline: string
+          id: number
+          image_count: number | null
+          is_regeneration: boolean | null
+          mood: string
+          players: Json
+          processing_stats: Json | null
+          prompt_used: string
+          thumbnail_id: string
+          variation_applied: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          generated_at: string
+          headline: string
+          id?: number
+          image_count?: number | null
+          is_regeneration?: boolean | null
+          mood: string
+          players: Json
+          processing_stats?: Json | null
+          prompt_used: string
+          thumbnail_id: string
+          variation_applied?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          generated_at?: string
+          headline?: string
+          id?: number
+          image_count?: number | null
+          is_regeneration?: boolean | null
+          mood?: string
+          players?: Json
+          processing_stats?: Json | null
+          prompt_used?: string
+          thumbnail_id?: string
+          variation_applied?: string | null
         }
         Relationships: []
       }
@@ -703,6 +895,15 @@ export type Database = {
           source_logo?: string | null
           title?: string | null
           url?: string | null
+        }
+        Relationships: []
+      }
+      motm_vote_results: {
+        Row: {
+          fixture_id: string | null
+          player_id: string | null
+          rank: number | null
+          vote_percentage: number | null
         }
         Relationships: []
       }

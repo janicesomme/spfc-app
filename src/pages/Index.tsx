@@ -37,18 +37,29 @@ export default function HomePage() {
     try {
       console.log('Fetching data...');
       
-      // Fetch latest video using direct fetch
+      // Fetch latest video using proper Supabase client
       try {
-        const response = await fetch('https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/latest_videos?select=video_id,title,description,thumbnail_url,youtube_url,published_at&order=published_at.desc&limit=1', {
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8'
-          }
-        });
-        const data = await response.json();
-        if (data && data.length > 0) {
-          setLatestVideo(data[0]);
-          console.log('Set latest video via direct query:', data[0]);
+        const { data: videoData, error: videoError } = await supabase
+          .from('youtube_videos')
+          .select('id, title, video_url, thumbnail_url, publish_date')
+          .order('publish_date', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (videoError) {
+          console.error('Error fetching video:', videoError);
+        } else if (videoData) {
+          // Transform the data to match our Video interface
+          const transformedVideo: Video = {
+            video_id: videoData.id || '',
+            title: videoData.title || '',
+            description: '',
+            thumbnail_url: videoData.thumbnail_url || '',
+            youtube_url: videoData.video_url || '',
+            published_at: videoData.publish_date || ''
+          };
+          setLatestVideo(transformedVideo);
+          console.log('Set latest video:', transformedVideo);
         } else {
           console.log('No videos found in table');
         }
