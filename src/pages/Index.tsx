@@ -171,13 +171,13 @@ export default function HomePage() {
               <div 
                 key={article.id}
                 onClick={() => article.url && window.open(article.url, '_blank')}
-                className="bg-black rounded-lg cursor-pointer hover:bg-gray-900 transition-colors h-40 mx-auto"
+                className="bg-black rounded-lg cursor-pointer hover:bg-gray-900 transition-colors min-h-40 mx-auto"
                 style={{
                   marginLeft: 'calc(2rem + 1cm + 70px + 75px - 100px)',
                   marginRight: 'calc(2rem + 1cm + 70px + 75px - 100px)'
                 }}
               >
-                <div className="flex h-full">
+                <div className="flex min-h-40">
                   {article.image_url && (
                     <div className="w-40 h-40 flex-shrink-0">
                       <img 
@@ -190,16 +190,20 @@ export default function HomePage() {
                       />
                     </div>
                   )}
-                  <div className="flex-1 min-w-0 p-4 flex flex-col justify-start">
-                    <h4 className="text-white text-2xl font-medium line-clamp-2 mb-3">
+                  <div className="flex-1 min-w-0 p-4 flex flex-col justify-start overflow-hidden">
+                    <h4 className="text-white text-2xl font-medium mb-3 leading-tight break-words hyphens-auto">
                       {article.title}
                     </h4>
-                    <p className="text-gray-400 text-base line-clamp-4">
-                      {article.description}
+                    <div className="text-gray-400 text-base leading-relaxed break-words hyphens-auto flex-1">
+                      <p className="mb-2">
+                        {article.description}
+                      </p>
                       {article.snippet && article.snippet !== article.description && (
-                        <span> {article.snippet}</span>
+                        <p>
+                          {article.snippet}
+                        </p>
                       )}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
