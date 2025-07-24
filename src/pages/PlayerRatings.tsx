@@ -229,8 +229,8 @@ export default function PlayerRatings() {
           return (
             <div key={player.id} className="bg-black rounded-lg p-3 sm:p-4 border border-red-600">
               {/* Mobile Layout */}
-              <div className="block sm:hidden relative">
-                <div className="flex flex-col">
+              <div className="block sm:hidden relative min-h-24">
+                <div className="flex flex-col h-full">
                   {/* Top Row: Player info with inline position and role */}
                   <div className="flex items-start">
                     {/* Player Image */}
@@ -260,8 +260,8 @@ export default function PlayerRatings() {
                     </div>
                   </div>
 
-                  {/* Star Rating - Centered and 40px below */}
-                  <div className="flex justify-center mt-10">
+                  {/* Star Rating - Absolutely centered in the box */}
+                  <div className="absolute inset-0 flex items-center justify-center">
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
