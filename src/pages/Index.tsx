@@ -247,6 +247,9 @@ export default function HomePage() {
             />
           </div>
         </button>
+        
+        {/* Match Predictions Game Section */}
+        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Play Our Match Predictions Game</h3>
       </div>
     </div>
   );
