@@ -229,60 +229,39 @@ export default function PlayerRatings() {
           return (
             <div key={player.id} className="bg-black rounded-lg p-3 sm:p-4 border border-red-600">
               {/* Mobile Layout */}
-              <div className="block sm:hidden">
+              <div className="block sm:hidden relative">
                 <div className="flex flex-col">
-                  {/* Top Row: Player info and MOTM button */}
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-2 flex-1">
-                      {/* Player Image */}
-                      <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
-                        {player.image_url ? (
-                          <img 
-                            src={player.image_url}
-                            alt={player.player_name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                            {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                          </div>
-                        )}
-                      </div>
-                      
-                      {/* Player Details */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-white text-sm leading-tight">{player.player_name}</h3>
-                      </div>
+                  {/* Top Row: Player info with inline position and role */}
+                  <div className="flex items-start">
+                    {/* Player Image */}
+                    <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
+                      {player.image_url ? (
+                        <img 
+                          src={player.image_url}
+                          alt={player.player_name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                          {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </div>
+                      )}
                     </div>
-
-                    {/* MOTM Button - Mobile */}
-                    <div className="mt-3.5">
-                      <button
-                        onClick={() => handleMotmSelection(player.id)}
-                        className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
-                          motmPlayerId === player.id
-                            ? 'bg-yellow-500 text-red-600'
-                            : 'bg-red-600 text-white hover:bg-red-700'
-                        }`}
-                      >
-                        MOTM
-                      </button>
+                    
+                    {/* Player Details - Name, Position, Role inline */}
+                    <div className="flex-1 min-w-0 ml-2">
+                      <div className="flex items-center text-sm leading-tight">
+                        <span className="font-semibold text-white">{player.player_name}</span>
+                        <span className="text-gray-400 ml-6">{player.position}</span>
+                        <span className={`capitalize ml-6 ${player.role === 'starter' ? 'text-green-400' : 'text-blue-400'}`}>
+                          {player.role}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Center Row: Position and Role */}
-                  <div className="flex justify-center mt-1">
-                    <div className="text-xs text-gray-400 flex items-center gap-2">
-                      <span>{player.position}</span>
-                      <span>•</span>
-                      <span className={`capitalize ${player.role === 'starter' ? 'text-green-400' : 'text-blue-400'}`}>
-                        {player.role}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Bottom Row: Star Rating */}
-                  <div className="flex justify-center mt-1 -mt-2.5">
+                  {/* Star Rating - Centered and 40px below */}
+                  <div className="flex justify-center mt-10">
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -291,7 +270,7 @@ export default function PlayerRatings() {
                           className="focus:outline-none transition-colors"
                         >
                           <Star
-                            className={`w-7 h-8 ${
+                            className={`w-8 h-9 ${
                               star <= playerRating
                                 ? 'fill-yellow-400 text-yellow-400'
                                 : 'text-white hover:text-yellow-300'
@@ -300,6 +279,20 @@ export default function PlayerRatings() {
                         </button>
                       ))}
                     </div>
+                  </div>
+
+                  {/* MOTM Button - Bottom Right */}
+                  <div className="absolute bottom-2 right-2">
+                    <button
+                      onClick={() => handleMotmSelection(player.id)}
+                      className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
+                        motmPlayerId === player.id
+                          ? 'bg-yellow-500 text-red-600'
+                          : 'bg-red-600 text-white hover:bg-red-700'
+                      }`}
+                    >
+                      MOTM
+                    </button>
                   </div>
                 </div>
               </div>
