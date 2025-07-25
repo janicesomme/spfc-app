@@ -1,154 +1,164 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Plus, Share } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+const fetchStats = async () => {
+    try {
+      // Get total users count
+      const usersData = await supabaseCall('users', { count: true });
+      const usersCount = usersData.count || 0;
 
-interface Player {
-  id: string;
-  name: string;
-  image: string;
-}
+      // Get Pick XI submissions count
+      const pickXIData = await supabaseCall('pick_xi', { count: true });
+      const pickXICount = pickXIData.count || 0;
 
-interface SelectedPlayers {
-  [position: string]: Player | null;
-}
+      // Get playerimport React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Users, FileText, Star, Mail } from 'lucide-react';
 
-const formations = {
-  '1-3-4-3': {
-    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
-    LB: { top: '55%', left: '25%' },
-    CB: { top: '55%', left: '50%' },
-    RB: { top: '55%', left: '75%' },
-    LM: { top: '33%', left: '7.5%' },
-    CM1: { top: '29%', left: '37.5%' },
-    CM2: { top: '29%', left: '62.5%' },
-    RM: { top: '33%', left: '92.5%' },
-    LW: { top: 'calc(12% - 0.5cm)', left: '25%' },
-    ST: { top: 'calc(8% - 0.5cm)', left: '50%' },
-    RW: { top: 'calc(12% - 0.5cm)', left: '75%' },
-  }
+// We'll use fetch API to call Lovable's built-in Supabase endpoints
+const supabaseCall = async (table: string, options: any = {}) => {
+  const { count = false, select = '*', order, where } = options;
+  
+  let url = `/api/supabase/${table}`;
+  const params = new URLSearchParams();
+  
+  if (count) params.append('count', 'exact');
+  if (select !== '*') params.append('select', select);
+  if (order) params.append('order', order);
+  if (where) params.append('where', JSON.stringify(where));
+  
+  if (params.toString()) url += `?${params.toString()}`;
+  
+  const response = await fetch(url);
+  return response.json();
 };
 
-const positionNames = {
-  GK: 'Goalkeeper',
-  LB: 'Left Back',
-  CB: 'Centre Back',
-  RB: 'Right Back',
-  LM: 'Left Midfielder',
-  CM1: 'Centre Midfielder',
-  CM2: 'Centre Midfielder',
-  RM: 'Right Midfielder',
-  LW: 'Left Winger',
-  ST: 'Striker',
-  RW: 'Right Winger',
-};
-
-export default function PickYourXI() {
-  const navigate = useNavigate();
-  const [selectedPlayers, setSelectedPlayers] = useState<SelectedPlayers>({});
+const AdminHomepage = () => {
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    pickXISubmissions: 0,
+    ratingsSubmitted: 0,
+    emailSignups: 0
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem('selectedPlayers');
-    if (saved) {
-      setSelectedPlayers(JSON.parse(saved));
-    }
+    fetchStats();
   }, []);
 
-  const handlePositionClick = (position: string) => {
-    navigate(`/pick-player?position=${position}`);
-  };
+  const fetchStats = async () => {
+    try {
+      // Get total users count
+      const { count: usersCount } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true });
 
-  const allPositionsFilled = Object.keys(formations['1-3-4-3']).every(
-    position => selectedPlayers[position]
-  );
+      // Get Pick XI submissions count
+      const { count: pickXICount } = await supabase
+        .from('pick_xi')
+        .select('*', { count: 'exact', head: true });
 
-  const handleSubmitXI = () => {
-    console.log('Submitting XI:', selectedPlayers);
-  };
+      // Get player ratings count
+      const { count: ratingsCount } = await supabase
+        .from('player_ratings')
+        .select('*', { count: 'exact', head: true });
 
-  const handleShare = async () => {
-    const shareData = {
-      text: "Here's who I'm starting for United this weekend ⚽🔥 #FUTVXI",
-      url: window.location.href
-    };
+      // Get email signups count
+      const { count: emailsCount } = await supabase
+        .from('emails')
+        .select('*', { count: 'exact', head: true });
 
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (error) {
-        console.log('Share cancelled or failed');
-      }
-    } else {
-      alert("Sharing isn't supported on this device.");
+      setStats({
+        totalUsers: usersCount || 0,
+        pickXISubmissions: pickXICount || 0,
+        ratingsSubmitted: ratingsCount || 0,
+        emailSignups: emailsCount || 0
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const statCards = [
+    {
+      title: 'Total Users',
+      value: stats.totalUsers,
+      icon: Users,
+      color: 'text-blue-600'
+    },
+    {
+      title: 'Pick XI Submissions',
+      value: stats.pickXISubmissions,
+      icon: FileText,
+      color: 'text-green-600'
+    },
+    {
+      title: 'Ratings Submitted',
+      value: stats.ratingsSubmitted,
+      icon: Star,
+      color: 'text-yellow-600'
+    },
+    {
+      title: 'Email Signups',
+      value: stats.emailSignups,
+      icon: Mail,
+      color: 'text-purple-600'
+    }
+  ];
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-6">FUTV Admin Dashboard</h1>
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div 
-      className="min-h-screen w-full relative"
-      style={{
-        backgroundImage: "url('https://jckkhfqswiasnepshxbr.supabase.co/storage/v1/object/public/player-headshots//best%20pitch%20for%20app.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
-      <div className="relative z-10 p-4 h-screen flex flex-col">
-        <div className="relative text-center pt-2 pb-8">
-          <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
-          
-          {/* Share Button */}
-          <Button
-            onClick={handleShare}
-            className="absolute top-0 right-0 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg border border-white shadow-lg"
-            size="sm"
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">FUTV Admin Dashboard</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {statCards.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={index}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {stat.title}
+                </CardTitle>
+                <Icon className={`h-4 w-4 ${stat.color}`} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stat.value}</div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Quick Actions</h2>
+        <div className="flex flex-wrap gap-4">
+          <a href="/admin/users" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            View Users
+          </a>
+          <a href="/admin/pick-xi" className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+            View Pick XI
+          </a>
+          <a href="/admin/ratings" className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700">
+            View Ratings
+          </a>
+          <button 
+            onClick={fetchStats}
+            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
           >
-            Share
-          </Button>
+            Refresh Stats
+          </button>
         </div>
-
-        <div className="flex-1 relative max-w-md mx-auto w-full" style={{ marginTop: '0.75cm' }}>
-          {Object.entries(formations['1-3-4-3']).map(([position, coords]) => {
-            const player = selectedPlayers[position];
-            return (
-              <button
-                key={position}
-                onClick={() => handlePositionClick(position)}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                style={{ top: coords.top, left: coords.left }}
-              >
-                <div className="w-16 h-16 rounded-full border border-white bg-red-600 flex items-center justify-center shadow-lg">
-                  {player ? (
-                    <img
-                      src={player.image}
-                      alt={player.name}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  ) : (
-                    <Plus className="w-8 h-8 text-white" />
-                  )}
-                </div>
-                <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2">
-                  <span className="text-white text-xs font-medium bg-black/50 px-2 py-1 rounded">
-                    {player ? player.name.split(' ').pop() : position}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {allPositionsFilled && (
-          <div className="pb-6 px-4 flex justify-center" style={{ marginTop: '-0.75cm' }}>
-            <Button
-              onClick={handleSubmitXI}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg border border-white"
-            >
-              Submit Your Starting XI
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );
-}
+};
+
+export default AdminHomepage;
