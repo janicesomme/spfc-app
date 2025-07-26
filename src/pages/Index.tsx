@@ -247,6 +247,14 @@ export default function HomePage() {
             />
           </div>
         </button>
+        
+        {/* Final Player Ratings Button */}
+        <button 
+          onClick={() => navigate('/final-player-ratings')}
+          className="w-full max-w-4xl mx-auto block mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base"
+        >
+          Final Player Ratings
+        </button>
       </div>
     </div>
   );
