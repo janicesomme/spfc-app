@@ -163,10 +163,10 @@ export default function FinalPlayerRatings() {
                     {finalRating}
                   </div>
                   
-                  {/* MOTM Badge - 30px to the right of rating */}
+                  {/* MOTM Badge - Smaller, positioned between rating and card edge */}
                   {player.is_motm && (
-                    <div className="ml-8">
-                      <div className="px-3 py-2 rounded bg-yellow-500 text-black text-3xl font-bold shadow-md">
+                    <div className="absolute left-1/2 ml-8">
+                      <div className="px-2 py-1 rounded bg-yellow-500 text-black text-sm font-bold shadow-md">
                         MOTM
                       </div>
                     </div>
