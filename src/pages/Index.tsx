@@ -143,8 +143,8 @@ export default function HomePage() {
               loading="lazy"
             />
             {/* YouTube Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-              <div className="bg-red-600 rounded-full p-3 sm:p-4 shadow-lg">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-100 hover:bg-black/30 transition-all rounded-lg">
+              <div className="bg-red-600 hover:bg-red-700 rounded-full p-3 sm:p-4 shadow-lg transition-colors">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
