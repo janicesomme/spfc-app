@@ -105,7 +105,7 @@ export default function FinalPlayerRatings() {
           <Link to="/" className="text-white hover:text-gray-300 transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
-          <h1 className="text-xl font-bold text-white">🧊 Final Player Ratings</h1>
+          <h1 className="text-xl font-bold text-white">Final Player Ratings</h1>
           <div className="w-6" /> {/* Spacer for center alignment */}
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function FinalPlayerRatings() {
           const finalRating = player.average_rating ? Math.round(player.average_rating * 10) / 10 : 0;
           
           return (
-            <div key={player.player_id || index} className="bg-black rounded-lg p-3 sm:p-4 border border-black">
+            <div key={player.player_id || index} className="bg-[#9d0208] rounded-lg p-3 sm:p-4 border border-black">
               {/* Mobile Layout */}
               <div className="block sm:hidden relative min-h-24">
                 <div className="flex flex-col h-full">
