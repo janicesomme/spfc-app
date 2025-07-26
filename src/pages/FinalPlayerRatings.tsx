@@ -119,8 +119,8 @@ export default function FinalPlayerRatings() {
             <div key={player.player_id || index} className="sm:bg-[#9d0208] bg-black rounded-lg p-3 sm:p-4 border-2 sm:border-black border-white shadow-lg">
               {/* Mobile Layout */}
               <div className="block sm:hidden relative min-h-20">
-                {/* Top Row: Player info with centered position */}
-                <div className="grid grid-cols-[40px_1fr_60px_1fr_auto] items-center gap-2 mb-1">
+                {/* Top Row: Player info with position centered between name and starter status */}
+                <div className="flex items-center mb-1">
                   {/* Player Image */}
                   <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700 border border-gray-600">
                     {player.image_url ? (
@@ -136,24 +136,24 @@ export default function FinalPlayerRatings() {
                     )}
                   </div>
                   
-                  {/* Player Name - Only last name on mobile */}
-                  <div className="text-left">
-                    <span className="font-semibold text-white text-sm">
-                      {player.player_name.split(' ').slice(-1)[0]}
-                    </span>
-                  </div>
-                  
-                  {/* Position - Centered */}
-                  <div className="text-center text-gray-300 text-sm font-medium">
-                    {player.position}
-                  </div>
-                  
-                  {/* Spacer */}
-                  <div></div>
-                  
-                  {/* Starter/Sub Status */}
-                  <div className={`text-xs font-bold px-2 py-1 rounded ${player.starter ? 'text-green-400 bg-green-400/10' : 'text-blue-400 bg-blue-400/10'}`}>
-                    {player.starter ? 'Starter' : 'Sub'}
+                  {/* Player Name, Position, and Starter Status - evenly spaced */}
+                  <div className="flex-1 flex items-center justify-between ml-3">
+                    {/* Player Name - Only last name on mobile */}
+                    <div>
+                      <span className="font-semibold text-white text-sm">
+                        {player.player_name.split(' ').slice(-1)[0]}
+                      </span>
+                    </div>
+                    
+                    {/* Position - Centered between name and starter status */}
+                    <div className="text-gray-300 text-sm font-medium">
+                      {player.position}
+                    </div>
+                    
+                    {/* Starter/Sub Status */}
+                    <div className={`text-xs font-bold px-2 py-1 rounded ${player.starter ? 'text-green-400 bg-green-400/10' : 'text-blue-400 bg-blue-400/10'}`}>
+                      {player.starter ? 'Starter' : 'Sub'}
+                    </div>
                   </div>
                 </div>
 
