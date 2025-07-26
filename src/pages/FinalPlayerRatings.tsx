@@ -21,7 +21,7 @@ export default function FinalPlayerRatings() {
   const { toast } = useToast();
 
   // For demo purposes, using a match_id. In production, this would come from route params or context
-  const matchId = '2025-07-19-chelsea';
+  const matchId = 'test-match-001';
 
   useEffect(() => {
     fetchFinalRatings();
