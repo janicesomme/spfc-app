@@ -137,21 +137,21 @@ export default function FinalPlayerRatings() {
                       )}
                     </div>
                     
-                    {/* Player Details - Name, Position, Role inline */}
+                    {/* Player Details - Name, Position, Role spread across top */}
                     <div className="flex-1 min-w-0 ml-2">
-                      <div className="flex items-center text-sm leading-tight">
+                      <div className="flex items-center justify-between text-sm leading-tight w-full">
                         <span className="font-semibold text-white">{player.player_name}</span>
-                        <span className="text-gray-400 ml-6">{player.position}</span>
-                        <span className={`capitalize ml-6 ${player.starter ? 'text-green-400' : 'text-blue-400'}`}>
-                          {player.starter ? 'starter' : 'sub'}
+                        <span className="text-gray-400">{player.position}</span>
+                        <span className={`capitalize ${player.starter ? 'text-green-400' : 'text-blue-400'}`}>
+                          {player.starter ? 'Starter' : 'Sub'}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Final Rating - Centered in the box */}
+                  {/* Final Rating - Absolutely centered in the box */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-white text-2xl font-bold">
+                    <div className="text-white text-3xl font-bold">
                       {finalRating}
                     </div>
                   </div>
