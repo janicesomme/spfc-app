@@ -119,8 +119,8 @@ export default function FinalPlayerRatings() {
             <div key={player.player_id || index} className="sm:bg-[#9d0208] bg-black rounded-lg p-3 sm:p-4 border-2 sm:border-black border-white shadow-lg">
               {/* Mobile Layout */}
               <div className="block sm:hidden relative min-h-20">
-                {/* Top Row: Player info spread across full width */}
-                <div className="flex items-center justify-between mb-1">
+                {/* Top Row: Player info with centered position */}
+                <div className="grid grid-cols-[40px_1fr_60px_1fr_auto] items-center gap-2 mb-1">
                   {/* Player Image */}
                   <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700 border border-gray-600">
                     {player.image_url ? (
@@ -137,38 +137,41 @@ export default function FinalPlayerRatings() {
                   </div>
                   
                   {/* Player Name - Only last name on mobile */}
-                  <div className="flex-1 mx-3">
+                  <div className="text-left">
                     <span className="font-semibold text-white text-sm">
                       {player.player_name.split(' ').slice(-1)[0]}
                     </span>
                   </div>
                   
-                  {/* Position */}
-                  <div className="text-gray-300 text-sm font-medium">
+                  {/* Position - Centered */}
+                  <div className="text-center text-gray-300 text-sm font-medium">
                     {player.position}
                   </div>
                   
+                  {/* Spacer */}
+                  <div></div>
+                  
                   {/* Starter/Sub Status */}
-                  <div className={`ml-2 text-xs font-bold px-2 py-1 rounded ${player.starter ? 'text-green-400 bg-green-400/10' : 'text-blue-400 bg-blue-400/10'}`}>
+                  <div className={`text-xs font-bold px-2 py-1 rounded ${player.starter ? 'text-green-400 bg-green-400/10' : 'text-blue-400 bg-blue-400/10'}`}>
                     {player.starter ? 'Starter' : 'Sub'}
                   </div>
                 </div>
 
-                {/* Final Rating - Centered below player info */}
-                <div className="flex items-center justify-center mt-2">
+                {/* Final Rating and MOTM - Horizontally aligned */}
+                <div className="flex items-center justify-center mt-2 relative">
                   <div className="text-white text-4xl font-bold">
                     {finalRating}
                   </div>
-                </div>
-
-                {/* MOTM Badge - Right side, vertically centered */}
-                {player.is_motm && (
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                    <div className="px-2 py-1 rounded bg-yellow-500 text-black text-xs font-bold shadow-md">
-                      MOTM
+                  
+                  {/* MOTM Badge - 30px to the right of rating */}
+                  {player.is_motm && (
+                    <div className="ml-8">
+                      <div className="px-3 py-2 rounded bg-yellow-500 text-black text-3xl font-bold shadow-md">
+                        MOTM
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
 
               {/* Desktop Layout */}
