@@ -58,9 +58,7 @@ export default function News() {
         .from("man_utd_news")
         .select("id, title, description, url, image_url, source, source_logo, published_at, relevance_score, rank, has_image, is_breaking, is_transfer, is_match_report, is_active, created_at")
         .eq("is_active", true)
-        .order("rank", { ascending: true, nullsFirst: false })
-        .order("relevance_score", { ascending: false, nullsFirst: false })
-        .order("published_at", { ascending: false, nullsFirst: false });
+       .order("published_at", { ascending: false });
 
       // Apply source filter
       if (selectedSource !== "All") {
