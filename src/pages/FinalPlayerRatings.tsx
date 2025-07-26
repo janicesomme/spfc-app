@@ -30,7 +30,7 @@ export default function FinalPlayerRatings() {
   const fetchFinalRatings = async () => {
     try {
       // Use direct fetch to avoid TypeScript issues
-      const response = await fetch(`https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/match_player_ratings?select=*&match_id=eq.${matchId}`, {
+      const response = await fetch(`https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/final_player_ratings?select=*&match_id=eq.${matchId}`, {
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
