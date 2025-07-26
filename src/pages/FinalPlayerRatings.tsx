@@ -116,7 +116,7 @@ export default function FinalPlayerRatings() {
           const finalRating = player.average_rating ? Math.round(player.average_rating * 10) / 10 : 0;
           
           return (
-            <div key={player.player_id || index} className="bg-[#9d0208] rounded-lg p-3 sm:p-4 border-2 border-black shadow-lg">
+            <div key={player.player_id || index} className="sm:bg-[#9d0208] bg-black rounded-lg p-3 sm:p-4 border-2 sm:border-black border-white shadow-lg">
               {/* Mobile Layout */}
               <div className="block sm:hidden relative min-h-20">
                 {/* Top Row: Player info spread across full width */}
@@ -136,9 +136,11 @@ export default function FinalPlayerRatings() {
                     )}
                   </div>
                   
-                  {/* Player Name */}
+                  {/* Player Name - Only last name on mobile */}
                   <div className="flex-1 mx-3">
-                    <span className="font-semibold text-white text-sm">{player.player_name}</span>
+                    <span className="font-semibold text-white text-sm">
+                      {player.player_name.split(' ').slice(-1)[0]}
+                    </span>
                   </div>
                   
                   {/* Position */}
@@ -159,9 +161,9 @@ export default function FinalPlayerRatings() {
                   </div>
                 </div>
 
-                {/* MOTM Badge - Absolute positioned (only if is_motm is true) */}
+                {/* MOTM Badge - Right side, vertically centered */}
                 {player.is_motm && (
-                  <div className="absolute top-2 right-2">
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                     <div className="px-2 py-1 rounded bg-yellow-500 text-black text-xs font-bold shadow-md">
                       MOTM
                     </div>
