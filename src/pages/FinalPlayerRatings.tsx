@@ -50,10 +50,10 @@ export default function FinalPlayerRatings() {
 
       // Sort by starter status, then by position hierarchy
       const positionOrder: { [key: string]: number } = {
-        'Goalkeeper': 1,
-        'Defender': 2,
-        'Midfielder': 3,
-        'Forward': 4
+        'GK': 1,
+        'CB': 2, 'LB': 2, 'RB': 2, 'LWB': 2, 'RWB': 2,
+        'CDM': 3, 'CM': 3, 'CAM': 3, 'LM': 3, 'RM': 3,
+        'LW': 4, 'RW': 4, 'CF': 4, 'ST': 4
       };
 
       const sortedPlayers = data.sort((a: any, b: any) => {
@@ -116,55 +116,57 @@ export default function FinalPlayerRatings() {
           const finalRating = player.average_rating ? Math.round(player.average_rating * 10) / 10 : 0;
           
           return (
-            <div key={player.player_id || index} className="bg-[#9d0208] rounded-lg p-3 sm:p-4 border border-black">
+            <div key={player.player_id || index} className="bg-[#9d0208] rounded-lg p-3 sm:p-4 border-2 border-black shadow-lg">
               {/* Mobile Layout */}
-              <div className="block sm:hidden relative min-h-24">
-                <div className="flex flex-col h-full">
-                  {/* Top Row: Player info with inline position and role */}
-                  <div className="flex items-start">
-                    {/* Player Image */}
-                    <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
-                      {player.image_url ? (
-                        <img 
-                          src={player.image_url}
-                          alt={player.player_name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                          {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Player Details - Name, Position, Role spread across top */}
-                    <div className="flex-1 min-w-0 ml-2">
-                      <div className="flex items-center justify-between text-sm leading-tight w-full">
-                        <span className="font-semibold text-white">{player.player_name}</span>
-                        <span className="text-gray-400">{player.position}</span>
-                        <span className={`capitalize ${player.starter ? 'text-green-400' : 'text-blue-400'}`}>
-                          {player.starter ? 'Starter' : 'Sub'}
-                        </span>
+              <div className="block sm:hidden relative min-h-20">
+                {/* Top Row: Player info spread across full width */}
+                <div className="flex items-center justify-between mb-1">
+                  {/* Player Image */}
+                  <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700 border border-gray-600">
+                    {player.image_url ? (
+                      <img 
+                        src={player.image_url}
+                        alt={player.player_name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                        {player.player_name.split(' ').map(n => n[0]).join('').toUpperCase()}
                       </div>
-                    </div>
+                    )}
                   </div>
-
-                  {/* Final Rating - Absolutely centered in the box */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-white text-3xl font-bold">
-                      {finalRating}
-                    </div>
+                  
+                  {/* Player Name */}
+                  <div className="flex-1 mx-3">
+                    <span className="font-semibold text-white text-sm">{player.player_name}</span>
                   </div>
-
-                  {/* MOTM Button - Bottom Right (only if is_motm is true) */}
-                  {player.is_motm && (
-                    <div className="absolute bottom-2 right-2">
-                      <div className="px-2 py-1 rounded bg-yellow-500 text-red-600 text-xs font-bold">
-                        MOTM
-                      </div>
-                    </div>
-                  )}
+                  
+                  {/* Position */}
+                  <div className="text-gray-300 text-sm font-medium">
+                    {player.position}
+                  </div>
+                  
+                  {/* Starter/Sub Status */}
+                  <div className={`ml-2 text-xs font-bold px-2 py-1 rounded ${player.starter ? 'text-green-400 bg-green-400/10' : 'text-blue-400 bg-blue-400/10'}`}>
+                    {player.starter ? 'Starter' : 'Sub'}
+                  </div>
                 </div>
+
+                {/* Final Rating - Centered below player info */}
+                <div className="flex items-center justify-center mt-2">
+                  <div className="text-white text-4xl font-bold">
+                    {finalRating}
+                  </div>
+                </div>
+
+                {/* MOTM Badge - Absolute positioned (only if is_motm is true) */}
+                {player.is_motm && (
+                  <div className="absolute top-2 right-2">
+                    <div className="px-2 py-1 rounded bg-yellow-500 text-black text-xs font-bold shadow-md">
+                      MOTM
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Desktop Layout */}
