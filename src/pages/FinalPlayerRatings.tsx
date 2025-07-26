@@ -116,7 +116,7 @@ export default function FinalPlayerRatings() {
           const finalRating = player.average_rating ? Math.round(player.average_rating * 10) / 10 : 0;
           
           return (
-            <div key={player.player_id || index} className="sm:bg-[#9d0208] bg-black rounded-lg p-3 sm:p-4 border-2 sm:border-black border-white shadow-lg">
+            <div key={player.player_id || index} className="sm:bg-[#000000] bg-black rounded-lg p-3 sm:p-4 border-2 sm:border-black border-white shadow-lg">
               {/* Mobile Layout */}
               <div className="block sm:hidden relative min-h-20">
                 {/* Top Row: Player info with position centered between name and starter status */}
