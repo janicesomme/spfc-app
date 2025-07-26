@@ -75,10 +75,8 @@ export default function HomePage() {
         .from('man_utd_news')
         .select('id, title, description, snippet, url, source, published_at, image_url, is_breaking, is_transfer')
         .eq('is_active', true)
-        .order('rank', { ascending: true, nullsFirst: false })
-        .order('relevance_score', { ascending: false, nullsFirst: false })
-        .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(10); // Fetch more to allow for deduplication
+        ..order("published_at", { ascending: false })
+.limit(3)
       
       if (newsError) {
         console.error('Error fetching news:', newsError);
