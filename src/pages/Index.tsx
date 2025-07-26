@@ -227,6 +227,12 @@ export default function HomePage() {
               alt="Pick Your XI"
               className="w-full h-full object-cover"
             />
+            {/* Clickable indicator triangle */}
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/90 rounded-full p-1.5 sm:p-2 shadow-lg">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8.59 16.58L13.17 12L8.59 7.42L10 6l6 6-6 6-1.41-1.42z"/>
+              </svg>
+            </div>
           </div>
         </button>
       </div>
@@ -245,6 +251,12 @@ export default function HomePage() {
               alt="Submit Your Player Ratings"
               className="w-full h-full object-contain"
             />
+            {/* Clickable indicator triangle */}
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/90 rounded-full p-1.5 sm:p-2 shadow-lg">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8.59 16.58L13.17 12L8.59 7.42L10 6l6 6-6 6-1.41-1.42z"/>
+              </svg>
+            </div>
           </div>
         </button>
         
