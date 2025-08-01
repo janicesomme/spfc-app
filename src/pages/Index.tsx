@@ -128,14 +128,15 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Banner Header */}
-      <div className="w-full py-3 px-4 sm:py-4 sm:px-6" style={{ backgroundColor: '#ec1c24' }}>
+      <div className="w-full py-5 px-4" style={{ backgroundColor: '#ec1c24' }}>
         <div className="flex items-center justify-center max-w-4xl mx-auto">
           <img 
-            src="/lovable-uploads/deba5cc5-8e4b-42be-ab02-3b8dc3f59d5a.png"
+            src="/lovable-uploads/fcaced2e-cef0-4d27-aefa-25f4acc9b7a4.png"
             alt="FTV Logo"
-            className="h-16 w-auto sm:h-20 md:h-24 mr-4 sm:mr-6 ml-5"
+            className="h-20 w-auto sm:h-24 md:h-28 mr-4 sm:mr-6"
+            style={{ marginLeft: '-40px' }}
           />
-          <h1 className="text-white font-bold text-xl sm:text-2xl md:text-3xl">
+          <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl">
             Members App
           </h1>
         </div>
