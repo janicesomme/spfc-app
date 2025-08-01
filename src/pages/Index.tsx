@@ -231,7 +231,7 @@ export default function HomePage() {
         <h2 className="text-youtube-yellow text-2xl sm:text-3xl font-bold text-center mb-3">Fan Football Starts Now</h2>
         <p className="text-white text-lg sm:text-xl text-center mb-4">Share your Starting XI and Player Ratings with the Community!</p>
         <div className="w-full h-0.5 bg-red-600 mb-6 max-w-4xl mx-auto"></div>
-        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2">Pick the Starting XI</h3>
+        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
         <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Pick It, Share It, Discuss It</p>
         <button 
           onClick={() => navigate('/pick-your-xi')}
@@ -260,7 +260,7 @@ export default function HomePage() {
 
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
+        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
         <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
         <button 
           onClick={() => navigate('/player-ratings')}
