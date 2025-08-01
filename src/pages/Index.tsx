@@ -253,6 +253,11 @@ export default function HomePage() {
         </button>
       </div>
 
+      {/* Red line above Player Ratings */}
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pt-8 pb-2">
+        <div className="w-full h-0.5 bg-red-600 max-w-4xl mx-auto"></div>
+      </div>
+
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
         <h3 className="text-youtube-yellow text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
