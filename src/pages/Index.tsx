@@ -129,13 +129,13 @@ export default function HomePage() {
     <div className="min-h-screen bg-black">
       {/* Banner Header */}
       <div className="w-full py-3 px-4 sm:py-4 sm:px-6" style={{ backgroundColor: '#ec1c24' }}>
-        <div className="flex items-center justify-start max-w-4xl mx-auto">
+        <div className="flex items-center justify-center max-w-4xl mx-auto">
           <img 
             src="/lovable-uploads/deba5cc5-8e4b-42be-ab02-3b8dc3f59d5a.png"
             alt="FTV Logo"
-            className="h-8 w-auto sm:h-10 md:h-12 mr-4 sm:mr-6"
+            className="h-16 w-auto sm:h-20 md:h-24 mr-4 sm:mr-6 ml-5"
           />
-          <h1 className="text-white font-bold text-lg sm:text-xl md:text-2xl">
+          <h1 className="text-white font-bold text-xl sm:text-2xl md:text-3xl">
             Members App
           </h1>
         </div>
