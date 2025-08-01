@@ -127,6 +127,20 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Banner Header */}
+      <div className="w-full py-3 px-4 sm:py-4 sm:px-6" style={{ backgroundColor: '#ec1c24' }}>
+        <div className="flex items-center justify-start max-w-4xl mx-auto">
+          <img 
+            src="/lovable-uploads/deba5cc5-8e4b-42be-ab02-3b8dc3f59d5a.png"
+            alt="FTV Logo"
+            className="h-8 w-auto sm:h-10 md:h-12 mr-4 sm:mr-6"
+          />
+          <h1 className="text-white font-bold text-lg sm:text-xl md:text-2xl">
+            Members App
+          </h1>
+        </div>
+      </div>
+
       {/* YouTube Video Section */}
       <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
         <button
