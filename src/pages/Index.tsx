@@ -128,7 +128,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Banner Header */}
-      <div className="w-full py-5 px-4" style={{ backgroundColor: '#ec1c24' }}>
+      <div className="w-full py-1 sm:py-5 px-4" style={{ backgroundColor: '#ec1c24' }}>
         <div className="flex items-center justify-center max-w-4xl mx-auto">
           <img 
             src="/lovable-uploads/fcaced2e-cef0-4d27-aefa-25f4acc9b7a4.png"
