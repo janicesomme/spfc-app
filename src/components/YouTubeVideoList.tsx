@@ -69,18 +69,6 @@ export function YouTubeVideoList() {
   return (
     <div className="min-h-screen bg-black">
       <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
-        {/* Header - Mobile optimized width */}
-        <div className="w-full max-w-[340px] sm:max-w-md mb-6 sm:mb-8">
-          <div className="bg-red-600 py-4 sm:py-6 px-3 sm:px-4 rounded-lg text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
-              Latest Videos
-            </h1>
-            <p className="text-white text-sm sm:text-base">
-              Latest Content from FUTV
-            </p>
-          </div>
-        </div>
-
         {/* Video List - Single Column, Mobile optimized */}
         <div className="space-y-6 sm:space-y-8 w-full max-w-[340px] sm:max-w-md">
           {videos.map((video) => (
