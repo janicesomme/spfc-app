@@ -227,7 +227,7 @@ export default function HomePage() {
       </div>
 
       {/* Pick Your XI Section */}
-      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6 mt-[15px] sm:mt-0" style={{ marginTop: '30px' }}>
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6 mt-[15px] sm:mt-0">
         <div className="bg-blue-950/40 rounded-lg p-6">
           <h2 className="text-youtube-yellow text-2xl sm:text-3xl font-bold text-center mb-3">Fan Football Starts Now</h2>
           <p className="text-white text-lg sm:text-xl text-center mb-4">Share your Starting XI and Player Ratings with the Community!</p>
@@ -245,7 +245,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover"
               />
               {/* Clickable indicator triangle */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90 rounded-full p-2 sm:p-2.5 shadow-lg">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 translate-y-[30px] bg-white/90 rounded-full p-2 sm:p-2.5 shadow-lg">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.58L13.17 12L8.59 7.42L10 6l6 6-6 6-1.41-1.42z"/>
                 </svg>
