@@ -227,30 +227,32 @@ export default function HomePage() {
       </div>
 
       {/* Pick Your XI Section */}
-      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <h2 className="text-youtube-yellow text-2xl sm:text-3xl font-bold text-center mb-3">Fan Football Starts Now</h2>
-        <p className="text-white text-lg sm:text-xl text-center mb-4">Share your Starting XI and Player Ratings with the Community!</p>
-        <div className="w-full h-0.5 bg-red-600 mb-6 max-w-4xl mx-auto"></div>
-        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
-        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Pick It, Share It, Discuss It</p>
-        <button 
-          onClick={() => navigate('/pick-your-xi')}
-          className="w-full relative max-w-4xl mx-auto block mt-2.5"
-        >
-          <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
-            <img 
-              src="/lovable-uploads/0f3f8042-8468-4f58-a444-404003a1b24c.png"
-              alt="Pick Your XI"
-              className="w-full h-full object-cover"
-            />
-            {/* Clickable indicator triangle */}
-            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/90 rounded-full p-1.5 sm:p-2 shadow-lg">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8.59 16.58L13.17 12L8.59 7.42L10 6l6 6-6 6-1.41-1.42z"/>
-              </svg>
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6 mt-[15px] sm:mt-0">
+        <div className="bg-blue-950/40 rounded-lg p-6">
+          <h2 className="text-youtube-yellow text-2xl sm:text-3xl font-bold text-center mb-3">Fan Football Starts Now</h2>
+          <p className="text-white text-lg sm:text-xl text-center mb-4">Share your Starting XI and Player Ratings with the Community!</p>
+          <div className="w-full h-0.5 bg-red-600 mb-6 max-w-4xl mx-auto"></div>
+          <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Pick the Starting XI</h3>
+          <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Pick It, Share It, Discuss It</p>
+          <button 
+            onClick={() => navigate('/pick-your-xi')}
+            className="w-full relative max-w-4xl mx-auto block mt-2.5"
+          >
+            <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
+              <img 
+                src="/lovable-uploads/0f3f8042-8468-4f58-a444-404003a1b24c.png"
+                alt="Pick Your XI"
+                className="w-full h-full object-cover"
+              />
+              {/* Clickable indicator triangle */}
+              <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/90 rounded-full p-1.5 sm:p-2 shadow-lg">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8.59 16.58L13.17 12L8.59 7.42L10 6l6 6-6 6-1.41-1.42z"/>
+                </svg>
+              </div>
             </div>
-          </div>
-        </button>
+          </button>
+        </div>
       </div>
 
       {/* Red line above Player Ratings */}
@@ -260,8 +262,9 @@ export default function HomePage() {
 
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
-        <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
+        <div className="bg-blue-950/40 rounded-lg p-6">
+          <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
+          <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
         <button 
           onClick={() => navigate('/player-ratings')}
           className="w-full relative max-w-4xl mx-auto block mt-2.5"
@@ -281,13 +284,14 @@ export default function HomePage() {
           </div>
         </button>
         
-        {/* Final Player Ratings Button */}
-        <button 
-          onClick={() => navigate('/final-player-ratings')}
-          className="w-full max-w-4xl mx-auto block mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base"
-        >
-          Final Player Ratings
-        </button>
+          {/* Final Player Ratings Button */}
+          <button 
+            onClick={() => navigate('/final-player-ratings')}
+            className="w-full max-w-4xl mx-auto block mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm sm:text-base"
+          >
+            Final Player Ratings
+          </button>
+        </div>
       </div>
     </div>
   );
