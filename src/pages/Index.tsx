@@ -227,7 +227,7 @@ export default function HomePage() {
       </div>
 
       {/* Pick Your XI Section */}
-      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6 mt-[15px] sm:mt-0">
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6 mt-[15px] sm:mt-0" style={{ marginTop: '30px' }}>
         <div className="bg-blue-950/40 rounded-lg p-6">
           <h2 className="text-youtube-yellow text-2xl sm:text-3xl font-bold text-center mb-3">Fan Football Starts Now</h2>
           <p className="text-white text-lg sm:text-xl text-center mb-4">Share your Starting XI and Player Ratings with the Community!</p>
