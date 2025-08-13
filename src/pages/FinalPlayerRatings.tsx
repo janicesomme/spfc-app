@@ -100,7 +100,7 @@ export default function FinalPlayerRatings() {
   return (
     <div className="min-h-screen bg-[#9d0208] text-white">
       {/* Header */}
-      <div className="sticky top-0 bg-black border-b border-gray-800 z-10">
+      <div className="fixed top-0 left-0 right-0 bg-black border-b border-gray-800 z-50">
         <div className="flex items-center justify-between p-4">
           <Link to="/" className="text-white hover:text-gray-300 transition-colors">
             <ArrowLeft className="w-6 h-6" />
@@ -111,7 +111,7 @@ export default function FinalPlayerRatings() {
       </div>
 
       {/* Players List */}
-      <div className="p-4 space-y-4">
+      <div className="p-4 space-y-4 mt-16">
         {players.map((player, index) => {
           const finalRating = player.average_rating ? Math.round(player.average_rating * 10) / 10 : 0;
           
