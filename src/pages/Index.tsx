@@ -191,7 +191,7 @@ export default function HomePage() {
                 </button>
                 
                 {/* FUTV Logo */}
-                <div className="flex justify-center mb-8" style={{ marginTop: '-100px' }}>
+                <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
                   <img 
                     src="/lovable-uploads/703f5319-120d-4554-a7b3-94147e86ee93.png"
                     alt="FUTV Logo"
@@ -200,7 +200,7 @@ export default function HomePage() {
                 </div>
                 
                 {/* Navigation Links */}
-                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-130px' }}>
+                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-90px' }}>
                   {navigationItems.map((item, index) => (
                     <div key={item.path} className="w-full">
                       <button
