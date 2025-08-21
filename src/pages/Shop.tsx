@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ export default function Shop() {
 
   useEffect(() => {
     // Open the store in a new tab when this component mounts
-    window.open('https://futv.teemill.com', '_blank');
+    window.open('https://futv.teemill.com/collection/new', '_blank');
     // Navigate back to the previous page
     navigate(-1);
   }, [navigate]);
@@ -23,7 +24,7 @@ export default function Shop() {
         </p>
         <div className="space-y-3">
           <Button
-            onClick={() => window.open('https://futv.teemill.com', '_blank')}
+            onClick={() => window.open('https://futv.teemill.com/collection/new', '_blank')}
             className="bg-[#C8102E] hover:bg-[#A00D26] text-white px-6 py-2"
           >
             <ExternalLink className="h-4 w-4 mr-2" />
