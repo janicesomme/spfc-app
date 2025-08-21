@@ -200,7 +200,7 @@ export default function HomePage() {
                 </div>
                 
                 {/* Navigation Links */}
-                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-90px' }}>
+                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-50px' }}>
                   {navigationItems.map((item, index) => (
                     <div key={item.path} className="w-full">
                       <button
