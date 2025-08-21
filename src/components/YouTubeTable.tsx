@@ -146,12 +146,14 @@ export function YouTubeTable() {
             <a
               href={YOUTUBE_CHANNEL_URL}
               target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Watch all on YouTube"
+              rel="noopener"
+              aria-label="Watch all on YouTube (opens in new tab)"
               tabIndex={0}
               className="flex items-center"
             >
               <Youtube size={20} className="mr-1" /> <span className="hidden xs:inline">Watch all on</span> YouTube
+              <span className="ml-1 text-xs" aria-hidden="true">↗</span>
+              <span className="sr-only">(opens in new tab)</span>
             </a>
           </Button>
         </div>
@@ -167,10 +169,10 @@ export function YouTubeTable() {
             key={video.id}
             href={videoUrl}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener"
             className="w-full max-w-[370px] sm:max-w-[430px] block focus:ring-2 focus:ring-red-400 rounded-xl transition"
             tabIndex={0}
-            aria-label={`Play video: ${video.title}`}
+            aria-label={`Play video: ${video.title} (opens in new tab)`}
             style={{
               marginBottom: "0", // Reduce the vertical gap to be as close as possible
             }}
@@ -214,9 +216,11 @@ export function YouTubeTable() {
                   )}
                 </div>
                 <div className="flex flex-col justify-center items-center px-1">
-                  <div className="text-sm sm:text-base font-semibold text-white text-center break-words leading-tight line-clamp-2">
+                  <div className="text-sm sm:text-base font-semibold text-white text-center break-words leading-tight line-clamp-2 flex items-center gap-1">
                     {video.title}
+                    <span className="text-xs text-gray-400" aria-hidden="true">↗</span>
                   </div>
+                  <span className="sr-only">(opens in new tab)</span>
                 </div>
               </CardContent>
             </Card>
