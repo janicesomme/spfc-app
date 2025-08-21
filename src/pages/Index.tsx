@@ -228,7 +228,7 @@ export default function HomePage() {
 
       {/* Pick Your XI Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6 mt-[15px] sm:mt-0">
-        <div className="bg-blue-950/40 rounded-lg p-6">
+        <div className="bg-blue-950/40 rounded-lg p-6 border border-white">
           <h2 className="text-youtube-yellow text-2xl sm:text-3xl font-bold text-center mb-3">Fan Football Starts Now</h2>
           <p className="text-white text-lg sm:text-xl text-center mb-4">Share your Starting XI and Player Ratings with the Community!</p>
           <div className="w-full h-0.5 bg-red-600 mb-6 max-w-4xl mx-auto"></div>
@@ -262,7 +262,7 @@ export default function HomePage() {
 
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <div className="bg-blue-950/40 rounded-lg p-6">
+        <div className="bg-blue-950/40 rounded-lg p-6 border border-white">
           <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
           <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
         <button 
