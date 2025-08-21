@@ -293,6 +293,31 @@ export default function HomePage() {
           </button>
         </div>
       </div>
+
+      {/* Red line above Shop */}
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pt-8 pb-2">
+        <div className="w-full h-0.5 bg-red-600 max-w-4xl mx-auto"></div>
+      </div>
+
+      {/* Shop Section */}
+      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
+        <div className="bg-blue-950/40 rounded-lg p-6 border border-white">
+          <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">SHOP THE LATEST MERCH</h3>
+          <p className="text-youtube-yellow text-base sm:text-lg text-center mb-4">Everything FUTV Branded</p>
+          <button 
+            onClick={() => navigate('/shop')}
+            className="w-full relative max-w-4xl mx-auto block mt-2.5"
+          >
+            <div className="relative rounded-lg overflow-hidden w-full">
+              <img 
+                src="/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png"
+                alt="Shop the Latest Merch"
+                className="w-full h-auto object-contain rounded-lg"
+              />
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
