@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
+import { Menu, X } from 'lucide-react';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 interface Video {
   video_id: string;
@@ -29,6 +35,22 @@ export default function HomePage() {
   const [latestVideo, setLatestVideo] = useState<Video | null>(null);
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const navigationItems = [
+    { label: 'Home', path: '/' },
+    { label: 'News', path: '/news' },
+    { label: 'YT Videos', path: '/youtube' },
+    { label: 'Starting XI', path: '/pick-your-xi' },
+    { label: 'Player Ratings', path: '/player-ratings' },
+    { label: 'Final Player Ratings', path: '/final-player-ratings' },
+    { label: 'Shop', path: '/shop' },
+  ];
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsDrawerOpen(false);
+  };
 
   useEffect(() => {
     fetchData();
@@ -129,7 +151,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-black">
       {/* Banner Header */}
       <div className="w-full py-1 sm:py-5 px-4" style={{ backgroundColor: '#ec1c24' }}>
-        <div className="flex items-center justify-center max-w-4xl mx-auto">
+        <div className="flex items-center justify-center max-w-4xl mx-auto relative">
           <img 
             src="/lovable-uploads/fcaced2e-cef0-4d27-aefa-25f4acc9b7a4.png"
             alt="FTV Logo"
@@ -139,6 +161,63 @@ export default function HomePage() {
           <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl">
             Members App
           </h1>
+          
+          {/* Hamburger Menu - Mobile First */}
+          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+            <DrawerTrigger asChild>
+              <button 
+                className="absolute md:hidden text-white hover:text-gray-200 transition-colors z-10"
+                style={{ 
+                  right: '15px',
+                  top: '15px'
+                }}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={24} />
+              </button>
+            </DrawerTrigger>
+            <DrawerContent 
+              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
+              style={{ backgroundColor: '#ec1c24' }}
+            >
+              <div className="flex flex-col h-full p-6">
+                {/* Close Button */}
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="self-end text-white hover:text-gray-200 mb-4"
+                  aria-label="Close navigation menu"
+                >
+                  <X size={24} />
+                </button>
+                
+                {/* FUTV Logo */}
+                <div className="flex justify-center mb-8">
+                  <img 
+                    src="/lovable-uploads/703f5319-120d-4554-a7b3-94147e86ee93.png"
+                    alt="FUTV Logo"
+                    className="w-[100px] h-auto"
+                  />
+                </div>
+                
+                {/* Navigation Links */}
+                <nav className="flex flex-col items-start space-y-0">
+                  {navigationItems.map((item, index) => (
+                    <div key={item.path} className="w-full">
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                      {index < navigationItems.length - 1 && (
+                        <div className="w-full h-px bg-white/30" />
+                      )}
+                    </div>
+                  ))}
+                </nav>
+              </div>
+            </DrawerContent>
+          </Drawer>
         </div>
       </div>
 
