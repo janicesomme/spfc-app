@@ -122,8 +122,8 @@ export default function PickYourXI() {
               <button 
                 className="absolute md:hidden text-white hover:text-gray-200 transition-colors z-10"
                 style={{ 
-                  left: 'calc(50% - 90px)', // 40px to the left of "P" in "Pick"
-                  top: '15px'
+                  left: 'calc(50% - 130px)', // 80px to the left of "P" in "Pick"
+                  top: '5px'
                 }}
                 aria-label="Open navigation menu"
               >
