@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Share } from 'lucide-react';
+import { Plus, Share, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 interface Player {
   id: string;
@@ -46,6 +51,22 @@ const positionNames = {
 export default function PickYourXI() {
   const navigate = useNavigate();
   const [selectedPlayers, setSelectedPlayers] = useState<SelectedPlayers>({});
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const navigationItems = [
+    { label: 'Home', path: '/' },
+    { label: 'News', path: '/news' },
+    { label: 'YT Videos', path: '/youtube' },
+    { label: 'Starting XI', path: '/pick-your-xi' },
+    { label: 'Player Ratings', path: '/player-ratings' },
+    { label: 'Final Player Ratings', path: '/final-player-ratings' },
+    { label: 'Shop', path: '/shop' },
+  ];
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsDrawerOpen(false);
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem('selectedPlayers');
@@ -95,6 +116,63 @@ export default function PickYourXI() {
     >
       <div className="relative z-10 p-4 h-screen flex flex-col">
         <div className="relative text-center pt-2 pb-8">
+          {/* Hamburger Menu */}
+          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+            <DrawerTrigger asChild>
+              <button 
+                className="absolute md:hidden text-white hover:text-gray-200 transition-colors z-10"
+                style={{ 
+                  left: 'calc(50% - 90px)', // 40px to the left of "P" in "Pick"
+                  top: '15px'
+                }}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={24} />
+              </button>
+            </DrawerTrigger>
+            <DrawerContent 
+              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
+              style={{ backgroundColor: '#ec1c24' }}
+            >
+              <div className="flex flex-col h-full p-6">
+                {/* Close Button */}
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="self-end text-white hover:text-gray-200 mb-4"
+                  aria-label="Close navigation menu"
+                >
+                  <X size={24} />
+                </button>
+                
+                {/* FUTV Logo */}
+                <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
+                  <img 
+                    src="/lovable-uploads/703f5319-120d-4554-a7b3-94147e86ee93.png"
+                    alt="FUTV Logo"
+                    className="w-[100px] h-auto border border-white rounded"
+                  />
+                </div>
+                
+                {/* Navigation Links */}
+                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-50px' }}>
+                  {navigationItems.map((item, index) => (
+                    <div key={item.path} className="w-full">
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                      {index < navigationItems.length - 1 && (
+                        <div className="w-full h-px bg-white/30" />
+                      )}
+                    </div>
+                  ))}
+                </nav>
+              </div>
+            </DrawerContent>
+          </Drawer>
+
           <h1 className="text-2xl font-bold text-white mb-4">Pick Your XI</h1>
           
           {/* Share Button */}

@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ArrowLeft, Star, Menu, X } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 interface Player {
   id: string;
@@ -20,12 +25,29 @@ interface PlayerRating {
 }
 
 export default function PlayerRatings() {
+  const navigate = useNavigate();
   const [players, setPlayers] = useState<Player[]>([]);
   const [ratings, setRatings] = useState<PlayerRating[]>([]);
   const [motmPlayerId, setMotmPlayerId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { toast } = useToast();
+
+  const navigationItems = [
+    { label: 'Home', path: '/' },
+    { label: 'News', path: '/news' },
+    { label: 'YT Videos', path: '/youtube' },
+    { label: 'Starting XI', path: '/pick-your-xi' },
+    { label: 'Player Ratings', path: '/player-ratings' },
+    { label: 'Final Player Ratings', path: '/final-player-ratings' },
+    { label: 'Shop', path: '/shop' },
+  ];
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsDrawerOpen(false);
+  };
 
   // For demo purposes, using a fixture_id. In production, this would come from route params or context
   const fixtureId = 'fixture-mufc-chelsea-2025-07-19';
@@ -212,12 +234,67 @@ export default function PlayerRatings() {
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <div className="sticky top-0 bg-red-600 border-b border-gray-800 z-10">
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between p-4 relative">
           <Link to="/" className="text-white hover:text-red-400 transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <h1 className="text-xl font-bold">Rate The Players</h1>
-          <div className="w-6" /> {/* Spacer for center alignment */}
+          
+          {/* Hamburger Menu */}
+          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+            <DrawerTrigger asChild>
+              <button 
+                className="md:hidden text-white hover:text-gray-200 transition-colors z-10"
+                style={{ 
+                  marginLeft: '40px', // 40px to the right of the text
+                }}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={24} />
+              </button>
+            </DrawerTrigger>
+            <DrawerContent 
+              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
+              style={{ backgroundColor: '#ec1c24' }}
+            >
+              <div className="flex flex-col h-full p-6">
+                {/* Close Button */}
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="self-end text-white hover:text-gray-200 mb-4"
+                  aria-label="Close navigation menu"
+                >
+                  <X size={24} />
+                </button>
+                
+                {/* FUTV Logo */}
+                <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
+                  <img 
+                    src="/lovable-uploads/703f5319-120d-4554-a7b3-94147e86ee93.png"
+                    alt="FUTV Logo"
+                    className="w-[100px] h-auto border border-white rounded"
+                  />
+                </div>
+                
+                {/* Navigation Links */}
+                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-50px' }}>
+                  {navigationItems.map((item, index) => (
+                    <div key={item.path} className="w-full">
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                      {index < navigationItems.length - 1 && (
+                        <div className="w-full h-px bg-white/30" />
+                      )}
+                    </div>
+                  ))}
+                </nav>
+              </div>
+            </DrawerContent>
+          </Drawer>
         </div>
       </div>
 
