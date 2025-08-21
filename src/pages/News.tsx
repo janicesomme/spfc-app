@@ -251,8 +251,9 @@ export default function News() {
                   <a
                     href={article.url}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener"
                     className="block"
+                    aria-label={`${article.title} (opens in new tab)`}
                   >
                     {/* Article image */}
                     <div className="aspect-video overflow-hidden">
@@ -291,9 +292,11 @@ export default function News() {
                       </div>
 
                       {/* Title */}
-                      <h2 className="font-bold text-lg text-[#EAEAEA] leading-tight line-clamp-2 hover:text-red-400 transition-colors">
-                        {article.title}
+                      <h2 className="font-bold text-lg text-[#EAEAEA] leading-tight line-clamp-2 hover:text-red-400 transition-colors flex items-start gap-1">
+                        <span>{article.title}</span>
+                        <span className="text-xs text-gray-400 flex-shrink-0 mt-1" aria-hidden="true">↗</span>
                       </h2>
+                      <span className="sr-only">(opens in new tab)</span>
                       
                       {/* Description */}
                       {article.description && (
