@@ -245,7 +245,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover"
               />
               {/* Clickable indicator triangle */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 translate-y-[30px] bg-white/90 rounded-full p-4 sm:p-5 shadow-lg">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 translate-y-[0px] -translate-x-[10px] -translate-y-[30px] bg-white/90 rounded-full p-4 sm:p-5 shadow-lg">
                 <svg className="w-8 h-8 sm:w-10 sm:h-10 text-red-600" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.58L13.17 12L8.59 7.42L10 6l6 6-6 6-1.41-1.42z"/>
                 </svg>
