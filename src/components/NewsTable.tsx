@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { isExternalUrl, openUrl } from "@/lib/external-link-utils";
 
 // Only the columns that are present in your news_items table!
 interface NewsItem {
@@ -145,9 +146,18 @@ export function NewsTable() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => item.url && window.open(item.url, '_blank')}
+                    onClick={() => item.url && openUrl(item.url)}
+                    {...(item.url && isExternalUrl(item.url) && {
+                      'aria-label': `Read article (opens in new tab)`
+                    })}
                   >
                     <ExternalLink className="h-4 w-4" />
+                    {item.url && isExternalUrl(item.url) && (
+                      <>
+                        <span className="ml-1 text-xs" aria-hidden="true">↗</span>
+                        <span className="sr-only">(opens in new tab)</span>
+                      </>
+                    )}
                   </Button>
                 </TableCell>
               </TableRow>

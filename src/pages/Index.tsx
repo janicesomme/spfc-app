@@ -7,6 +7,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
 
 interface Video {
   video_id: string;
@@ -223,27 +224,51 @@ export default function HomePage() {
 
       {/* YouTube Video Section */}
       <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
-        <button
-          className="w-full max-w-[340px] sm:max-w-4xl mx-auto block"
-          onClick={() => latestVideo?.youtube_url ? window.open(latestVideo.youtube_url, '_blank') : navigate('/youtube')}
-        >
-          <div className="relative group cursor-pointer w-full">
-            <img 
-              src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
-              alt={latestVideo?.title || "Latest Video"}
-              className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
-              loading="lazy"
-            />
-            {/* YouTube Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-100 hover:bg-black/30 transition-all rounded-lg">
-              <div className="bg-red-600 hover:bg-red-700 rounded-full p-3 sm:p-4 shadow-lg transition-colors">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
+        {latestVideo?.youtube_url ? (
+          <ExternalLinkButton
+            url={latestVideo.youtube_url}
+            className="w-full max-w-[340px] sm:max-w-4xl mx-auto block"
+          >
+            <div className="relative group cursor-pointer w-full">
+              <img 
+                src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
+                alt={latestVideo?.title || "Latest Video"}
+                className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
+                loading="lazy"
+              />
+              {/* YouTube Play Button Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-100 hover:bg-black/30 transition-all rounded-lg">
+                <div className="bg-red-600 hover:bg-red-700 rounded-full p-3 sm:p-4 shadow-lg transition-colors">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
-        </button>
+          </ExternalLinkButton>
+        ) : (
+          <button
+            className="w-full max-w-[340px] sm:max-w-4xl mx-auto block"
+            onClick={() => navigate('/youtube')}
+          >
+            <div className="relative group cursor-pointer w-full">
+              <img 
+                src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
+                alt={latestVideo?.title || "Latest Video"}
+                className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
+                loading="lazy"
+              />
+              {/* YouTube Play Button Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-100 hover:bg-black/30 transition-all rounded-lg">
+                <div className="bg-red-600 hover:bg-red-700 rounded-full p-3 sm:p-4 shadow-lg transition-colors">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </button>
+        )}
         {/* Video Title - Below thumbnail with same width */}
         {latestVideo && (
           <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto">
@@ -261,10 +286,10 @@ export default function HomePage() {
         {newsArticles.length > 0 ? (
           <div className="space-y-3 max-w-4xl mx-auto">
             {newsArticles.map((article) => (
-              <div 
+              <ExternalLinkDiv
                 key={article.id}
-                onClick={() => article.url && window.open(article.url, '_blank')}
-                className="bg-black rounded-lg cursor-pointer hover:bg-gray-900 transition-colors"
+                url={article.url}
+                className="bg-black rounded-lg hover:bg-gray-900 transition-colors"
               >
                 <div className="flex flex-col sm:flex-row min-h-32 sm:min-h-40">
                   {article.image_url && (
@@ -295,7 +320,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </ExternalLinkDiv>
             ))}
           </div>
         ) : (

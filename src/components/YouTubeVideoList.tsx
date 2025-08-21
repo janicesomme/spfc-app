@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { ExternalLinkDiv } from '@/lib/external-link-utils';
 
 interface LatestVideo {
   id: number;
@@ -74,7 +75,10 @@ export function YouTubeVideoList() {
           {videos.map((video) => (
             <div key={video.id} className="flex flex-col items-center">
               {/* Thumbnail Container */}
-              <div className="relative group cursor-pointer w-full" onClick={() => window.open(video.youtube_url, '_blank')}>
+              <ExternalLinkDiv 
+                url={video.youtube_url}
+                className="relative group w-full"
+              >
                 <div className="relative">
                   <img
                     src={video.thumbnail_url}
@@ -87,7 +91,7 @@ export function YouTubeVideoList() {
                     <Play className="h-16 w-16 text-white drop-shadow-lg" />
                   </div>
                 </div>
-              </div>
+              </ExternalLinkDiv>
               
               {/* Title - Same width as thumbnail */}
               <h3 className="text-white text-lg sm:text-xl font-bold text-center mt-1 leading-tight w-full px-1">

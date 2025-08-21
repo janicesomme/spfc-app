@@ -3,13 +3,16 @@ import React, { useEffect } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { openUrl, isExternalUrl } from '@/lib/external-link-utils';
 
 export default function Shop() {
   const navigate = useNavigate();
 
+  const storeUrl = 'https://futv.teemill.com/collection/new';
+
   useEffect(() => {
     // Open the store in a new tab when this component mounts
-    window.open('https://futv.teemill.com/collection/new', '_blank');
+    openUrl(storeUrl);
     // Navigate back to the previous page
     navigate(-1);
   }, [navigate]);
@@ -24,11 +27,18 @@ export default function Shop() {
         </p>
         <div className="space-y-3">
           <Button
-            onClick={() => window.open('https://futv.teemill.com/collection/new', '_blank')}
+            onClick={() => openUrl(storeUrl)}
             className="bg-[#C8102E] hover:bg-[#A00D26] text-white px-6 py-2"
+            aria-label="Open Store (opens in new tab)"
           >
             <ExternalLink className="h-4 w-4 mr-2" />
             Open Store
+            {isExternalUrl(storeUrl) && (
+              <>
+                <span className="ml-1 text-xs" aria-hidden="true">↗</span>
+                <span className="sr-only">(opens in new tab)</span>
+              </>
+            )}
           </Button>
           <Button
             variant="ghost"
