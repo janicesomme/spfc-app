@@ -7,16 +7,16 @@ const Leaderboard = () => {
   const [showMyRank, setShowMyRank] = useState(false);
 
   const leaderboardData = [
-    { rank: 1, name: "Janice", points: 15, trend: "up" },
-    { rank: 2, name: "BarryTheRed", points: 12, trend: "up" },
-    { rank: 3, name: "RonaldoSZN", points: 10, trend: "down" },
-    { rank: 4, name: "FootyFan92", points: 9, trend: "up" },
-    { rank: 5, name: "RedDevil", points: 8, trend: "same" },
-    { rank: 6, name: "ArsenalACE", points: 7, trend: "down" },
-    { rank: 7, name: "PredictorPro", points: 6, trend: "up" },
-    { rank: 8, name: "MatchMaster", points: 5, trend: "same" },
-    { rank: 9, name: "ScoreGuru", points: 4, trend: "down" },
-    { rank: 10, name: "GoalGetter", points: 3, trend: "up" },
+    { rank: 1, name: "JaniceS", points: 2215, trend: "up" },
+    { rank: 2, name: "BarryTheRed", points: 2012, trend: "up" },
+    { rank: 3, name: "RonaldoSZN", points: 1910, trend: "down" },
+    { rank: 4, name: "FootyFan92", points: 1899, trend: "up" },
+    { rank: 5, name: "RedDevil", points: 1878, trend: "same" },
+    { rank: 6, name: "ArsenalACE", points: 1767, trend: "down" },
+    { rank: 7, name: "PredictorPro", points: 1766, trend: "up" },
+    { rank: 8, name: "MatchMaster", points: 1525, trend: "same" },
+    { rank: 9, name: "ScoreGuru", points: 1489, trend: "down" },
+    { rank: 10, name: "GoalGetter", points: 1438, trend: "up" },
   ];
 
   const getTrendIcon = (trend: string) => {
