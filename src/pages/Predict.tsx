@@ -85,7 +85,7 @@ const Predict = () => {
 
       {/* Red Header Section */}
       <div className="bg-gradient-to-r from-red-600 to-red-700 relative z-10">
-        <div className="container mx-auto px-4 py-8 max-w-md">
+        <div className="container mx-auto px-4 pt-3 pb-0.5 max-w-md">
           {/* Header */}
           <div className="text-center text-white">
             <h1 className="text-2xl font-extrabold mb-2">Man Utd vs Arsenal</h1>
