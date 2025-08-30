@@ -50,7 +50,7 @@ export const FirstScorerPredictor = ({
             </SelectTrigger>
             <SelectContent className="bg-white z-50">
               {unitedPlayers.map((player) => (
-                <SelectItem key={player.value} value={player.value} className="text-xl font-bold">
+                <SelectItem key={player.value} value={player.value} className="text-xl font-bold text-black">
                   {player.label}
                 </SelectItem>
               ))}
