@@ -6,6 +6,8 @@ const tabs = [
   { label: "Home", path: "/" },
   { label: "News", path: "/news" },
   { label: "Videos", path: "/youtube" },
+  { label: "🎯 Predict", path: "/predict" },
+  { label: "🏆 Leaderboard", path: "/leaderboard" },
   { label: "🛒 Shop", path: "/shop" },
 ];
 
