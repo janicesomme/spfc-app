@@ -57,7 +57,7 @@ const Predict = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-black-600 to-black-800 pb-20 md:pb-0">
+      <div className="min-h-screen bg-gradient-to-b from-red-600 to-red-800 pb-20 md:pb-0">
         <div className="container mx-auto px-4 py-8 max-w-sm">
           <div className="text-center space-y-6 text-white">
             <div className="text-6xl">🎉</div>
@@ -135,7 +135,7 @@ const Predict = () => {
           <Button
             onClick={handleSubmit}
             disabled={!canSubmit}
-            className="w-full h-16 text-xl font-bold bg-white-600 text-black hover:bg-grey-700 shadow-lg rounded-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border-2 border-black"
+            className="w-full h-16 text-xl font-bold bg-white-900 text-black hover:bg-grey-700 shadow-lg rounded-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border-2 border-black"
             size="lg"
           >
             Submit Bets 🔥
