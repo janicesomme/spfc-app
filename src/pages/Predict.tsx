@@ -69,7 +69,7 @@ const Predict = () => {
             <Button
               onClick={() => setIsSubmitted(false)}
               variant="outline"
-              className="w-full h-12 bg-white text-red-600 border-white hover:bg-white/90"
+              className="hidden md:block w-full h-12 bg-white text-red-600 border-white hover:bg-white/90"
             >
               Change Predictions
             </Button>
