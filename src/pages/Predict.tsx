@@ -1,0 +1,166 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { MessageSquare } from "lucide-react";
+import { BetTracker } from "@/components/predict/BetTracker";
+import { ScorePredictor } from "@/components/predict/ScorePredictor";
+import { FirstScorerPredictor } from "@/components/predict/FirstScorerPredictor";
+import { PossessionPredictor } from "@/components/predict/PossessionPredictor";
+import { ShotsPredictor } from "@/components/predict/ShotsPredictor";
+
+const Predict = () => {
+  const [homeScore, setHomeScore] = useState("");
+  const [awayScore, setAwayScore] = useState("");
+  const [firstScorer, setFirstScorer] = useState("marcus-rashford");
+  const [possession, setPossession] = useState([55]);
+  const [shotsOnTarget, setShotsOnTarget] = useState("7");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // Bet amounts
+  const [scoreBet, setScoreBet] = useState("");
+  const [scorerBet, setScorerBet] = useState("");
+  const [possessionBet, setPossessionBet] = useState("");
+  const [shotsBet, setShotsBet] = useState("");
+  
+  const { toast } = useToast();
+
+  // Calculate total bet and remaining budget
+  const totalBet = (parseFloat(scoreBet) || 0) + (parseFloat(scorerBet) || 0) + (parseFloat(possessionBet) || 0) + (parseFloat(shotsBet) || 0);
+  const canSubmit = totalBet === 100;
+
+  const handleSubmit = () => {
+    if (!homeScore || !awayScore) {
+      toast({
+        title: "Missing scores!",
+        description: "Please enter scores for both teams.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Simulate saving prediction
+    localStorage.setItem("currentPrediction", JSON.stringify({
+      homeScore: parseInt(homeScore),
+      awayScore: parseInt(awayScore),
+      firstScorer,
+      possession: possession[0],
+      shotsOnTarget: parseInt(shotsOnTarget),
+      timestamp: new Date().toISOString()
+    }));
+
+    setIsSubmitted(true);
+    toast({
+      title: "Prediction submitted!",
+      description: "You're locked in! Good luck! 🔥",
+    });
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-red-600 to-red-800 pb-20 md:pb-0">
+        <div className="container mx-auto px-4 py-8 max-w-sm">
+          <div className="text-center space-y-6 text-white">
+            <div className="text-6xl">🎉</div>
+            <div>
+              <h3 className="text-2xl font-bold mb-2">You're locked in!</h3>
+              <p className="text-lg mb-4">All predictions submitted!</p>
+              <p className="font-semibold">Good luck! 🍀</p>
+            </div>
+            
+            <Button
+              onClick={() => setIsSubmitted(false)}
+              variant="outline"
+              className="w-full h-12 bg-white text-red-600 border-white hover:bg-white/90"
+            >
+              Change Predictions
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen pb-20 md:pb-0 relative bg-gradient-to-b from-blue-900 to-blue-700">
+      <BetTracker totalBet={totalBet} canSubmit={canSubmit} />
+
+      <div className="container mx-auto px-4 py-8 max-w-md relative z-10">
+        {/* Header */}
+        <div className="text-center mb-8 text-white">
+          <h1 className="text-2xl font-extrabold mb-2">Man Utd vs Arsenal</h1>
+          <h2 className="text-lg font-bold mb-4">Old Trafford — Aug 17, 3:00pm</h2>
+          
+          {/* Top Winner Banner */}
+          <div className="bg-yellow-400 rounded-2xl p-4 mb-8 border-2 border-black">
+            <p className="text-black font-bold text-base">
+              🎉 Last Week's Winner: <span className="text-red-600 font-extrabold">FUTVFan123</span> — £774 Won
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <ScorePredictor 
+            homeScore={homeScore}
+            awayScore={awayScore}
+            betAmount={scoreBet}
+            onHomeScoreChange={setHomeScore}
+            onAwayScoreChange={setAwayScore}
+            onBetAmountChange={setScoreBet}
+          />
+
+          <FirstScorerPredictor 
+            selectedPlayer={firstScorer}
+            betAmount={scorerBet}
+            onPlayerChange={setFirstScorer}
+            onBetAmountChange={setScorerBet}
+          />
+
+          <PossessionPredictor 
+            possession={possession}
+            betAmount={possessionBet}
+            onPossessionChange={setPossession}
+            onBetAmountChange={setPossessionBet}
+          />
+
+          <ShotsPredictor 
+            shotsOnTarget={shotsOnTarget}
+            betAmount={shotsBet}
+            onShotsChange={setShotsOnTarget}
+            onBetAmountChange={setShotsBet}
+          />
+        </div>
+
+        {/* Submit Bets Button */}
+        <div className="mt-12 mb-6">
+          <Button
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+            className="w-full h-16 text-xl font-bold bg-green-600 text-white hover:bg-green-700 shadow-lg rounded-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border-2 border-black"
+            size="lg"
+          >
+            Submit Bets 🔥
+          </Button>
+        </div>
+          
+        {/* Discord Join Button */}
+        <div className="mb-6">
+          <Button
+            className="w-full h-16 text-lg font-bold text-white hover:opacity-90 hover:shadow-2xl rounded-xl shadow-lg transition-all duration-200 border-2 border-black hover:border-yellow-400 flex items-center justify-center gap-2"
+            style={{ backgroundColor: '#1e52f1' }}
+          >
+            <MessageSquare size={24} />
+            📢 Join Our Fan Discord
+          </Button>
+        </div>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-white/80">
+            ⚠️ Risky choices bring big rewards! 🏆 Go for glory!
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Predict;
