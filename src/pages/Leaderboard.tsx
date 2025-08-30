@@ -7,16 +7,16 @@ const Leaderboard = () => {
   const [showMyRank, setShowMyRank] = useState(false);
 
   const leaderboardData = [
-    { rank: 1, name: "Janice", points: 2155, trend: "up" },
-    { rank: 2, name: "BarryTheRed", points: 1902, trend: "up" },
-    { rank: 3, name: "RonaldoSZN", points: 1790, trend: "down" },
-    { rank: 4, name: "FootyFan92", points: 1559, trend: "up" },
-    { rank: 5, name: "RedDevil", points: 1556, trend: "same" },
-    { rank: 6, name: "ArsenalACE", points: 1483, trend: "down" },
-    { rank: 7, name: "PredictorPro", points: 1416, trend: "up" },
-    { rank: 8, name: "MatchMaster", points: 1405, trend: "same" },
-    { rank: 9, name: "ScoreGuru", points: 1394, trend: "down" },
-    { rank: 10, name: "GoalGetter", points: 1389, trend: "up" },
+    { rank: 1, name: "Janice", points: 15, trend: "up" },
+    { rank: 2, name: "BarryTheRed", points: 12, trend: "up" },
+    { rank: 3, name: "RonaldoSZN", points: 10, trend: "down" },
+    { rank: 4, name: "FootyFan92", points: 9, trend: "up" },
+    { rank: 5, name: "RedDevil", points: 8, trend: "same" },
+    { rank: 6, name: "ArsenalACE", points: 7, trend: "down" },
+    { rank: 7, name: "PredictorPro", points: 6, trend: "up" },
+    { rank: 8, name: "MatchMaster", points: 5, trend: "same" },
+    { rank: 9, name: "ScoreGuru", points: 4, trend: "down" },
+    { rank: 10, name: "GoalGetter", points: 3, trend: "up" },
   ];
 
   const getTrendIcon = (trend: string) => {
@@ -47,7 +47,7 @@ const Leaderboard = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0 relative bg-gradient-to-b from-purple-900 to-purple-700">
+    <div className="min-h-screen pb-20 md:pb-0 relative bg-gradient-to-b from-black-900 to-black-700">
       <div className="container mx-auto px-4 py-8 max-w-2xl relative z-10">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">
