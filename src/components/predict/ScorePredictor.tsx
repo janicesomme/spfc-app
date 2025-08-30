@@ -42,7 +42,7 @@ export const ScorePredictor = ({
             </label>
             <div className="flex items-center gap-4 justify-center">
               <div className="flex-1">
-                <div className="text-center text-lg text-black mb-1">Home Team</div>
+                <div className="text-center text-sm sm:text-lg text-black mb-1 whitespace-nowrap">Home Team</div>
                 <Input
                   type="number"
                   value={homeScore}
@@ -55,7 +55,7 @@ export const ScorePredictor = ({
               </div>
               <div className="text-2xl font-bold text-gray-600 px-2">-</div>
               <div className="flex-1">
-                <div className="text-center text-lg text-black mb-1">Away Team</div>
+                <div className="text-center text-sm sm:text-lg text-black mb-1 whitespace-nowrap">Away Team</div>
                 <Input
                   type="number"
                   value={awayScore}
