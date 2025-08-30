@@ -10,8 +10,8 @@ const level1Tabs = [
 ];
 
 const level2Tabs = [
-  { label: "Player Ratings", path: "/player-ratings" },
-  { label: "Starting XI", path: "/pick-your-xi" },
+  { label: "Ratings", path: "/player-ratings" },
+  { label: "My XI", path: "/pick-your-xi" },
   { label: "Predictions", path: "/predict" },
   { label: "Leaderboard", path: "/leaderboard" },
 ];
