@@ -135,7 +135,7 @@ const Predict = () => {
           <Button
             onClick={handleSubmit}
             disabled={!canSubmit}
-            className="w-full h-16 text-xl font-bold bg-green-600 text-white hover:bg-green-700 shadow-lg rounded-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border-2 border-black"
+            className="w-full h-16 text-xl font-bold bg-white-600 text-black hover:bg-grey-700 shadow-lg rounded-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border-2 border-black"
             size="lg"
           >
             Submit Bets 🔥
