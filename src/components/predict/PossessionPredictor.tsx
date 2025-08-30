@@ -19,14 +19,14 @@ export const PossessionPredictor = ({
   onBetAmountChange
 }: PossessionPredictorProps) => {
   return (
-    <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-card-background border-4 border-black">
+    <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-white border-4 border-black">
       <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
         <CardTitle className="text-2xl font-extrabold text-center flex items-center justify-between">
           <span>MAN UTD POSSESSION %</span>
           <UserRound className="w-8 h-8" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6 space-y-6">
+      <CardContent className="p-6 space-y-6 bg-white">
         <div className="space-y-4">
           <label className="block text-lg font-bold text-center text-gray-700">
             ⚽ What % of possession will United have?
@@ -69,7 +69,7 @@ export const PossessionPredictor = ({
             placeholder="Enter amount"
             value={betAmount}
             onChange={(e) => onBetAmountChange(e.target.value)}
-            className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl"
+            className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100 text-black placeholder:text-red-500"
           />
         </div>
 
