@@ -81,7 +81,7 @@ const Predict = () => {
   }
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0 relative" style={{ background: 'linear-gradient(to bottom, #1e3a8a, #1d4ed8)' }}>
+    <div className="min-h-screen pb-20 md:pb-0 relative" style={{ background: 'linear-gradient(to bottom, #dc2626, #b91c1c)' }}>
       <BetTracker totalBet={totalBet} canSubmit={canSubmit} />
 
       <div className="container mx-auto px-4 py-8 max-w-md relative z-10">

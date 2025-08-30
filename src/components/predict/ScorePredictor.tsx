@@ -23,7 +23,7 @@ export const ScorePredictor = ({
   onBetAmountChange
 }: ScorePredictorProps) => {
   return (
-    <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-card-background border-4 border-black">
+    <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-white border-4 border-black">
       <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
         <CardTitle className="text-2xl font-extrabold text-center flex items-center justify-between">
           <span>PREDICT THE SCORE</span>
@@ -31,7 +31,7 @@ export const ScorePredictor = ({
         </CardTitle>
         <p className="mt-1 text-xs sm:text-sm text-white text-center">HOME team score in the LEFT box</p>
       </CardHeader>
-      <CardContent className="p-6 space-y-6">
+      <CardContent className="p-6 space-y-6 bg-white">
         <div className="space-y-3">
           <label className="block text-lg font-bold text-center text-gray-700">
             🏆 Final Score Prediction
