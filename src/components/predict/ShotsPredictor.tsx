@@ -37,7 +37,7 @@ export const ShotsPredictor = ({
             </SelectTrigger>
             <SelectContent className="bg-white z-50">
               {Array.from({ length: 16 }, (_, i) => (
-                <SelectItem key={i} value={i.toString()} className="text-xl font-bold">
+                <SelectItem key={i} value={i.toString()} className="text-xl font-bold text-black">
                   {i} shots
                 </SelectItem>
               ))}
