@@ -10,7 +10,7 @@ export const BetTracker = ({ totalBet, canSubmit }: BetTrackerProps) => {
         <span className="text-lg md:text-2xl">💰</span>
         <span className="font-bold text-sm md:text-lg text-white">Total Bets</span>
       </div>
-      <div className="text-lg md:text-2xl font-extrabold text-white text-center mt-2 md:-mt-3">
+      <div className="text-lg md:text-2xl font-extrabold text-white text-center -mt-2 md:-mt-3">
         £{totalBet.toFixed(0)}/£100
       </div>
       <p className="text-xs text-white/90 text-center -mt-1 md:-mt-2">
