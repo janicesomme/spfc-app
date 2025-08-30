@@ -96,7 +96,7 @@ const Predict = () => {
 
       <div className="container mx-auto px-4 max-w-md relative z-10">
         {/* Winner Banner with margin */}
-        <div className="bg-yellow-400 rounded-2xl p-4 mb-8 border-2 border-black" style={{ marginTop: '5px' }}>
+        <div className="bg-yellow-400 rounded-2xl p-4 mb-8 border-2 border-black mt-[35px] md:mt-[5px]">
           <p className="text-black font-bold text-base">
             🎉 Last Week's Winner: <span className="text-red-600 font-extrabold">FUTVFan123</span> — £774 Won
           </p>
