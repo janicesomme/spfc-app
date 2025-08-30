@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare } from "lucide-react";
 import { BetTracker } from "@/components/predict/BetTracker";
 import { ScorePredictor } from "@/components/predict/ScorePredictor";
 import { FirstScorerPredictor } from "@/components/predict/FirstScorerPredictor";
@@ -139,17 +138,6 @@ const Predict = () => {
             size="lg"
           >
             Submit Bets 🔥
-          </Button>
-        </div>
-          
-        {/* Discord Join Button */}
-        <div className="mb-6">
-          <Button
-            className="w-full h-16 text-lg font-bold text-white hover:opacity-90 hover:shadow-2xl rounded-xl shadow-lg transition-all duration-200 border-2 border-black hover:border-yellow-400 flex items-center justify-center gap-2"
-            style={{ backgroundColor: '#1e52f1' }}
-          >
-            <MessageSquare size={24} />
-            📢 Join Our Fan Discord
           </Button>
         </div>
 
