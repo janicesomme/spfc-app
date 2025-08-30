@@ -57,7 +57,7 @@ const Predict = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-red-600 to-red-800 pb-20 md:pb-0">
+      <div className="min-h-screen bg-gradient-to-b from-black to-black">
         <div className="container mx-auto px-4 py-8 max-w-sm">
           <div className="text-center space-y-6 text-white">
             <div className="text-6xl">🎉</div>
