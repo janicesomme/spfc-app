@@ -83,18 +83,23 @@ const Predict = () => {
     <div className="min-h-screen pb-20 md:pb-0 relative" style={{ background: 'radial-gradient(ellipse at center, rgba(160, 160, 160, 0.8) 0%, rgba(120, 120, 120, 0.6) 30%, rgba(80, 80, 80, 0.4) 50%, rgba(0, 0, 0, 1) 90%), black' }}>
       <BetTracker totalBet={totalBet} canSubmit={canSubmit} />
 
-      <div className="container mx-auto px-4 py-8 max-w-md relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8 text-white">
-          <h1 className="text-2xl font-extrabold mb-2">Man Utd vs Arsenal</h1>
-          <h2 className="text-lg font-bold mb-4">Old Trafford — Aug 17, 3:00pm</h2>
-          
-          {/* Top Winner Banner */}
-          <div className="bg-yellow-400 rounded-2xl p-4 mb-8 border-2 border-black">
-            <p className="text-black font-bold text-base">
-              🎉 Last Week's Winner: <span className="text-red-600 font-extrabold">FUTVFan123</span> — £774 Won
-            </p>
+      {/* Red Header Section */}
+      <div className="bg-gradient-to-r from-red-600 to-red-700 relative z-10">
+        <div className="container mx-auto px-4 py-8 max-w-md">
+          {/* Header */}
+          <div className="text-center text-white">
+            <h1 className="text-2xl font-extrabold mb-2">Man Utd vs Arsenal</h1>
+            <h2 className="text-lg font-bold mb-4">Old Trafford — Aug 17, 3:00pm</h2>
           </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 max-w-md relative z-10">
+        {/* Winner Banner with margin */}
+        <div className="bg-yellow-400 rounded-2xl p-4 mb-8 border-2 border-black" style={{ marginTop: '5px' }}>
+          <p className="text-black font-bold text-base">
+            🎉 Last Week's Winner: <span className="text-red-600 font-extrabold">FUTVFan123</span> — £774 Won
+          </p>
         </div>
 
         <div className="space-y-6">
