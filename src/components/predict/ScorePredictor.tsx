@@ -43,7 +43,7 @@ export const ScorePredictor = ({
                 type="number"
                 value={homeScore}
                 onChange={(e) => onHomeScoreChange(e.target.value)}
-                className="text-center text-foreground placeholder:text-foreground !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl"
+                className="text-center text-black placeholder:text-black !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100"
                 placeholder="3"
                 min="0"
                 max="10"
@@ -56,7 +56,7 @@ export const ScorePredictor = ({
                 type="number"
                 value={awayScore}
                 onChange={(e) => onAwayScoreChange(e.target.value)}
-                className="text-center text-foreground placeholder:text-foreground !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl"
+                className="text-center text-black placeholder:text-black !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100"
                 placeholder="1"
                 min="0"
                 max="10"
@@ -78,7 +78,7 @@ export const ScorePredictor = ({
             placeholder="Enter amount"
             value={betAmount}
             onChange={(e) => onBetAmountChange(e.target.value)}
-            className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl"
+            className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100 text-black placeholder:text-red-500"
           />
         </div>
 
