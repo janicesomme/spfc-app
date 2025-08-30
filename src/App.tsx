@@ -22,6 +22,7 @@ import PlayerRatings from "./pages/PlayerRatings";
 import FinalPlayerRatings from "./pages/FinalPlayerRatings";
 import GamePredictions from "./pages/GamePredictions";
 import Predict from "./pages/Predict";
+import Leaderboard from "./pages/Leaderboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,6 +54,7 @@ function App() {
               <Route path="/final-player-ratings" element={<FinalPlayerRatings />} />
               <Route path="/game-predictions" element={<GamePredictions />} />
               <Route path="/predict" element={<Predict />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/hot-o-meter" element={<HotOMeter />} />
               <Route path="*" element={<NotFound />} />
