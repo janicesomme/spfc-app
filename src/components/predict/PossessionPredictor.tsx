@@ -33,7 +33,7 @@ export const PossessionPredictor = ({
           </label>
           <div className="relative flex justify-center">
             <div className="w-40 h-20 relative">
-              <div className="absolute inset-0 border-8 border-gray-200 rounded-t-full"></div>
+              <div className="absolute inset-0 border-8 border-red-600 rounded-t-full"></div>
               <div 
                 className="absolute inset-0 border-8 border-green-500 rounded-t-full"
                 style={{
@@ -41,7 +41,7 @@ export const PossessionPredictor = ({
                 }}
               ></div>
               <div className="absolute inset-0 flex items-end justify-center pb-2">
-                <span className="text-3xl font-bold">{possession[0]}%</span>
+                <span className="text-3xl font-bold text-black">{possession[0]}%</span>
               </div>
             </div>
           </div>
