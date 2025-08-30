@@ -61,7 +61,7 @@ const Leaderboard = () => {
         <Card className="shadow-lg mb-6">
           <CardHeader className="bg-red-600">
             <CardTitle className="text-center text-xl text-white">
-              Week 1 Standings
+              Week 3 Standings
             </CardTitle>
           </CardHeader>
           
