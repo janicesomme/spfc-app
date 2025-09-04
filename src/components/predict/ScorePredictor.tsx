@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CircleDot } from "lucide-react";
 import { QuickBetButtons } from "./QuickBetButtons";
+import { OddsDisplay } from "./OddsDisplay";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
 
@@ -51,7 +52,6 @@ export const ScorePredictor = ({
           }
         });
         
-        console.log('Loaded odds map:', map);
         setOddsMap(map);
         setIsLoadingOdds(false);
       } catch (error) {
@@ -66,8 +66,6 @@ export const ScorePredictor = ({
   // Compute current score key and get odds
   const currentScoreKey = homeScore && awayScore ? `${homeScore}-${awayScore}` : '';
   const currentOdds = currentScoreKey ? oddsMap[currentScoreKey] : null;
-  
-  console.log('Score key:', currentScoreKey, 'Odds:', currentOdds, 'Bet:', betAmount);
 
   // Update parent with selected odds when score changes
   useEffect(() => {
@@ -99,10 +97,7 @@ export const ScorePredictor = ({
                 <Input
                   type="number"
                   value={homeScore}
-                  onChange={(e) => {
-                    console.log('Home score changed to:', e.target.value);
-                    onHomeScoreChange(e.target.value);
-                  }}
+                  onChange={(e) => onHomeScoreChange(e.target.value)}
                   className="text-center text-black placeholder:text-black !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100"
                   placeholder="3"
                   min="0"
@@ -115,10 +110,7 @@ export const ScorePredictor = ({
                 <Input
                   type="number"
                   value={awayScore}
-                  onChange={(e) => {
-                    console.log('Away score changed to:', e.target.value);
-                    onAwayScoreChange(e.target.value);
-                  }}
+                  onChange={(e) => onAwayScoreChange(e.target.value)}
                   className="text-center text-black placeholder:text-black !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100"
                   placeholder="1"
                   min="0"
@@ -127,24 +119,11 @@ export const ScorePredictor = ({
               </div>
             </div>
             
-            {/* Dynamic Odds Display */}
-            {currentScoreKey && currentOdds && (
-              <div className="flex justify-center mt-2">
-                <Badge variant="outline" className="border-blue-600 text-blue-700 px-3 py-1 text-sm font-bold">
-                  {currentScoreKey} @ {currentOdds.toFixed(1)}/1 odds
-                </Badge>
-              </div>
-            )}
-            
-            {/* Potential Winnings Calculator */}
+            {/* Odds Badge */}
             <div className="flex justify-center mt-3">
-              {currentOdds && betAmount && parseFloat(betAmount) > 0 ? (
-                <Badge variant="secondary" className="bg-green-600 text-white border-black border-2 px-3 py-1 text-sm font-bold">
-                  You will win £{(parseFloat(betAmount) * currentOdds).toFixed(2)}
-                </Badge>
-              ) : currentOdds && (!betAmount || parseFloat(betAmount) === 0) ? (
-                <Badge variant="outline" className="border-blue-500 text-blue-600 px-3 py-1 text-xs">
-                  Enter bet amount to see winnings
+              {currentOdds ? (
+                <Badge variant="secondary" className="bg-blue-900 text-white border-black border-2 px-3 py-1 text-sm font-bold">
+                  {currentOdds}:1
                 </Badge>
               ) : currentScoreKey && !isLoadingOdds ? (
                 <Badge variant="outline" className="border-gray-400 text-gray-500 px-3 py-1 text-xs">
@@ -171,7 +150,7 @@ export const ScorePredictor = ({
             />
           </div>
 
-          
+          <OddsDisplay />
         </CardContent>
       </Card>
     </div>
