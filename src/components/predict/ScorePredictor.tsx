@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CircleDot } from "lucide-react";
 import { QuickBetButtons } from "./QuickBetButtons";
-import { OddsDisplay } from "./OddsDisplay";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
 
@@ -52,6 +51,7 @@ export const ScorePredictor = ({
           }
         });
         
+        console.log('Loaded odds map:', map);
         setOddsMap(map);
         setIsLoadingOdds(false);
       } catch (error) {
@@ -66,6 +66,8 @@ export const ScorePredictor = ({
   // Compute current score key and get odds
   const currentScoreKey = homeScore && awayScore ? `${homeScore}-${awayScore}` : '';
   const currentOdds = currentScoreKey ? oddsMap[currentScoreKey] : null;
+  
+  console.log('Score key:', currentScoreKey, 'Odds:', currentOdds, 'Bet:', betAmount);
 
   // Update parent with selected odds when score changes
   useEffect(() => {
@@ -154,7 +156,7 @@ export const ScorePredictor = ({
             />
           </div>
 
-          <OddsDisplay />
+          
         </CardContent>
       </Card>
     </div>
