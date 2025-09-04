@@ -4,6 +4,8 @@ import { Slider } from "@/components/ui/slider";
 import { UserRound } from "lucide-react";
 import { QuickBetButtons } from "./QuickBetButtons";
 import { OddsDisplay } from "./OddsDisplay";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 interface PossessionPredictorProps {
   possession: number[];
@@ -18,6 +20,23 @@ export const PossessionPredictor = ({
   onPossessionChange,
   onBetAmountChange
 }: PossessionPredictorProps) => {
+  const [possessionMvp, setPossessionMvp] = useState<{ our_band_text?: string; fraction?: string } | null>(null);
+
+  useEffect(() => {
+    const fetchPossessionMvp = async () => {
+      const { data, error } = await (supabase as any)
+        .from('possession_mvp')
+        .select('our_band_text, fraction')
+        .eq('fixture_id', '537822')
+        .maybeSingle();
+      
+      if (data && !error) {
+        setPossessionMvp(data);
+      }
+    };
+
+    fetchPossessionMvp();
+  }, []);
   return (
     <div className="relative p-4">
       {/* Glow effect background */}
@@ -58,6 +77,12 @@ export const PossessionPredictor = ({
               step={1}
               className="w-full"
             />
+            
+            {possessionMvp && (
+              <div className="text-center text-sm text-gray-600 mt-2">
+                Expected band: {possessionMvp.our_band_text}% (Odds: {possessionMvp.fraction})
+              </div>
+            )}
           </div>
 
           <QuickBetButtons 
