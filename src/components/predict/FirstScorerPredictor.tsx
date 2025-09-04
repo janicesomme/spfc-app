@@ -14,15 +14,29 @@ interface FirstScorerPredictorProps {
 
 const unitedPlayers = [
   { value: "benjamin-sesko", label: "Benjamin Sesko" },
-  { value: "rasmus-hojlund", label: "Rasmus Højlund" },
+  { value: "chido-obi-martin", label: "Chido Obi-Martin" },
+  { value: "joshua-zirkzee", label: "Joshua Zirkzee" },
   { value: "mattheus-cunha", label: "Mattheus Cunha" },
   { value: "bryan-mbuemo", label: "Bryan Mbuemo" },
   { value: "amad-diallo", label: "Amad-Diallo" },
   { value: "bruno-fernandes", label: "Bruno Fernandes" },
-  { value: "casemiro", label: "Casemiro" },
+  { value: "carlos-casemiro", label: "Casemiro" },
   { value: "mason-mount", label: "Mason Mount" },
   { value: "matijis-deligt", label: "Matijis DeLigt" },
-  { value: "manuel-ugarte", label: "Manuel-Ugarte" },
+  { value: "manuel-ugarte", label: "Manuel Ugarte" },
+  { value: "kobbie-manioo", label: "Koddie Mainoo" },
+  { value: "ethan-wheatly", label: "Ethan Wheatley" },
+  { value: "patrick-dorgu", label: "Patrick Dorgu" },
+  { value: "leny-yoro", label: "Leny Yoro" },
+  { value: "noussair-mazraoui", label: "Noussair Mazraoui" },
+  { value: "ayden-heaven", label: "Ayden Heaven" },
+  { value: "tyler-fredricson", label: "Tyler Fredricson" },
+  { value: "harry-amass", label: "Harry Amass" },
+  { value: "lisandro-martinez", label: "Lisandro Martinez" },
+  { value: "luke-shaw", label: "Luke Shaw" },
+  { value: "diogo-dalot", label: "Diogo Dalot" },
+  { value: "altay-bayindir", label: "Altay Bayindir" },
+  { value: "andre-onana", label: "Andre Onana" },
 ];
 
 export const FirstScorerPredictor = ({

@@ -10,7 +10,7 @@ import { ShotsPredictor } from "@/components/predict/ShotsPredictor";
 const Predict = () => {
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
-  const [firstScorer, setFirstScorer] = useState("marcus-rashford");
+  const [firstScorer, setFirstScorer] = useState("benjamin-sesko");
   const [possession, setPossession] = useState([55]);
   const [shotsOnTarget, setShotsOnTarget] = useState("7");
   const [isSubmitted, setIsSubmitted] = useState(false);
