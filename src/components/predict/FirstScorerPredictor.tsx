@@ -79,7 +79,30 @@ export const FirstScorerPredictor = ({
             />
           </div>
 
-          <OddsDisplay />
+          {/* Odds Section */}
+          <div className="space-y-3">
+            <label className="block text-lg font-bold text-center text-gray-700">
+              📊 ODDS
+            </label>
+            <div className="flex justify-center">
+              <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
+                ENTER PREDICTION
+              </div>
+            </div>
+          </div>
+          
+          {/* Potential Winnings Calculator */}
+          <div className="flex justify-center mt-3">
+            {betAmount && parseFloat(betAmount) > 0 ? (
+              <div className="bg-green-600 text-white border-black border-2 px-3 py-1 text-sm font-bold rounded">
+                Potential winnings: £{(parseFloat(betAmount) * 3.0).toFixed(2)}
+              </div>
+            ) : (
+              <div className="border-blue-500 border text-blue-600 px-3 py-1 text-xs rounded">
+                Enter bet amount to see winnings
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>
