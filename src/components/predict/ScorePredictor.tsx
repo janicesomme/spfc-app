@@ -69,6 +69,31 @@ export const ScorePredictor = ({
   
   console.log('Score key:', currentScoreKey, 'Odds:', currentOdds, 'Bet:', betAmount);
 
+  // Convert decimal odds to fractional odds
+  const convertToFractionalOdds = (decimalOdds: number): string => {
+    if (decimalOdds === 2.0) return "EVENS";
+    
+    const fractional = decimalOdds - 1;
+    
+    // Handle common fractional odds
+    if (fractional === 0.5) return "1/2";
+    if (fractional === 1) return "1/1";
+    if (fractional === 1.5) return "3/2";
+    if (fractional === 2) return "2/1";
+    if (fractional === 2.5) return "5/2";
+    if (fractional === 3) return "3/1";
+    if (fractional === 4) return "4/1";
+    if (fractional === 5) return "5/1";
+    if (fractional === 6) return "6/1";
+    if (fractional === 9) return "9/1";
+    if (fractional === 10) return "10/1";
+    
+    // For other odds, calculate the best fraction
+    const denominator = 1;
+    const numerator = Math.round(fractional * denominator);
+    return `${numerator}/${denominator}`;
+  };
+
   // Update parent with selected odds when score changes
   useEffect(() => {
     if (onSelectedOddsChange) {
@@ -130,9 +155,9 @@ export const ScorePredictor = ({
             {/* Dynamic Odds Display */}
             {currentScoreKey && currentOdds && (
               <div className="flex justify-center mt-2">
-                <Badge variant="outline" className="border-blue-600 text-blue-700 px-3 py-1 text-sm font-bold">
-                  {currentScoreKey} @ {currentOdds.toFixed(1)}/1 odds
-                </Badge>
+                <div className="bg-primary text-white px-4 py-2 text-lg font-bold rounded-lg">
+                  {convertToFractionalOdds(currentOdds)}
+                </div>
               </div>
             )}
             
