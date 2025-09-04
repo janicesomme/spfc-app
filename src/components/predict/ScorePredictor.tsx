@@ -99,7 +99,10 @@ export const ScorePredictor = ({
                 <Input
                   type="number"
                   value={homeScore}
-                  onChange={(e) => onHomeScoreChange(e.target.value)}
+                  onChange={(e) => {
+                    console.log('Home score changed to:', e.target.value);
+                    onHomeScoreChange(e.target.value);
+                  }}
                   className="text-center text-black placeholder:text-black !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100"
                   placeholder="3"
                   min="0"
@@ -112,7 +115,10 @@ export const ScorePredictor = ({
                 <Input
                   type="number"
                   value={awayScore}
-                  onChange={(e) => onAwayScoreChange(e.target.value)}
+                  onChange={(e) => {
+                    console.log('Away score changed to:', e.target.value);
+                    onAwayScoreChange(e.target.value);
+                  }}
                   className="text-center text-black placeholder:text-black !text-2xl !font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100"
                   placeholder="1"
                   min="0"
@@ -120,6 +126,15 @@ export const ScorePredictor = ({
                 />
               </div>
             </div>
+            
+            {/* Dynamic Odds Display */}
+            {currentScoreKey && currentOdds && (
+              <div className="flex justify-center mt-2">
+                <Badge variant="outline" className="border-blue-600 text-blue-700 px-3 py-1 text-sm font-bold">
+                  {currentScoreKey} @ {currentOdds.toFixed(1)}/1 odds
+                </Badge>
+              </div>
+            )}
             
             {/* Potential Winnings Calculator */}
             <div className="flex justify-center mt-3">
