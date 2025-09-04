@@ -90,8 +90,8 @@ const Predict = () => {
         <div className="container mx-auto px-4 pt-3 pb-0.5 max-w-md">
           {/* Header */}
           <div className="text-center text-white">
-            <h1 className="text-2xl font-extrabold mb-2">Man Utd vs Arsenal</h1>
-            <h2 className="text-lg font-bold mb-4">Old Trafford — Aug 17, 3:00pm</h2>
+            <h1 className="text-2xl font-extrabold mb-2">Man City vs Man Utd</h1>
+            <h2 className="text-lg font-bold mb-4">Emirates Stadium — Sept 14, 4:30pm</h2>
           </div>
         </div>
       </div>
