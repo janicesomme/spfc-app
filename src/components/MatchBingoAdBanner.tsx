@@ -6,7 +6,7 @@ export const MatchBingoAdBanner = () => {
 
   return (
     <div 
-      className="w-full max-w-[340px] sm:max-w-4xl mx-auto rounded-lg border border-white p-4 sm:p-6 mb-6"
+      className="w-full max-w-[340px] sm:max-w-4xl mx-auto rounded-lg border border-white p-4 sm:p-6 mb-6 mt-5"
       style={{ backgroundColor: '#2B1348' }}
     >
       <div className="text-center space-y-3 sm:space-y-4">
