@@ -119,11 +119,15 @@ export const ScorePredictor = ({
               </div>
             </div>
             
-            {/* Odds Badge */}
+            {/* Potential Winnings Calculator */}
             <div className="flex justify-center mt-3">
-              {currentOdds ? (
-                <Badge variant="secondary" className="bg-blue-900 text-white border-black border-2 px-3 py-1 text-sm font-bold">
-                  {currentOdds}:1
+              {currentOdds && betAmount && parseFloat(betAmount) > 0 ? (
+                <Badge variant="secondary" className="bg-green-600 text-white border-black border-2 px-3 py-1 text-sm font-bold">
+                  You will win £{(parseFloat(betAmount) * currentOdds).toFixed(2)}
+                </Badge>
+              ) : currentOdds && (!betAmount || parseFloat(betAmount) === 0) ? (
+                <Badge variant="outline" className="border-blue-500 text-blue-600 px-3 py-1 text-xs">
+                  Enter bet amount to see winnings
                 </Badge>
               ) : currentScoreKey && !isLoadingOdds ? (
                 <Badge variant="outline" className="border-gray-400 text-gray-500 px-3 py-1 text-xs">
