@@ -4,6 +4,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Crown } from "lucide-react";
 import { QuickBetButtons } from "./QuickBetButtons";
 import { OddsDisplay } from "./OddsDisplay";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 interface FirstScorerPredictorProps {
   selectedPlayer: string;
@@ -45,6 +47,34 @@ export const FirstScorerPredictor = ({
   onPlayerChange,
   onBetAmountChange
 }: FirstScorerPredictorProps) => {
+  const [oddsBySlug, setOddsBySlug] = useState<{ [key: string]: string }>({});
+  const [selectedFirstScorerOdds, setSelectedFirstScorerOdds] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchOdds = async () => {
+      const playerSlugs = unitedPlayers.map(p => p.value);
+      const { data, error } = await (supabase as any)
+        .from('first_scorer_odds')
+        .select('player_slug, fraction')
+        .in('player_slug', playerSlugs);
+      
+      if (data && !error) {
+        const oddsMap: { [key: string]: string } = {};
+        data.forEach((item: any) => {
+          oddsMap[item.player_slug] = item.fraction;
+        });
+        setOddsBySlug(oddsMap);
+      }
+    };
+
+    fetchOdds();
+  }, []);
+
+  const handlePlayerChange = (value: string) => {
+    onPlayerChange(value);
+    setSelectedFirstScorerOdds(oddsBySlug[value] || null);
+  };
+
   return (
     <div className="relative p-4">
       {/* Glow effect background */}
@@ -62,14 +92,14 @@ export const FirstScorerPredictor = ({
             <label className="block text-lg font-bold text-center text-gray-700">
               🔴 Who scores first for United?
             </label>
-            <Select value={selectedPlayer} onValueChange={onPlayerChange}>
+            <Select value={selectedPlayer} onValueChange={handlePlayerChange}>
               <SelectTrigger className="h-16 text-2xl font-bold shadow-lg border-2 border-gray-300 rounded-xl bg-gray-100 text-black">
                 <SelectValue placeholder="Select player" />
               </SelectTrigger>
               <SelectContent className="bg-white z-50">
                 {unitedPlayers.map((player) => (
                   <SelectItem key={player.value} value={player.value} className="text-xl font-bold text-black">
-                    {player.label}
+                    {player.label + (oddsBySlug[player.value] ? " (" + oddsBySlug[player.value] + ")" : "")}
                   </SelectItem>
                 ))}
               </SelectContent>
