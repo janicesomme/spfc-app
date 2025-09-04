@@ -20,13 +20,26 @@ export const PossessionPredictor = ({
   onPossessionChange,
   onBetAmountChange
 }: PossessionPredictorProps) => {
-  const [possessionMvp, setPossessionMvp] = useState<{ our_band_text?: string; fraction?: string } | null>(null);
+  const [possessionMvp, setPossessionMvp] = useState<{ our_band_text?: string; fraction?: string; our_expected?: number } | null>(null);
+
+  // Calculate odds based on difference from expected
+  const calculateOdds = (userPick: number, expected: number): string => {
+    const difference = Math.abs(userPick - expected);
+    if (difference <= 3) return "4/1";
+    if (difference <= 5) return "6/1";
+    if (difference <= 7) return "8/1";
+    return "12/1";
+  };
+
+  const computedOdds = possessionMvp?.our_expected 
+    ? calculateOdds(possession[0], possessionMvp.our_expected)
+    : "4/1";
 
   useEffect(() => {
     const fetchPossessionMvp = async () => {
       const { data, error } = await (supabase as any)
         .from('possession_mvp')
-        .select('our_band_text, fraction')
+        .select('our_band_text, fraction, our_expected')
         .eq('fixture_id', '537822')
         .maybeSingle();
       
@@ -78,6 +91,16 @@ export const PossessionPredictor = ({
               className="w-full"
             />
             
+            {possessionMvp && (
+              <div className="text-center space-y-1 mt-3">
+                <div className="text-sm text-gray-600">
+                  Expected band: {possessionMvp.our_band_text}%
+                </div>
+                <div className="text-sm text-gray-600">
+                  Your pick odds: {computedOdds}
+                </div>
+              </div>
+            )}
           </div>
 
           <QuickBetButtons 
@@ -104,7 +127,7 @@ export const PossessionPredictor = ({
             </label>
             <div className="flex justify-center">
               <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
-                {possessionMvp?.fraction || "ENTER PREDICTION"}
+                {computedOdds}
               </div>
             </div>
           </div>
