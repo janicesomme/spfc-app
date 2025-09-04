@@ -23,6 +23,7 @@ import FinalPlayerRatings from "./pages/FinalPlayerRatings";
 import GamePredictions from "./pages/GamePredictions";
 import Predict from "./pages/Predict";
 import Leaderboard from "./pages/Leaderboard";
+import MatchBingo from "./pages/MatchBingo";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,6 +56,7 @@ function App() {
               <Route path="/game-predictions" element={<GamePredictions />} />
               <Route path="/predict" element={<Predict />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/match-bingo" element={<MatchBingo />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/hot-o-meter" element={<HotOMeter />} />
               <Route path="*" element={<NotFound />} />
