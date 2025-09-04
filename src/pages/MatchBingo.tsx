@@ -13,9 +13,11 @@ const MatchBingo = () => {
       <div className="max-w-4xl mx-auto space-y-8 text-center">
         {/* Header */}
         <div className="space-y-4">
-          <h1 className="text-4xl sm:text-6xl font-bold text-red-500">
-            MATCH BINGO
-          </h1>
+          <img 
+            src="/lovable-uploads/ce1cbe45-0627-4581-a278-c5f12dd05315.png" 
+            alt="Match Bingo Logo" 
+            className="mx-auto h-24 sm:h-32 w-auto"
+          />
           <p className="text-white text-lg sm:text-xl font-medium">
             OFFICIAL FUTV SPONSOR SPOTLIGHT
           </p>
@@ -62,7 +64,7 @@ const MatchBingo = () => {
         {/* How Fans Like It Section */}
         <div className="text-left max-w-3xl mx-auto space-y-4">
           <h3 className="text-white text-2xl font-bold mb-6">
-            How fans like it:
+            Why fans love it:
           </h3>
           
           <div className="space-y-3">
@@ -97,10 +99,7 @@ const MatchBingo = () => {
         </div>
 
         {/* Footer Links */}
-        <div className="flex justify-between items-center max-w-3xl mx-auto pt-8">
-          <button className="text-white text-lg font-medium underline">
-            See FAQs
-          </button>
+        <div className="flex justify-center items-center max-w-3xl mx-auto pt-8">
           <button className="text-white text-lg font-medium underline">
             Responsible play
           </button>
