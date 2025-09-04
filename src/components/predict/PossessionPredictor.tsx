@@ -78,11 +78,6 @@ export const PossessionPredictor = ({
               className="w-full"
             />
             
-            {possessionMvp && (
-              <div className="text-center text-sm text-gray-600 mt-2">
-                Expected band: {possessionMvp.our_band_text}% (Odds: {possessionMvp.fraction})
-              </div>
-            )}
           </div>
 
           <QuickBetButtons 
@@ -109,7 +104,7 @@ export const PossessionPredictor = ({
             </label>
             <div className="flex justify-center">
               <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
-                ENTER PREDICTION
+                {possessionMvp?.fraction || "ENTER PREDICTION"}
               </div>
             </div>
           </div>
