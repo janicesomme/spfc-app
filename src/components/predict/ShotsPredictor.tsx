@@ -4,20 +4,52 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Target } from "lucide-react";
 import { QuickBetButtons } from "./QuickBetButtons";
 import { OddsDisplay } from "./OddsDisplay";
+import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
 
 interface ShotsPredictorProps {
   shotsOnTarget: string;
   betAmount: string;
   onShotsChange: (value: string) => void;
   onBetAmountChange: (value: string) => void;
+  onShotsOddsChange?: (odds: string) => void;
 }
 
 export const ShotsPredictor = ({
   shotsOnTarget,
   betAmount,
   onShotsChange,
-  onBetAmountChange
+  onBetAmountChange,
+  onShotsOddsChange
 }: ShotsPredictorProps) => {
+  const [shotsOddsMap, setShotsOddsMap] = useState<{ [shots: number]: string }>({});
+  const [selectedShotsOdds, setSelectedShotsOdds] = useState<string>("");
+
+  useEffect(() => {
+    const fetchShotsOdds = async () => {
+      const { data, error } = await (supabase as any)
+        .from('shots_on_target_odds')
+        .select('shots, fraction');
+      
+      if (!error && data) {
+        const oddsMap = data.reduce((acc: { [shots: number]: string }, item: any) => {
+          acc[item.shots] = item.fraction;
+          return acc;
+        }, {});
+        setShotsOddsMap(oddsMap);
+      }
+    };
+
+    fetchShotsOdds();
+  }, []);
+
+  useEffect(() => {
+    if (shotsOnTarget && shotsOddsMap[parseInt(shotsOnTarget)]) {
+      const odds = shotsOddsMap[parseInt(shotsOnTarget)];
+      setSelectedShotsOdds(odds);
+      onShotsOddsChange?.(odds);
+    }
+  }, [shotsOnTarget, shotsOddsMap, onShotsOddsChange]);
   return (
     <div className="relative p-4">
       {/* Glow effect background */}
@@ -73,7 +105,7 @@ export const ShotsPredictor = ({
             </label>
             <div className="flex justify-center">
               <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
-                ENTER PREDICTION
+                {selectedShotsOdds || "ENTER PREDICTION"}
               </div>
             </div>
           </div>
