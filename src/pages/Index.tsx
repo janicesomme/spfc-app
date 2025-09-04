@@ -8,6 +8,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
+import { MatchBingoAdBanner } from '../components/MatchBingoAdBanner';
 
 interface Video {
   video_id: string;
@@ -277,6 +278,9 @@ export default function HomePage() {
             </h3>
           </div>
         )}
+
+        {/* Match Bingo Ad Banner */}
+        <MatchBingoAdBanner />
       </div>
 
       {/* Latest News Section */}
