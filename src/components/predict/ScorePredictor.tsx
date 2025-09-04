@@ -1,9 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { CurrencyInput } from "@/components/ui/currency-input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { CircleDot } from "lucide-react";
 import { QuickBetButtons } from "./QuickBetButtons";
 import { OddsDisplay } from "./OddsDisplay";
+import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
 
 interface ScorePredictorProps {
   homeScore: string;
@@ -12,6 +15,7 @@ interface ScorePredictorProps {
   onHomeScoreChange: (value: string) => void;
   onAwayScoreChange: (value: string) => void;
   onBetAmountChange: (value: string) => void;
+  onSelectedOddsChange?: (odds: number | null) => void;
 }
 
 export const ScorePredictor = ({
@@ -20,8 +24,55 @@ export const ScorePredictor = ({
   betAmount,
   onHomeScoreChange,
   onAwayScoreChange,
-  onBetAmountChange
+  onBetAmountChange,
+  onSelectedOddsChange
 }: ScorePredictorProps) => {
+  const [oddsMap, setOddsMap] = useState<Record<string, number>>({});
+  const [isLoadingOdds, setIsLoadingOdds] = useState(true);
+
+  useEffect(() => {
+    const fetchOdds = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('prediction_markets' as any)
+          .select('option_key, odds_decimal')
+          .eq('fixture_id', '537822')
+          .eq('question_key', 'final_score');
+
+        if (error) {
+          console.error('Error fetching odds:', error);
+          setIsLoadingOdds(false);
+          return;
+        }
+
+        const map: Record<string, number> = {};
+        data?.forEach((item: any) => {
+          if (item.option_key && item.odds_decimal) {
+            map[item.option_key] = item.odds_decimal;
+          }
+        });
+        
+        setOddsMap(map);
+        setIsLoadingOdds(false);
+      } catch (error) {
+        console.error('Error fetching odds:', error);
+        setIsLoadingOdds(false);
+      }
+    };
+
+    fetchOdds();
+  }, []);
+
+  // Compute current score key and get odds
+  const currentScoreKey = homeScore && awayScore ? `${homeScore}-${awayScore}` : '';
+  const currentOdds = currentScoreKey ? oddsMap[currentScoreKey] : null;
+
+  // Update parent with selected odds when score changes
+  useEffect(() => {
+    if (onSelectedOddsChange) {
+      onSelectedOddsChange(currentOdds);
+    }
+  }, [currentOdds, onSelectedOddsChange]);
   return (
     <div className="relative p-4">
       {/* Glow effect background */}
@@ -67,9 +118,22 @@ export const ScorePredictor = ({
                 />
               </div>
             </div>
+            
+            {/* Odds Badge */}
+            <div className="flex justify-center mt-3">
+              {currentOdds ? (
+                <Badge variant="secondary" className="bg-blue-900 text-white border-black border-2 px-3 py-1 text-sm font-bold">
+                  {currentOdds}:1
+                </Badge>
+              ) : currentScoreKey && !isLoadingOdds ? (
+                <Badge variant="outline" className="border-gray-400 text-gray-500 px-3 py-1 text-xs">
+                  Odds unavailable
+                </Badge>
+              ) : null}
+            </div>
           </div>
 
-          <QuickBetButtons 
+          <QuickBetButtons
             selectedAmount={betAmount}
             onAmountSelect={onBetAmountChange}
           />

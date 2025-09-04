@@ -14,6 +14,7 @@ const Predict = () => {
   const [possession, setPossession] = useState([55]);
   const [shotsOnTarget, setShotsOnTarget] = useState("7");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedOdds, setSelectedOdds] = useState<number | null>(null);
   
   // Bet amounts
   const [scoreBet, setScoreBet] = useState("");
@@ -44,6 +45,7 @@ const Predict = () => {
       firstScorer,
       possession: possession[0],
       shotsOnTarget: parseInt(shotsOnTarget),
+      selectedOdds,
       timestamp: new Date().toISOString()
     }));
 
@@ -110,6 +112,7 @@ const Predict = () => {
             onHomeScoreChange={setHomeScore}
             onAwayScoreChange={setAwayScore}
             onBetAmountChange={setScoreBet}
+            onSelectedOddsChange={setSelectedOdds}
           />
 
           <FirstScorerPredictor 
