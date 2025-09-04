@@ -152,14 +152,20 @@ export const ScorePredictor = ({
               </div>
             </div>
             
-            {/* Dynamic Odds Display */}
-            {currentScoreKey && currentOdds && (
-              <div className="flex justify-center mt-2">
-                <div className="bg-primary text-white px-4 py-2 text-lg font-bold rounded-lg">
-                  {convertToFractionalOdds(currentOdds)}
+            {/* Odds Section */}
+            <div className="space-y-3">
+              <label className="block text-lg font-bold text-center text-gray-700">
+                📊 ODDS
+              </label>
+              <div className="flex justify-center">
+                <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
+                  {currentScoreKey && currentOdds ? 
+                    convertToFractionalOdds(currentOdds) : 
+                    "Enter scores"
+                  }
                 </div>
               </div>
-            )}
+            </div>
             
             {/* Potential Winnings Calculator */}
             <div className="flex justify-center mt-3">
