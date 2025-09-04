@@ -8,15 +8,15 @@ const Leaderboard = () => {
 
   const leaderboardData = [
     { rank: 1, name: "JaniceS", points: 2215, trend: "up" },
-    { rank: 2, name: "BarryTheRed", points: 2012, trend: "up" },
-    { rank: 3, name: "RonaldoSZN", points: 1910, trend: "down" },
-    { rank: 4, name: "FootyFan92", points: 1899, trend: "up" },
-    { rank: 5, name: "RedDevil", points: 1878, trend: "same" },
-    { rank: 6, name: "ArsenalACE", points: 1767, trend: "down" },
-    { rank: 7, name: "PredictorPro", points: 1766, trend: "up" },
-    { rank: 8, name: "MatchMaster", points: 1525, trend: "same" },
-    { rank: 9, name: "ScoreGuru", points: 1489, trend: "down" },
-    { rank: 10, name: "GoalGetter", points: 1438, trend: "up" },
+    { rank: 2, name: "The Realist", points: 2012, trend: "up" },
+    { rank: 3, name: "Silverback", points: 1910, trend: "down" },
+    { rank: 4, name: "Gregg", points: 1899, trend: "up" },
+    { rank: 5, name: "Tom Porter", points: 1878, trend: "same" },
+    { rank: 6, name: "Real Real", points: 1767, trend: "down" },
+    { rank: 7, name: "Chris Mac", points: 1766, trend: "up" },
+    { rank: 8, name: "Graham Wilde", points: 1525, trend: "same" },
+    { rank: 9, name: "UnitedSpotlight", points: 1489, trend: "down" },
+    { rank: 10, name: "AdamFUTV", points: 1438, trend: "up" },
   ];
 
   const getTrendIcon = (trend: string) => {
