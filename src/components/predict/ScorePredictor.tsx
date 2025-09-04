@@ -14,7 +14,7 @@ interface ScorePredictorProps {
   onHomeScoreChange: (value: string) => void;
   onAwayScoreChange: (value: string) => void;
   onBetAmountChange: (value: string) => void;
-  onSelectedOddsChange?: (odds: number | null) => void;
+  onSelectedOddsChange?: (odds: string | null) => void;
 }
 
 export const ScorePredictor = ({
@@ -26,17 +26,16 @@ export const ScorePredictor = ({
   onBetAmountChange,
   onSelectedOddsChange
 }: ScorePredictorProps) => {
-  const [oddsMap, setOddsMap] = useState<Record<string, number>>({});
+  const [oddsMap, setOddsMap] = useState<Record<string, string>>({});
   const [isLoadingOdds, setIsLoadingOdds] = useState(true);
 
   useEffect(() => {
     const fetchOdds = async () => {
       try {
         const { data, error } = await supabase
-          .from('prediction_markets' as any)
-          .select('option_key, odds_decimal')
-          .eq('fixture_id', '537822')
-          .eq('question_key', 'final_score');
+          .from('prediction_adjusted_odds' as any)
+          .select('scoreline, adjusted_fraction')
+          .eq('fixture_id', '537822');
 
         if (error) {
           console.error('Error fetching odds:', error);
@@ -44,10 +43,10 @@ export const ScorePredictor = ({
           return;
         }
 
-        const map: Record<string, number> = {};
+        const map: Record<string, string> = {};
         data?.forEach((item: any) => {
-          if (item.option_key && item.odds_decimal) {
-            map[item.option_key] = item.odds_decimal;
+          if (item.scoreline && item.adjusted_fraction) {
+            map[item.scoreline] = item.adjusted_fraction;
           }
         });
         
@@ -69,29 +68,18 @@ export const ScorePredictor = ({
   
   console.log('Score key:', currentScoreKey, 'Odds:', currentOdds, 'Bet:', betAmount);
 
-  // Convert decimal odds to fractional odds
-  const convertToFractionalOdds = (decimalOdds: number): string => {
-    if (decimalOdds === 2.0) return "EVENS";
+  // Convert fractional odds to decimal for calculations
+  const convertFractionalToDecimal = (fractional: string): number => {
+    if (fractional === "EVENS") return 2.0;
     
-    const fractional = decimalOdds - 1;
+    const parts = fractional.split('/');
+    if (parts.length === 2) {
+      const numerator = parseFloat(parts[0]);
+      const denominator = parseFloat(parts[1]);
+      return (numerator / denominator) + 1;
+    }
     
-    // Handle common fractional odds
-    if (fractional === 0.5) return "1/2";
-    if (fractional === 1) return "1/1";
-    if (fractional === 1.5) return "3/2";
-    if (fractional === 2) return "2/1";
-    if (fractional === 2.5) return "5/2";
-    if (fractional === 3) return "3/1";
-    if (fractional === 4) return "4/1";
-    if (fractional === 5) return "5/1";
-    if (fractional === 6) return "6/1";
-    if (fractional === 9) return "9/1";
-    if (fractional === 10) return "10/1";
-    
-    // For other odds, calculate the best fraction
-    const denominator = 1;
-    const numerator = Math.round(fractional * denominator);
-    return `${numerator}/${denominator}`;
+    return 2.0; // Default fallback
   };
 
   // Update parent with selected odds when score changes
@@ -159,10 +147,7 @@ export const ScorePredictor = ({
               </label>
               <div className="flex justify-center">
                 <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
-                  {currentScoreKey && currentOdds ? 
-                    convertToFractionalOdds(currentOdds) : 
-                    "ENTER PREDICTION"
-                  }
+                  {currentOdds || "ENTER PREDICTION"}
                 </div>
               </div>
             </div>
@@ -171,7 +156,7 @@ export const ScorePredictor = ({
             <div className="flex justify-center mt-3">
               {currentOdds && betAmount && parseFloat(betAmount) > 0 ? (
                 <Badge variant="secondary" className="bg-green-600 text-white border-black border-2 px-3 py-1 text-sm font-bold">
-                  You will win £{(parseFloat(betAmount) * currentOdds).toFixed(2)}
+                  You will win £{(parseFloat(betAmount) * convertFractionalToDecimal(currentOdds)).toFixed(2)}
                 </Badge>
               ) : currentOdds && (!betAmount || parseFloat(betAmount) === 0) ? (
                 <Badge variant="outline" className="border-blue-500 text-blue-600 px-3 py-1 text-xs">
