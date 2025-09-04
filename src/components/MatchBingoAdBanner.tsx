@@ -6,24 +6,26 @@ export const MatchBingoAdBanner = () => {
 
   return (
     <div 
-      className="w-full max-w-[340px] sm:max-w-4xl mx-auto rounded-lg border border-white p-6 mb-6"
+      className="w-full max-w-[340px] sm:max-w-4xl mx-auto rounded-lg border border-white p-4 sm:p-6 mb-6"
       style={{ backgroundColor: '#2B1348' }}
     >
-      <div className="text-center space-y-3">
-        <h2 className="text-2xl sm:text-3xl font-bold text-red-600">
-          MATCH BINGO
-        </h2>
-        <p className="text-white font-semibold text-sm sm:text-base">
-          PLAY MATCH BINGO DURING FOOTBALL GAMES!
+      <div className="text-center space-y-3 sm:space-y-4">
+        <img 
+          src="/lovable-uploads/e99f1ed3-6638-4587-9ea6-8ad0f045de7e.png" 
+          alt="Match Bingo Logo"
+          className="mx-auto h-12 sm:h-16 w-auto"
+        />
+        <p className="text-white font-bold text-lg sm:text-xl">
+          Bingo Transformed
         </p>
-        <p className="text-white/90 text-xs sm:text-sm">
-          Make the game even more exciting with your own bingo card.
+        <p className="text-white/90 text-sm sm:text-base px-2">
+          Make games even more exciting with your own bingo card!
         </p>
         <Button
           onClick={() => navigate("/match-bingo")}
-          className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded mt-4"
+          className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded text-sm sm:text-base mt-4"
         >
-          PLAY NOW
+          Learn More
         </Button>
       </div>
     </div>
