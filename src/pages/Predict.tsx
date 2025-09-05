@@ -68,13 +68,6 @@ const Predict = () => {
               <p className="font-semibold">Good luck! 🍀</p>
             </div>
             
-            <Button
-              onClick={() => setIsSubmitted(false)}
-              variant="outline"
-              className="hidden md:block w-full h-12 bg-white text-red-600 border-white hover:bg-white/90"
-            >
-              Change Predictions
-            </Button>
           </div>
         </div>
       </div>
