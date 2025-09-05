@@ -25,7 +25,7 @@ export const WeeklyShoutSubscription = () => {
     setIsLoading(true);
 
     try {
-      const { error: insertError } = await supabase
+      const { error: insertError } = await (supabase as any)
         .from('email_subscribers')
         .insert([{ 
           email: email.trim().toLowerCase(), 
@@ -54,8 +54,11 @@ export const WeeklyShoutSubscription = () => {
     <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto rounded-lg border border-white p-4 sm:p-6 mb-6 mt-6" style={{ backgroundColor: '#1a1a2e' }}>
       <div className="text-center space-y-4">
         <h3 className="text-white font-bold text-lg sm:text-xl">
-          Join The Weekly Shout
+          Join the FUTV Family
         </h3>
+        <p className="text-white/90 text-sm leading-relaxed">
+          Behind-the-scenes stories that never make YouTube. Adam's matchday snapshots, and all the best fan comments from the week!
+        </p>
         
         {!isSubmitted ? (
           <>
@@ -74,7 +77,7 @@ export const WeeklyShoutSubscription = () => {
                   disabled={isLoading}
                   className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2"
                 >
-                  {isLoading ? 'Joining...' : 'Get it free'}
+                  {isLoading ? 'Joining...' : 'Become an inner-circle member today!'}
                 </Button>
               </div>
               {error && (
@@ -82,13 +85,13 @@ export const WeeklyShoutSubscription = () => {
               )}
             </form>
             <p className="text-white/80 text-sm">
-              1 email/week. No spam. 1-tap unsubscribe.
+              One email every Friday. Unsubscribe anytime.
             </p>
           </>
         ) : (
           <div className="space-y-3">
             <p className="text-green-400 font-medium">
-              You're in! Watch for The Weekly Shout each Friday.
+              You're in! First Friday drop lands soon.
             </p>
             <Button
               disabled
