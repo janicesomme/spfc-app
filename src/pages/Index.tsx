@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/drawer";
 import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
 import { MatchBingoAdBanner } from '../components/MatchBingoAdBanner';
+import { WeeklyShoutSubscription } from '../components/WeeklyShoutSubscription';
 
 interface Video {
   video_id: string;
@@ -281,6 +282,9 @@ export default function HomePage() {
 
         {/* Match Bingo Ad Banner */}
         <MatchBingoAdBanner />
+
+        {/* Weekly Shout Subscription */}
+        <WeeklyShoutSubscription />
       </div>
 
       {/* Latest News Section */}
