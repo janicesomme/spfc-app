@@ -13,6 +13,7 @@ const level2Tabs = [
   { label: "Ratings", path: "/player-ratings" },
   { label: "My XI", path: "/pick-your-xi" },
   { label: "Predictions", path: "/predict" },
+  { label: "Vote", path: "/vote" },
   { label: "Leaderboard", path: "/leaderboard" },
 ];
 
