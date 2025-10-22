@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Minimize2, Maximize2 } from "lucide-react";
+import hangoutPreview from "@/assets/hangout-video-preview.png";
 
 interface VideoPlayerProps {
   isLive?: boolean;
@@ -19,20 +20,11 @@ export const VideoPlayer = ({ isLive = false }: VideoPlayerProps) => {
         }`}
       >
         {/* Video Placeholder */}
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-          <div className="text-center text-white/60">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
-              <svg
-                className="w-10 h-10"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-              </svg>
-            </div>
-            <p className="text-sm">Creator Hangout Video</p>
-          </div>
-        </div>
+        <img 
+          src={hangoutPreview} 
+          alt="Creator Hangout Video" 
+          className="w-full h-full object-cover"
+        />
 
         {/* Live Badge */}
         {isLive && (
@@ -61,7 +53,12 @@ export const VideoPlayer = ({ isLive = false }: VideoPlayerProps) => {
       {/* Floating Minimized Video */}
       {isMinimized && (
         <div className="fixed top-20 left-4 z-50 w-32 h-24 bg-black rounded-lg shadow-2xl overflow-hidden border-2 border-[#C8102E]">
-          <div className="relative w-full h-full bg-gradient-to-br from-gray-900 to-gray-800">
+          <img 
+            src={hangoutPreview} 
+            alt="Creator Hangout Video" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0">
             {isLive && (
               <Badge className="absolute top-1 left-1 text-[10px] bg-[#C8102E] text-white border-0 px-1.5 py-0">
                 LIVE
