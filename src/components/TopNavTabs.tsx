@@ -8,6 +8,7 @@ const allTabs = [
   { label: "Videos", path: "/youtube" },
   { label: "Ratings", path: "/player-ratings" },
   { label: "Vote", path: "/vote" },
+  { label: "Hangout", path: "/hangout" },
   { label: "Shop", path: "/shop" },
 ];
 
