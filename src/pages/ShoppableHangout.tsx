@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { VideoPlayer } from "@/components/hangout/VideoPlayer";
+import { HangoutBanner } from "@/components/hangout/HangoutBanner";
 import { ChatFeed } from "@/components/hangout/ChatFeed";
 import { ProductShelf } from "@/components/hangout/ProductShelf";
 import { ProductDetailDrawer } from "@/components/hangout/ProductDetailDrawer";
@@ -25,6 +26,9 @@ export default function ShoppableHangout() {
 
   return (
     <div className="min-h-screen bg-[#0D0D0D] pb-16">
+      {/* Hangout Banner */}
+      <HangoutBanner />
+
       {/* Video Section */}
       <div ref={videoRef}>
         <VideoPlayer isLive={true} />
