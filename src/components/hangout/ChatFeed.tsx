@@ -50,10 +50,10 @@ const mockMessages: Message[] = [
 
 export const ChatFeed = () => {
   return (
-    <div className="flex-1 bg-[#0D0D0D] border-y border-[#171717]">
-      <div className="p-4 border-b border-[#171717]">
-        <h3 className="text-[#EAEAEA] font-semibold">Community Chat</h3>
-        <p className="text-[#A0A0A0] text-xs">Join the conversation</p>
+    <div className="flex-1 bg-white border-y border-gray-200">
+      <div className="p-4 border-b border-gray-200">
+        <h3 className="text-black font-semibold">Community Chat</h3>
+        <p className="text-gray-600 text-xs">Join the conversation</p>
       </div>
 
       <ScrollArea className="h-[300px] p-4">
@@ -69,8 +69,8 @@ export const ChatFeed = () => {
             >
               <div className="flex items-start gap-3">
                 {!message.isSystem && (
-                  <Avatar className="h-8 w-8 bg-[#171717] flex items-center justify-center">
-                    <span className="text-xs text-[#A0A0A0]">
+                  <Avatar className="h-8 w-8 bg-gray-100 flex items-center justify-center">
+                    <span className="text-xs text-gray-700">
                       {message.username.slice(0, 2).toUpperCase()}
                     </span>
                   </Avatar>
@@ -82,16 +82,16 @@ export const ChatFeed = () => {
                       className={`text-sm font-medium ${
                         message.isSystem
                           ? "text-[#C8102E]"
-                          : "text-[#EAEAEA]"
+                          : "text-black"
                       }`}
                     >
                       {message.username}
                     </span>
-                    <span className="text-xs text-[#A0A0A0]">
+                    <span className="text-xs text-gray-500">
                       {message.timestamp}
                     </span>
                   </div>
-                  <p className="text-sm text-[#EAEAEA] mt-1">
+                  <p className="text-sm text-black mt-1">
                     {message.content}
                   </p>
                   {message.reactions && message.reactions.length > 0 && (
@@ -99,7 +99,7 @@ export const ChatFeed = () => {
                       {message.reactions.map((reaction, idx) => (
                         <span
                           key={idx}
-                          className="text-xs bg-[#171717] px-2 py-0.5 rounded-full"
+                          className="text-xs bg-gray-100 px-2 py-0.5 rounded-full"
                         >
                           {reaction}
                         </span>
