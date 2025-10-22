@@ -26,6 +26,7 @@ import Leaderboard from "./pages/Leaderboard";
 import MatchBingo from "./pages/MatchBingo";
 import Vote from "./pages/Vote";
 import ShoppableHangout from "./pages/ShoppableHangout";
+import CharityHangout from "./pages/CharityHangout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -59,6 +60,7 @@ function App() {
               <Route path="/predict" element={<Predict />} />
               <Route path="/vote" element={<Vote />} />
               <Route path="/hangout" element={<ShoppableHangout />} />
+              <Route path="/charity-hangout" element={<CharityHangout />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/match-bingo" element={<MatchBingo />} />
               <Route path="/settings" element={<Settings />} />
