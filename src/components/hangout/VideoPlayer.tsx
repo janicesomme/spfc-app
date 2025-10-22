@@ -23,7 +23,7 @@ export const VideoPlayer = ({ isLive = false }: VideoPlayerProps) => {
         <img 
           src={hangoutPreview} 
           alt="Creator Hangout Video" 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain bg-black"
         />
 
         {/* Live Badge */}
@@ -56,7 +56,7 @@ export const VideoPlayer = ({ isLive = false }: VideoPlayerProps) => {
           <img 
             src={hangoutPreview} 
             alt="Creator Hangout Video" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
           <div className="absolute inset-0">
             {isLive && (
