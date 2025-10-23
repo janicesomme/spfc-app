@@ -5,15 +5,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 
 export default function Vote() {
-  const [votedA, setVotedA] = useState<'up' | 'down' | null>(null);
-  const [votedB, setVotedB] = useState<'up' | 'down' | null>(null);
+  const [voted, setVoted] = useState<'A' | 'B' | null>(null);
 
-  const handleVote = (video: 'A' | 'B', type: 'up' | 'down') => {
-    if (video === 'A') {
-      setVotedA(votedA === type ? null : type);
-    } else {
-      setVotedB(votedB === type ? null : type);
-    }
+  const handleVote = (product: 'A' | 'B') => {
+    setVoted(voted === product ? null : product);
   };
 
   return (
@@ -23,24 +18,44 @@ export default function Vote() {
           Vote for Your Favourite
         </h1>
 
-        {/* Product A */}
+        {/* Products Side by Side */}
         <div className="space-y-4">
           <Card className="shadow-lg">
             <CardContent className="p-4 sm:p-6">
-              <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
-                <img 
-                  src="/products/futv-hoodie.png" 
-                  alt="FUTV Hoodie" 
-                  className="w-full h-full object-contain"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                {/* Product A */}
+                <div className="space-y-2">
+                  <div className="relative w-full aspect-square bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                    <img 
+                      src="/products/futv-hoodie.png" 
+                      alt="Product A" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <p className="text-center text-lg font-bold text-foreground">A</p>
+                </div>
+                
+                {/* Product B */}
+                <div className="space-y-2">
+                  <div className="relative w-full aspect-square bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                    <img 
+                      src="/products/futv-mug.png" 
+                      alt="Product B" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <p className="text-center text-lg font-bold text-foreground">B</p>
+                </div>
               </div>
             </CardContent>
           </Card>
+          
+          {/* Vote Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-2">
             <Button
               size="lg"
-              variant={votedA === 'up' ? 'default' : 'outline'}
-              onClick={() => handleVote('A', 'up')}
+              variant={voted === 'A' ? 'default' : 'outline'}
+              onClick={() => handleVote('A')}
               className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
             >
               <ThumbsUp className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
@@ -48,47 +63,12 @@ export default function Vote() {
             </Button>
             <Button
               size="lg"
-              variant={votedA === 'down' ? 'default' : 'outline'}
-              onClick={() => handleVote('A', 'down')}
+              variant={voted === 'B' ? 'default' : 'outline'}
+              onClick={() => handleVote('B')}
               className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
             >
               <ThumbsDown className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-              THUMBS DOWN A
-            </Button>
-          </div>
-        </div>
-
-        {/* Product B */}
-        <div className="space-y-4">
-          <Card className="shadow-lg">
-            <CardContent className="p-4 sm:p-6">
-              <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
-                <img 
-                  src="/products/futv-mug.png" 
-                  alt="FUTV Mug" 
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </CardContent>
-          </Card>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-2">
-            <Button
-              size="lg"
-              variant={votedB === 'up' ? 'default' : 'outline'}
-              onClick={() => handleVote('B', 'up')}
-              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
-            >
-              <ThumbsUp className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
               THUMBS UP B
-            </Button>
-            <Button
-              size="lg"
-              variant={votedB === 'down' ? 'default' : 'outline'}
-              onClick={() => handleVote('B', 'down')}
-              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
-            >
-              <ThumbsDown className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-              THUMBS DOWN B
             </Button>
           </div>
         </div>
@@ -100,10 +80,10 @@ export default function Vote() {
               Current Results
             </h2>
             <div className="space-y-6">
-              {/* Video A Result */}
+              {/* Product A Result */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-base sm:text-lg font-semibold text-foreground">Video A</span>
+                  <span className="text-base sm:text-lg font-semibold text-foreground">Product A</span>
                   <span className="text-base sm:text-lg font-bold text-primary">57%</span>
                 </div>
                 <div className="w-full h-3 bg-secondary rounded-full overflow-hidden">
@@ -111,10 +91,10 @@ export default function Vote() {
                 </div>
               </div>
               
-              {/* Video B Result */}
+              {/* Product B Result */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-base sm:text-lg font-semibold text-foreground">Video B</span>
+                  <span className="text-base sm:text-lg font-semibold text-foreground">Product B</span>
                   <span className="text-base sm:text-lg font-bold text-primary">43%</span>
                 </div>
                 <div className="w-full h-3 bg-secondary rounded-full overflow-hidden">
