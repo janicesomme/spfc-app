@@ -1,5 +1,5 @@
 import { Sparkles } from "lucide-react";
-import { OfficialTUSLogo } from "@/components/OfficialTUSLogo";
+import futvLogoRed from "@/assets/futv-logo-red.jpg";
 
 interface ImpactHeroProps {
   totalRaised: number;
@@ -17,7 +17,11 @@ export const ImpactHero = ({ totalRaised, charityName }: ImpactHeroProps) => {
 
       <div className="relative max-w-4xl mx-auto px-4 py-12 text-center">
         <div className="absolute top-4 left-4 h-10">
-          <OfficialTUSLogo size={40} />
+          <img 
+            src={futvLogoRed} 
+            alt="FUTV Logo" 
+            className="h-10 w-auto object-contain"
+          />
         </div>
 
         <div className="flex justify-center mb-4">
