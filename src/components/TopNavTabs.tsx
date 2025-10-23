@@ -9,7 +9,7 @@ const allTabs = [
   { label: "Ratings", path: "/player-ratings" },
   { label: "Vote", path: "/vote" },
   { label: "Hangout", path: "/hangout" },
-  { label: "Shop", path: "/shop" },
+  { label: "Impact", path: "/impact" },
 ];
 
 export function TopNavTabs() {
