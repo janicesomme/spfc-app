@@ -4,7 +4,7 @@ import { SalesChart } from "@/components/dashboard/SalesChart";
 import { TransactionsTable } from "@/components/dashboard/TransactionsTable";
 import { CommunityHighlights } from "@/components/dashboard/CommunityHighlights";
 import { UpcomingEvents } from "@/components/dashboard/UpcomingEvents";
-import { TUSLogo } from "@/components/TUSLogo";
+import futvLogo from "@/assets/futv-logo.jpg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -15,17 +15,21 @@ export default function CreatorDashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-card border-b border-border px-4 py-4">
+      <header className="bg-gradient-to-r from-[#8B0000] to-[#FF1A1A] border-b-2 border-primary px-4 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <TUSLogo />
+          <img 
+            src={futvLogo} 
+            alt="FUTV Logo" 
+            className="h-10 w-auto object-contain"
+          />
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-semibold">Adam Stott</p>
-              <p className="text-xs text-muted-foreground">Creator</p>
+              <p className="text-sm font-semibold text-white">Adam Stott</p>
+              <p className="text-xs text-white/80">Creator</p>
             </div>
             <Avatar>
               <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback className="bg-primary text-primary-foreground">AS</AvatarFallback>
+              <AvatarFallback className="bg-white text-[#8B0000]">AS</AvatarFallback>
             </Avatar>
           </div>
         </div>
