@@ -23,12 +23,16 @@ export default function Vote() {
           Vote for Your Favourite
         </h1>
 
-        {/* Video A */}
+        {/* Product A */}
         <div className="space-y-4">
           <Card className="shadow-lg">
             <CardContent className="p-4 sm:p-6">
-              <div className="relative w-full aspect-video bg-secondary/50 rounded-lg flex items-center justify-center">
-                <span className="text-xl sm:text-2xl font-bold text-muted-foreground">Video A</span>
+              <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                <img 
+                  src="/products/futv-hoodie.png" 
+                  alt="FUTV Hoodie" 
+                  className="w-full h-full object-contain"
+                />
               </div>
             </CardContent>
           </Card>
@@ -37,29 +41,33 @@ export default function Vote() {
               size="lg"
               variant={votedA === 'up' ? 'default' : 'outline'}
               onClick={() => handleVote('A', 'up')}
-              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold"
+              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
             >
               <ThumbsUp className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-              Thumbs Up
+              THUMBS UP A
             </Button>
             <Button
               size="lg"
               variant={votedA === 'down' ? 'default' : 'outline'}
               onClick={() => handleVote('A', 'down')}
-              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold"
+              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
             >
               <ThumbsDown className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-              Thumbs Down
+              THUMBS DOWN A
             </Button>
           </div>
         </div>
 
-        {/* Video B */}
+        {/* Product B */}
         <div className="space-y-4">
           <Card className="shadow-lg">
             <CardContent className="p-4 sm:p-6">
-              <div className="relative w-full aspect-video bg-secondary/50 rounded-lg flex items-center justify-center">
-                <span className="text-xl sm:text-2xl font-bold text-muted-foreground">Video B</span>
+              <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                <img 
+                  src="/products/futv-mug.png" 
+                  alt="FUTV Mug" 
+                  className="w-full h-full object-contain"
+                />
               </div>
             </CardContent>
           </Card>
@@ -68,19 +76,19 @@ export default function Vote() {
               size="lg"
               variant={votedB === 'up' ? 'default' : 'outline'}
               onClick={() => handleVote('B', 'up')}
-              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold"
+              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
             >
               <ThumbsUp className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-              Thumbs Up
+              THUMBS UP B
             </Button>
             <Button
               size="lg"
               variant={votedB === 'down' ? 'default' : 'outline'}
               onClick={() => handleVote('B', 'down')}
-              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold"
+              className="w-full sm:flex-1 sm:max-w-[200px] h-14 sm:h-16 text-base sm:text-lg font-bold bg-[#C8102E] hover:bg-[#A00D24] text-white border-0"
             >
               <ThumbsDown className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-              Thumbs Down
+              THUMBS DOWN B
             </Button>
           </div>
         </div>
