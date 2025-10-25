@@ -1,19 +1,36 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { VideoPlayer } from "@/components/hangout/VideoPlayer";
 import { HangoutBanner } from "@/components/hangout/HangoutBanner";
 import { ChatFeed } from "@/components/hangout/ChatFeed";
 import { ProductShelf } from "@/components/hangout/ProductShelf";
+import { ProductShowcase } from "@/components/hangout/ProductShowcase";
 import { ProductDetailDrawer } from "@/components/hangout/ProductDetailDrawer";
 import { HangoutFooter } from "@/components/hangout/HangoutFooter";
-import { ShopifyProduct } from "@/lib/shopify";
+import { ShopifyProduct, fetchProducts } from "@/lib/shopify";
 
 export default function ShoppableHangout() {
   const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [cuedProduct, setCuedProduct] = useState<ShopifyProduct | null>(null);
   
   const videoRef = useRef<HTMLDivElement>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const shopRef = useRef<HTMLDivElement>(null);
+
+  // Load first product as cued product for MVP demo
+  useEffect(() => {
+    const loadInitialProduct = async () => {
+      try {
+        const products = await fetchProducts(1);
+        if (products && products.length > 0) {
+          setCuedProduct(products[0]);
+        }
+      } catch (error) {
+        console.error('Failed to load products:', error);
+      }
+    };
+    loadInitialProduct();
+  }, []);
 
   const handleProductSelect = (product: ShopifyProduct) => {
     setSelectedProduct(product);
@@ -29,9 +46,17 @@ export default function ShoppableHangout() {
       {/* Hangout Banner */}
       <HangoutBanner />
 
-      {/* Video Section */}
-      <div ref={videoRef}>
-        <VideoPlayer isLive={true} />
+      {/* Split Layout: Video + Product Showcase */}
+      <div ref={videoRef} className="flex flex-col md:flex-row">
+        {/* Left: Video Player */}
+        <div className="w-full md:w-1/2 h-[33vh] md:h-[50vh] min-h-[250px]">
+          <VideoPlayer isLive={true} />
+        </div>
+
+        {/* Right: Product Showcase */}
+        <div className="w-full md:w-1/2 h-[33vh] md:h-[50vh] min-h-[250px]">
+          <ProductShowcase cuedProduct={cuedProduct} />
+        </div>
       </div>
 
       {/* Chat Feed Section */}

@@ -16,7 +16,7 @@ export const VideoPlayer = ({ isLive = false }: VideoPlayerProps) => {
       {/* Main Video Player */}
       <div
         className={`relative bg-black transition-all duration-300 ${
-          isMinimized ? "hidden" : "h-[33vh] min-h-[250px]"
+          isMinimized ? "hidden" : "h-full w-full"
         }`}
       >
         {/* Video Placeholder */}
