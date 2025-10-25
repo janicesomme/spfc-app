@@ -28,6 +28,7 @@ import Vote from "./pages/Vote";
 import ShoppableHangout from "./pages/ShoppableHangout";
 import CharityHangout from "./pages/CharityHangout";
 import CreatorDashboard from "./pages/CreatorDashboard";
+import PresenterDashboard from "./pages/PresenterDashboard";
 import Impact from "./pages/Impact";
 
 const queryClient = new QueryClient({
@@ -64,6 +65,7 @@ function App() {
               <Route path="/hangout" element={<ShoppableHangout />} />
               <Route path="/charity-hangout" element={<CharityHangout />} />
               <Route path="/creator-dashboard" element={<CreatorDashboard />} />
+              <Route path="/presenter-dashboard" element={<PresenterDashboard />} />
               <Route path="/impact" element={<Impact />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/match-bingo" element={<MatchBingo />} />
