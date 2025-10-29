@@ -56,50 +56,47 @@ export const ProductShowcase = ({ cuedProduct }: ProductShowcaseProps) => {
 
   return (
     <div 
-      className={`h-full bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] p-6 flex flex-col justify-center transition-all duration-500 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+      className={`h-full bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] flex items-center justify-center overflow-hidden transition-all duration-500 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      <div className="max-w-md mx-auto w-full">
+      <div className="w-full h-full flex flex-col md:flex-row items-center justify-center gap-3 p-3 md:p-4 lg:p-6">
         {/* Product Image */}
-        <div className="relative mb-6 rounded-lg overflow-hidden bg-white/5 border-2 border-[#C8102E]/30">
+        <div className="relative rounded-lg overflow-hidden bg-white/5 border-2 border-[#C8102E]/30 flex-shrink-0 w-full md:w-[45%] aspect-square max-h-[180px] md:max-h-[280px]">
           {imageUrl ? (
             <img 
               src={imageUrl} 
               alt={product.title}
-              className="w-full aspect-square object-cover"
+              className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full aspect-square flex items-center justify-center bg-gray-800">
-              <span className="text-gray-500">No Image</span>
+            <div className="w-full h-full flex items-center justify-center bg-gray-800">
+              <span className="text-gray-500 text-sm">No Image</span>
             </div>
           )}
-          <div className="absolute top-3 right-3">
-            <div className="bg-[#C8102E] text-white px-3 py-1 rounded-full text-sm font-bold">
+          <div className="absolute top-2 right-2">
+            <div className="bg-[#C8102E] text-white px-2 py-0.5 rounded-full text-xs font-bold">
               FEATURED
             </div>
           </div>
         </div>
 
         {/* Product Info */}
-        <div className="space-y-4">
+        <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-3 min-w-0 max-w-full md:max-w-[50%]">
           <div>
-            <h3 className="text-2xl font-bold text-white mb-2">{product.title}</h3>
+            <h3 className="text-base md:text-xl lg:text-2xl font-bold text-white mb-1 line-clamp-2">{product.title}</h3>
             {product.description && (
-              <p className="text-gray-400 text-sm line-clamp-2">{product.description}</p>
+              <p className="text-gray-400 text-xs md:text-sm line-clamp-1 md:line-clamp-2">{product.description}</p>
             )}
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="text-3xl font-bold text-[#C8102E]">
-              {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
-            </div>
+          <div className="text-xl md:text-2xl lg:text-3xl font-bold text-[#C8102E]">
+            {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
           </div>
 
           <Button 
             onClick={handleAddToCart}
-            className="w-full bg-[#C8102E] hover:bg-[#A00D24] text-white font-bold py-6 text-lg rounded-lg transition-all hover:scale-[1.02]"
-            size="lg"
+            className="w-full bg-[#C8102E] hover:bg-[#A00D24] text-white font-bold py-3 md:py-4 lg:py-5 text-sm md:text-base lg:text-lg rounded-lg transition-all hover:scale-[1.02]"
           >
             Add to Cart
           </Button>
