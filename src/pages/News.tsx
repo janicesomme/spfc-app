@@ -44,7 +44,7 @@ export default function News() {
   const [selectedSource, setSelectedSource] = useState("All");
   const [sources, setSources] = useState<string[]>([]);
 
-  const ARTICLES_PER_PAGE = 20;
+  const ARTICLES_PER_PAGE = 15;
 
   const fetchNews = useCallback(async (offset = 0, reset = true) => {
     if (offset === 0) {
@@ -55,7 +55,7 @@ export default function News() {
     
     try {
       let query = supabase
-        .from("man_utd_news")
+        .from("bundesliga_news")
         .select("id, title, description, url, image_url, source, source_logo, published_at, relevance_score, rank, has_image, is_breaking, is_transfer, is_match_report, is_active, created_at")
         .eq("is_active", true)
        .order("published_at", { ascending: false });
@@ -123,7 +123,7 @@ export default function News() {
   const fetchSources = useCallback(async () => {
     try {
       const { data, error } = await supabase
-        .from("man_utd_news")
+        .from("bundesliga_news")
         .select("source")
         .eq("is_active", true)
         .not("source", "is", null);

@@ -98,7 +98,7 @@ export default function HomePage() {
       console.log('Attempting to fetch news...');
       
       const { data: newsData, error: newsError } = await supabase
-        .from('man_utd_news')
+        .from('bundesliga_news')
         .select('id, title, description, snippet, url, source, published_at, image_url, is_breaking, is_transfer')
         .eq('is_active', true)
         .order("published_at", { ascending: false })
