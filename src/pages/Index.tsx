@@ -167,13 +167,12 @@ export default function HomePage() {
         {/* Black separator line */}
         <div className="w-full h-[10px] bg-black"></div>
         
-        {/* Bundesliga Banner - 50% height */}
-        <div className="w-full flex justify-center">
+        {/* Bundesliga Banner */}
+        <div className="w-full">
           <img 
             src={bundesligaBanner} 
             alt="The Bundesliga" 
             className="w-full h-auto object-contain"
-            style={{ transform: 'scaleY(0.5)', transformOrigin: 'top' }}
           />
         </div>
         
