@@ -10,8 +10,7 @@ import {
 import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
 import { MatchBingoAdBanner } from '../components/MatchBingoAdBanner';
 import { WeeklyShoutSubscription } from '../components/WeeklyShoutSubscription';
-import thatsfootballBanner from "@/assets/thats-football-banner-home.jpg";
-import bundesligaBanner from "@/assets/bundesliga-banner.png";
+import thatsfootballBanner from "@/assets/thats-football-bundesliga-combined.png";
 
 interface Video {
   video_id: string;
@@ -159,19 +158,7 @@ export default function HomePage() {
         <div className="w-full">
           <img 
             src={thatsfootballBanner} 
-            alt="That's Football Banner" 
-            className="w-full h-auto object-contain"
-          />
-        </div>
-        
-        {/* Black separator line */}
-        <div className="w-full h-[10px] bg-black"></div>
-        
-        {/* Bundesliga Banner */}
-        <div className="w-full">
-          <img 
-            src={bundesligaBanner} 
-            alt="The Bundesliga" 
+            alt="That's Football Bundesliga Banner" 
             className="w-full h-auto object-contain"
           />
         </div>
