@@ -221,68 +221,6 @@ export default function HomePage() {
           </Drawer>
       </div>
 
-      {/* YouTube Video Section */}
-      <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
-        {latestVideo?.youtube_url ? (
-          <ExternalLinkButton
-            url={latestVideo.youtube_url}
-            className="w-full max-w-[340px] sm:max-w-4xl mx-auto block"
-          >
-            <div className="relative group cursor-pointer w-full">
-              <img 
-                src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
-                alt={latestVideo?.title || "Latest Video"}
-                className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
-                loading="lazy"
-              />
-              {/* YouTube Play Button Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-100 hover:bg-black/30 transition-all rounded-lg">
-                <div className="bg-red-600 hover:bg-red-700 rounded-full p-3 sm:p-4 shadow-lg transition-colors">
-                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </ExternalLinkButton>
-        ) : (
-          <button
-            className="w-full max-w-[340px] sm:max-w-4xl mx-auto block"
-            onClick={() => navigate('/youtube')}
-          >
-            <div className="relative group cursor-pointer w-full">
-              <img 
-                src={latestVideo?.thumbnail_url || "https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"}
-                alt={latestVideo?.title || "Latest Video"}
-                className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
-                loading="lazy"
-              />
-              {/* YouTube Play Button Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-100 hover:bg-black/30 transition-all rounded-lg">
-                <div className="bg-red-600 hover:bg-red-700 rounded-full p-3 sm:p-4 shadow-lg transition-colors">
-                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </button>
-        )}
-        {/* Video Title - Below thumbnail with same width */}
-        {latestVideo && (
-          <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto">
-            <h3 className="text-white text-lg sm:text-xl font-bold text-center mt-1 leading-tight px-1">
-              {latestVideo.title}
-            </h3>
-          </div>
-        )}
-
-        {/* Match Bingo Ad Banner */}
-        <MatchBingoAdBanner />
-
-        {/* Weekly Shout Subscription */}
-        <WeeklyShoutSubscription />
-      </div>
 
       {/* Latest News Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-4">
