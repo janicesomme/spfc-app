@@ -10,6 +10,7 @@ import {
 import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
 import { MatchBingoAdBanner } from '../components/MatchBingoAdBanner';
 import { WeeklyShoutSubscription } from '../components/WeeklyShoutSubscription';
+import thatsfootballBanner from "@/assets/thats-football-banner-home.jpg";
 
 interface Video {
   video_id: string;
@@ -152,33 +153,30 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Banner Header */}
-      <div className="w-full py-1 sm:py-5 px-4" style={{ backgroundColor: '#ec1c24' }}>
-        <div className="flex items-center justify-center max-w-4xl mx-auto relative">
+      {/* Banner Header with Menu */}
+      <div className="relative w-full">
+        <div className="w-full border-b-2 border-border">
           <img 
-            src="/lovable-uploads/fcaced2e-cef0-4d27-aefa-25f4acc9b7a4.png"
-            alt="FTV Logo"
-            className="h-20 w-auto sm:h-24 md:h-28 mr-4 sm:mr-6"
-            style={{ marginLeft: '-40px' }}
+            src={thatsfootballBanner} 
+            alt="That's Football Banner" 
+            className="w-full h-auto object-contain"
           />
-          <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl">
-            Members App
-          </h1>
-          
-          {/* Hamburger Menu - Mobile First */}
-          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-            <DrawerTrigger asChild>
-              <button 
-                className="absolute md:hidden text-white hover:text-gray-200 transition-colors z-10"
-                style={{ 
-                  right: '15px',
-                  top: '15px'
-                }}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={24} />
-              </button>
-            </DrawerTrigger>
+        </div>
+        
+        {/* Hamburger Menu - Mobile First */}
+        <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+          <DrawerTrigger asChild>
+            <button 
+              className="absolute md:hidden text-white hover:text-gray-200 transition-colors z-10"
+              style={{ 
+                right: '15px',
+                top: '15px'
+              }}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={24} />
+            </button>
+          </DrawerTrigger>
             <DrawerContent 
               className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
               style={{ backgroundColor: '#ec1c24' }}
@@ -221,7 +219,6 @@ export default function HomePage() {
               </div>
             </DrawerContent>
           </Drawer>
-        </div>
       </div>
 
       {/* YouTube Video Section */}
