@@ -11,6 +11,7 @@ import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
 import { MatchBingoAdBanner } from '../components/MatchBingoAdBanner';
 import { WeeklyShoutSubscription } from '../components/WeeklyShoutSubscription';
 import thatsfootballBanner from "@/assets/thats-football-banner-home.jpg";
+import bundesligaBanner from "@/assets/bundesliga-banner.png";
 
 interface Video {
   video_id: string;
@@ -155,11 +156,24 @@ export default function HomePage() {
     <div className="min-h-screen bg-black">
       {/* Banner Header with Menu */}
       <div className="relative w-full">
-        <div className="w-full border-b-2 border-border">
+        <div className="w-full">
           <img 
             src={thatsfootballBanner} 
             alt="That's Football Banner" 
             className="w-full h-auto object-contain"
+          />
+        </div>
+        
+        {/* Black separator line */}
+        <div className="w-full h-[10px] bg-black"></div>
+        
+        {/* Bundesliga Banner - 60% height of top banner */}
+        <div className="w-full">
+          <img 
+            src={bundesligaBanner} 
+            alt="The Bundesliga" 
+            className="w-full h-auto object-contain"
+            style={{ maxHeight: '60%' }}
           />
         </div>
         
