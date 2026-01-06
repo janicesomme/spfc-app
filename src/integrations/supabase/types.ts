@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics: {
+        Row: {
+          comments: number | null
+          content_id: string | null
+          created_at: string | null
+          engagement_rate: number | null
+          id: string
+          likes: number | null
+          recorded_at: string | null
+          shares: number | null
+          views: number | null
+          watch_time_minutes: number | null
+        }
+        Insert: {
+          comments?: number | null
+          content_id?: string | null
+          created_at?: string | null
+          engagement_rate?: number | null
+          id?: string
+          likes?: number | null
+          recorded_at?: string | null
+          shares?: number | null
+          views?: number | null
+          watch_time_minutes?: number | null
+        }
+        Update: {
+          comments?: number | null
+          content_id?: string | null
+          created_at?: string | null
+          engagement_rate?: number | null
+          id?: string
+          likes?: number | null
+          recorded_at?: string | null
+          shares?: number | null
+          views?: number | null
+          watch_time_minutes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analytics_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bets: {
         Row: {
           actual_away_goals: number | null
@@ -90,6 +137,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      brand_deals: {
+        Row: {
+          brand_name: string
+          campaign_title: string
+          created_at: string | null
+          deadline: string
+          deliverables: string
+          id: string
+          notes: string | null
+          progress: number | null
+          revenue: number | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          brand_name: string
+          campaign_title: string
+          created_at?: string | null
+          deadline: string
+          deliverables: string
+          id?: string
+          notes?: string | null
+          progress?: number | null
+          revenue?: number | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          brand_name?: string
+          campaign_title?: string
+          created_at?: string | null
+          deadline?: string
+          deliverables?: string
+          id?: string
+          notes?: string | null
+          progress?: number | null
+          revenue?: number | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       bundesliga_news: {
         Row: {
@@ -168,6 +260,102 @@ export type Database = {
           timestamp?: string | null
           title?: string
           url?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      content: {
+        Row: {
+          content_type: string | null
+          created_at: string | null
+          creator_id: string | null
+          description: string | null
+          id: string
+          platform_content_id: string | null
+          platform_id: string | null
+          published_at: string | null
+          status: string | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          url: string | null
+        }
+        Insert: {
+          content_type?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          description?: string | null
+          id?: string
+          platform_content_id?: string | null
+          platform_id?: string | null
+          published_at?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Update: {
+          content_type?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          description?: string | null
+          id?: string
+          platform_content_id?: string | null
+          platform_id?: string | null
+          published_at?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "creators"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "platforms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      creators: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string
+          id: string
+          name: string | null
+          timezone: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          name?: string | null
+          timezone?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string | null
+          timezone?: string | null
+          updated_at?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -1270,6 +1458,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      platforms: {
+        Row: {
+          access_token: string | null
+          created_at: string | null
+          creator_id: string | null
+          handle: string
+          id: string
+          is_active: boolean | null
+          last_synced: string | null
+          platform: string
+          refresh_token: string | null
+          token_expires_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          handle: string
+          id?: string
+          is_active?: boolean | null
+          last_synced?: string | null
+          platform: string
+          refresh_token?: string | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          handle?: string
+          id?: string
+          is_active?: boolean | null
+          last_synced?: string | null
+          platform?: string
+          refresh_token?: string | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platforms_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "creators"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       player_images: {
         Row: {
@@ -2428,6 +2666,18 @@ export type Database = {
           source_logo?: string | null
           title?: string | null
           url?: string | null
+        }
+        Relationships: []
+      }
+      deal_analytics: {
+        Row: {
+          active_deals: number | null
+          avg_deal_value: number | null
+          completed_deals: number | null
+          negotiating_deals: number | null
+          total_deals: number | null
+          total_revenue: number | null
+          user_id: string | null
         }
         Relationships: []
       }
