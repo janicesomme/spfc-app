@@ -273,8 +273,8 @@ export default function HomePage() {
         )}
         {/* Video Title - Below thumbnail with same width */}
         {latestVideo && (
-          <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto">
-            <h3 className="text-white text-lg sm:text-xl font-bold text-center mt-1 leading-tight px-1">
+          <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto" style={{ marginTop: '-15px' }}>
+            <h3 className="text-white text-2xl sm:text-3xl font-bold text-center mt-1 leading-tight px-1">
               {latestVideo.title}
             </h3>
           </div>
