@@ -281,7 +281,9 @@ export default function HomePage() {
         )}
 
         {/* Match Bingo Ad Banner */}
-        <MatchBingoAdBanner />
+        <div style={{ marginTop: '15px' }}>
+          <MatchBingoAdBanner />
+        </div>
 
         {/* Weekly Shout Subscription */}
         <WeeklyShoutSubscription />
