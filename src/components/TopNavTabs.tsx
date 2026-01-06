@@ -7,9 +7,7 @@ const allTabs = [
   { label: "News", path: "/news" },
   { label: "Videos", path: "/youtube" },
   { label: "Ratings", path: "/player-ratings" },
-  { label: "Vote", path: "/vote" },
-  { label: "Hangout", path: "/hangout" },
-  { label: "Impact", path: "/impact" },
+  { label: "Starting XI", path: "/pick-your-xi" },
 ];
 
 export function TopNavTabs() {
