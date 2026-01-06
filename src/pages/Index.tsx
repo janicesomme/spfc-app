@@ -281,7 +281,7 @@ export default function HomePage() {
         )}
 
         {/* Match Bingo Ad Banner */}
-        <div style={{ marginTop: '15px' }}>
+        <div className="w-full" style={{ marginTop: '15px' }}>
           <MatchBingoAdBanner />
         </div>
 
