@@ -59,8 +59,8 @@ export default function PlayerRatings() {
 
   const fetchPlayersAndImages = async () => {
     try {
-      // Fetch players from player_images table (this is where the SPFC images are!)
-      const response = await fetch('https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/player_images?select=*', {
+      // Fetch players from spfc_players table
+      const response = await fetch('https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/spfc_players?select=*', {
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
@@ -69,16 +69,16 @@ export default function PlayerRatings() {
 
       if (!response.ok) throw new Error('Failed to fetch players');
       const playersData = await response.json();
-      console.log('Players fetched from player_images:', playersData);
+      console.log('Players fetched from spfc_players:', playersData);
 
-      // Map player_images table data to Player interface
+      // Map spfc_players table data to Player interface
       const playersWithImages: Player[] = playersData.map((player: any) => {
-        // Image URLs are stored as full image URLs from player_images table
-        console.log('Player:', player.player_name, 'Image URL:', player.image_url);
+        // Image URLs from spfc_players table
+        console.log('Player:', player.name, 'Image URL:', player.image_url);
 
         return {
           id: player.id,
-          player_name: player.player_name,
+          player_name: player.name,
           position: player.position || 'Unknown',
           role: 'starter',
           match_id: matchId,
