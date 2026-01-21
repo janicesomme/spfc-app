@@ -20,8 +20,8 @@ export const SPFCNewsSection = () => {
 
   const fetchRSSFeed = async () => {
     try {
-      // Fetch RSS feed
-      const response = await fetch('https://stretfordpaddockfc.com/feed/');
+      // Fetch RSS feed using CORS proxy
+      const response = await fetch('https://api.allorigins.win/raw?url=https://stretfordpaddockfc.com/feed/');
       const text = await response.text();
 
       // Parse XML
