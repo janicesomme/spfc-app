@@ -51,8 +51,8 @@ export default function FinalPlayerRatings() {
 
   const fetchFinalRatings = async () => {
     try {
-      // Use direct fetch to avoid TypeScript issues
-      const response = await fetch(`https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/final_player_ratings?select=*&match_id=eq.${matchId}`, {
+      // Fetch from spfc_players table
+      const response = await fetch(`https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/spfc_players?select=*`, {
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
@@ -70,25 +70,30 @@ export default function FinalPlayerRatings() {
         return;
       }
 
-      // Sort by starter status, then by position hierarchy
+      // Map spfc_players data to FinalPlayer interface and sort
       const positionOrder: { [key: string]: number } = {
-        'GK': 1,
-        'CB': 2, 'LB': 2, 'RB': 2, 'LWB': 2, 'RWB': 2,
-        'CDM': 3, 'CM': 3, 'CAM': 3, 'LM': 3, 'RM': 3,
-        'LW': 4, 'RW': 4, 'CF': 4, 'ST': 4
+        'Goalkeeper': 1,
+        'Defender': 2,
+        'Midfielder': 3,
+        'Forward': 4
       };
 
-      const sortedPlayers = data.sort((a: any, b: any) => {
-        // First separate starters from subs
-        if (a.starter !== b.starter) {
-          if (a.starter && !b.starter) return -1;
-          if (!a.starter && b.starter) return 1;
-        }
+      const mappedPlayers: FinalPlayer[] = data.map((player: any) => ({
+        player_id: player.id,
+        player_name: player.name,
+        position: player.position || 'Unknown',
+        starter: true,
+        average_rating: 0,
+        is_motm: false,
+        match_id: matchId,
+        image_url: player.image_url
+      }));
 
-        // Within the same starter status, sort by position hierarchy
+      const sortedPlayers = mappedPlayers.sort((a, b) => {
+        // Sort by position hierarchy
         const aOrder = positionOrder[a.position || ''] || 999;
         const bOrder = positionOrder[b.position || ''] || 999;
-        
+
         if (aOrder !== bOrder) {
           return aOrder - bOrder;
         }

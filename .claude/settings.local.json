@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wmic process where name=\"node.exe\" delete)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout 5 npm run dev:*)",
+      "Bash(cp:*)",
+      "Bash(xargs kill -9)",
+      "Bash(fuser:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

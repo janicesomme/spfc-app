@@ -8,7 +8,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
-import { MatchBingoAdBanner } from '../components/MatchBingoAdBanner';
+import { PriceworxAdBanner } from '../components/PriceworxAdBanner';
+import { JoinRevolutionBanner } from '../components/JoinRevolutionBanner';
 import { WeeklyShoutSubscription } from '../components/WeeklyShoutSubscription';
 
 interface Video {
@@ -34,6 +35,7 @@ interface NewsArticle {
 }
 
 export default function HomePage() {
+  console.log("SPFC HOME PAGE RENDERING - IF YOU SEE THIS THE NEW CODE IS LOADED");
   const navigate = useNavigate();
   const [latestVideo, setLatestVideo] = useState<Video | null>(null);
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
@@ -62,36 +64,22 @@ export default function HomePage() {
   const fetchData = async () => {
     try {
       console.log('Fetching data...');
-      
-      // Fetch latest video using the same approach as YouTubeVideoList
-      try {
-        const { data: videoData, error: videoError } = await (supabase as any)
-          .from('latest_videos')
-          .select('*')
-          .order('published_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
 
-        if (videoError) {
-          console.error('Error fetching video:', videoError);
-        } else if (videoData) {
-          // Transform the data to match our Video interface
-          const transformedVideo: Video = {
-            video_id: videoData.video_id || '',
-            title: videoData.title || '',
-            description: videoData.description || '',
-            thumbnail_url: videoData.thumbnail_url || '',
-            youtube_url: videoData.youtube_url || '',
-            published_at: videoData.published_at || ''
-          };
-          setLatestVideo(transformedVideo);
-          console.log('Set latest video:', transformedVideo);
-        } else {
-          console.log('No videos found in table');
-        }
-      } catch (error) {
-        console.error('Error fetching video:', error);
-      }
+      // Set hardcoded video from YouTube URL
+      const youtubeUrl = 'https://www.youtube.com/watch?v=3KWW17dgzzY&t=3s';
+      const videoId = '3KWW17dgzzY';
+
+      const transformedVideo: Video = {
+        video_id: videoId,
+        title: 'Latest Match Analysis',
+        description: 'Watch the latest football match analysis',
+        thumbnail_url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+        youtube_url: youtubeUrl,
+        published_at: new Date().toISOString()
+      };
+
+      setLatestVideo(transformedVideo);
+      console.log('Set latest video:', transformedVideo);
 
       // Fetch latest 3 news articles
       console.log('Attempting to fetch news...');
@@ -155,14 +143,14 @@ export default function HomePage() {
       {/* Banner Header */}
       <div className="w-full py-1 sm:py-5 px-4" style={{ backgroundColor: '#ec1c24' }}>
         <div className="flex items-center justify-center max-w-4xl mx-auto relative">
-          <img 
-            src="/lovable-uploads/fcaced2e-cef0-4d27-aefa-25f4acc9b7a4.png"
-            alt="FTV Logo"
+          <img
+            src="/sp-logo.webp"
+            alt="SPFC Logo"
             className="h-20 w-auto sm:h-24 md:h-28 mr-4 sm:mr-6"
             style={{ marginLeft: '-40px' }}
           />
           <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl">
-            Members App
+            SPFC App
           </h1>
           
           {/* Hamburger Menu - Mobile First */}
@@ -280,9 +268,14 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Match Bingo Ad Banner */}
+        {/* Priceworx Ad Banner */}
         <div className="w-full" style={{ marginTop: '15px' }}>
-          <MatchBingoAdBanner />
+          <PriceworxAdBanner />
+        </div>
+
+        {/* Join the Revolution Banner */}
+        <div className="w-full" style={{ marginTop: '15px' }}>
+          <JoinRevolutionBanner />
         </div>
 
         {/* Weekly Shout Subscription */}
