@@ -51,8 +51,8 @@ export default function FinalPlayerRatings() {
 
   const fetchFinalRatings = async () => {
     try {
-      // Fetch from spfc_players table
-      const response = await fetch(`https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/spfc_players?select=*`, {
+      // Fetch from player_images table (this is where the SPFC images are!)
+      const response = await fetch(`https://jckkhfqswiasnepshxbr.supabase.co/rest/v1/player_images?select=*`, {
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impja2toZnFzd2lhc25lcHNoeGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDQ0NDIsImV4cCI6MjA2NDgyMDQ0Mn0.3-uOf61O93hSmhP3UvjBRZuAf5vEg6xyUYu77VyVMZ8',
@@ -70,7 +70,7 @@ export default function FinalPlayerRatings() {
         return;
       }
 
-      // Map spfc_players data to FinalPlayer interface and sort
+      // Map player_images data to FinalPlayer interface and sort
       const positionOrder: { [key: string]: number } = {
         'Goalkeeper': 1,
         'Defender': 2,
@@ -80,7 +80,7 @@ export default function FinalPlayerRatings() {
 
       const mappedPlayers: FinalPlayer[] = data.map((player: any) => ({
         player_id: player.id,
-        player_name: player.name,
+        player_name: player.player_name,
         position: player.position || 'Unknown',
         starter: true,
         average_rating: 0,
