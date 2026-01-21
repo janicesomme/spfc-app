@@ -7,10 +7,11 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { ExternalLinkButton, ExternalLinkDiv } from '@/lib/external-link-utils';
+import { ExternalLinkButton } from '@/lib/external-link-utils';
 import { PriceworxAdBanner } from '../components/PriceworxAdBanner';
 import { JoinRevolutionBanner } from '../components/JoinRevolutionBanner';
 import { WeeklyShoutSubscription } from '../components/WeeklyShoutSubscription';
+import { SPFCNewsSection } from '../components/SPFCNewsSection';
 
 interface Video {
   video_id: string;
@@ -21,24 +22,11 @@ interface Video {
   published_at: string;
 }
 
-interface NewsArticle {
-  id: string;
-  title: string;
-  description: string | null;
-  snippet: string | null;
-  url: string;
-  source: string;
-  published_at: string | null;
-  image_url: string | null;
-  is_breaking: boolean | null;
-  is_transfer: boolean | null;
-}
 
 export default function HomePage() {
   console.log("SPFC HOME PAGE RENDERING - IF YOU SEE THIS THE NEW CODE IS LOADED");
   const navigate = useNavigate();
   const [latestVideo, setLatestVideo] = useState<Video | null>(null);
-  const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -80,54 +68,11 @@ export default function HomePage() {
 
       setLatestVideo(transformedVideo);
       console.log('Set latest video:', transformedVideo);
-
-      // Fetch latest 3 news articles
-      console.log('Attempting to fetch news...');
-      
-      const { data: newsData, error: newsError } = await supabase
-        .from('man_utd_news')
-        .select('id, title, description, snippet, url, source, published_at, image_url, is_breaking, is_transfer')
-        .eq('is_active', true)
-        .order("published_at", { ascending: false })
-        .limit(3)
-      
-      if (newsError) {
-        console.error('Error fetching news:', newsError);
-      } else if (newsData && newsData.length > 0) {
-        // Remove duplicates based on title and URL
-        const uniqueArticles = newsData.reduce((acc: NewsArticle[], current) => {
-          const isDuplicate = acc.some(article => 
-            article.title === current.title || 
-            (article.url && current.url && article.url === current.url)
-          );
-          if (!isDuplicate) {
-            acc.push(current);
-          }
-          return acc;
-        }, []).slice(0, 3); // Take only first 3 unique articles
-        
-        setNewsArticles(uniqueArticles);
-        console.log('Set unique news articles:', uniqueArticles);
-      } else {
-        console.log('No news articles found in table');
-      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    return date.toLocaleDateString();
   };
 
   if (loading) {
@@ -283,55 +228,7 @@ export default function HomePage() {
       </div>
 
       {/* Latest News Section */}
-      <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-4">
-        <h3 className="text-youtube-yellow text-lg font-semibold mb-4 text-center uppercase">Latest News</h3>
-        
-        {newsArticles.length > 0 ? (
-          <div className="space-y-3 max-w-4xl mx-auto">
-            {newsArticles.map((article) => (
-              <ExternalLinkDiv
-                key={article.id}
-                url={article.url}
-                className="bg-black rounded-lg hover:bg-gray-900 transition-colors"
-              >
-                <div className="flex flex-col sm:flex-row min-h-32 sm:min-h-40">
-                  {article.image_url && (
-                    <div className="w-full h-48 sm:w-32 sm:h-32 md:w-40 md:h-40 flex-shrink-0">
-                      <img 
-                        src={article.image_url}
-                        alt={article.title}
-                        className="w-full h-full object-cover rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col justify-start overflow-hidden">
-                    <h4 className="text-white text-lg sm:text-xl md:text-2xl font-medium mb-2 sm:mb-3 leading-tight break-words hyphens-auto">
-                      {article.title}
-                    </h4>
-                    <div className="text-gray-400 text-sm sm:text-base leading-relaxed break-words hyphens-auto flex-1">
-                      <p className="mb-2 line-clamp-3 sm:line-clamp-none">
-                        {article.description}
-                      </p>
-                      {article.snippet && article.snippet !== article.description && (
-                        <p className="line-clamp-2 sm:line-clamp-none">
-                          {article.snippet}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </ExternalLinkDiv>
-            ))}
-          </div>
-        ) : (
-          <div className="text-gray-400 text-center py-4">
-            No news articles available
-          </div>
-        )}
-      </div>
+      <SPFCNewsSection />
 
       {/* Pick Your XI Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6 mt-[15px] sm:mt-0">
