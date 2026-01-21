@@ -54,10 +54,10 @@ export const WeeklyShoutSubscription = () => {
     <div className="w-full max-w-[340px] sm:max-w-4xl mx-auto rounded-lg border border-white p-4 sm:p-6 mb-6 mt-6" style={{ backgroundColor: '#1a1a2e' }}>
       <div className="text-center space-y-4">
         <h3 className="text-white font-bold text-lg sm:text-xl">
-          Join the FUTV Family
+          Get the SPFC Newsletter
         </h3>
         <p className="text-white/90 text-sm leading-relaxed">
-          Behind-the-scenes stories that never make YouTube. Adam's matchday snapshots, and all the best fan comments from the week!
+          Behind the scenes stories, our club business....everything a fan needs to know!
         </p>
         
         {!isSubmitted ? (
