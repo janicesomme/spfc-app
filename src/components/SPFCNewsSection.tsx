@@ -62,7 +62,16 @@ export const SPFCNewsSection = () => {
           }
         }
 
-        // Try to extract image from description HTML
+        // Try to extract image from content:encoded HTML (priority source)
+        if (!imageUrl && contentEl) {
+          const contentHtml = contentEl.textContent || '';
+          const imgMatch = contentHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
+          if (imgMatch) {
+            imageUrl = imgMatch[1];
+          }
+        }
+
+        // Fallback: try to extract image from description HTML
         if (!imageUrl && descEl) {
           const descHtml = descEl.textContent || '';
           const imgMatch = descHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
