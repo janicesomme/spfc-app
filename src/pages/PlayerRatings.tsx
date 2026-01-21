@@ -73,6 +73,7 @@ export default function PlayerRatings() {
 
       // Map spfc_players table data to Player interface
       const playersWithImages: Player[] = playersData.map((player: any) => {
+        // Image URLs are stored as full TUS URLs, use them directly
         console.log('Player:', player.name, 'Image URL:', player.image_url);
 
         return {
@@ -81,7 +82,7 @@ export default function PlayerRatings() {
           position: player.position || 'Unknown',
           role: 'starter',
           match_id: matchId,
-          image_url: player.image_url
+          image_url: player.image_url // Using URL from database as-is
         };
       });
 
@@ -313,10 +314,14 @@ export default function PlayerRatings() {
                     {/* Player Image */}
                     <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
                       {player.image_url ? (
-                        <img 
+                        <img
                           src={player.image_url}
                           alt={player.player_name}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            console.error('Image failed to load:', player.image_url);
+                            e.currentTarget.style.display = 'none';
+                          }}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
@@ -381,10 +386,14 @@ export default function PlayerRatings() {
                   {/* Player Image */}
                   <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
                     {player.image_url ? (
-                      <img 
+                      <img
                         src={player.image_url}
                         alt={player.player_name}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          console.error('Image failed to load:', player.image_url);
+                          e.currentTarget.style.display = 'none';
+                        }}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
