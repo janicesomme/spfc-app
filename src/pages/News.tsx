@@ -56,7 +56,7 @@ export default function News() {
             ? proxy + 'https://stretfordpaddockfc.com/feed/'
             : proxy + 'https://stretfordpaddockfc.com/feed/';
 
-          const response = await fetch(url);
+          const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
           if (response.ok) {
             text = await response.text();
             break;
