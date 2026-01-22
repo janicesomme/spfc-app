@@ -24,44 +24,16 @@ export const SPFCNewsSection = () => {
       let text: string | null = null;
       let lastError: Error | null = null;
 
-      // Try direct fetch
+      // Use api.allorigins.win which was working (no timeout - it can be slow)
       try {
-        const response = await fetch('https://stretfordpaddockfc.com/feed/', {
-          signal: AbortSignal.timeout(10000),
-          mode: 'cors'
-        });
+        const response = await fetch('https://api.allorigins.win/raw?url=https://stretfordpaddockfc.com/feed/');
         if (response.ok) {
           text = await response.text();
         } else {
-          lastError = new Error(`Direct fetch failed: ${response.status}`);
+          lastError = new Error(`Proxy failed: ${response.status}`);
         }
       } catch (err) {
         lastError = err instanceof Error ? err : new Error(String(err));
-      }
-
-      // If direct fetch failed, try CORS proxies
-      if (!text) {
-        const proxies = [
-          'https://api.allorigins.win/raw?url=',
-          'https://cors.eu.org/?url='
-        ];
-
-        for (const proxy of proxies) {
-          try {
-            const url = proxy.includes('?url=')
-              ? proxy + 'https://stretfordpaddockfc.com/feed/'
-              : proxy + 'https://stretfordpaddockfc.com/feed/';
-
-            const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
-            if (response.ok) {
-              text = await response.text();
-              break;
-            }
-          } catch (err) {
-            lastError = err instanceof Error ? err : new Error(String(err));
-            continue;
-          }
-        }
       }
 
       if (!text) {
@@ -161,31 +133,7 @@ export const SPFCNewsSection = () => {
       setLoading(false);
     } catch (err) {
       console.error('Error fetching RSS feed:', err);
-      // Use fallback demo data if fetch fails
-      const fallbackArticles: RSSArticle[] = [
-        {
-          title: 'Stretford Paddock FC Secures Victory',
-          link: 'https://stretfordpaddockfc.com',
-          description: 'The team delivered an impressive performance against their rivals. Fans celebrated the dramatic last-minute goal that sealed the victory.',
-          image: '/sp-logo.webp',
-          pubDate: new Date().toISOString()
-        },
-        {
-          title: 'Player of the Week Announcement',
-          link: 'https://stretfordpaddockfc.com',
-          description: 'Outstanding individual performances throughout the season. The voting was extremely competitive this week with several standout candidates.',
-          image: '/sp-logo.webp',
-          pubDate: new Date().toISOString()
-        },
-        {
-          title: 'Training Facility Upgrades Complete',
-          link: 'https://stretfordpaddockfc.com',
-          description: 'New equipment and facilities now available for the squad. The upgrades will enhance preparation for upcoming matches.',
-          image: '/sp-logo.webp',
-          pubDate: new Date().toISOString()
-        }
-      ];
-      setArticles(fallbackArticles);
+      setError('Failed to load news articles');
       setLoading(false);
     }
   };
