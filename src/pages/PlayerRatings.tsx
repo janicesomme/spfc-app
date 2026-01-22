@@ -74,7 +74,9 @@ export default function PlayerRatings() {
       // Map spfc_players table data to Player interface
       const playersWithImages: Player[] = playersData.map((player: any) => {
         // Image URLs from spfc_players table
-        console.log('Player:', player.name, 'Image URL:', player.image_url);
+        console.log('Player:', player.name);
+        console.log('  Raw image_url:', player.image_url);
+        console.log('  URL starts with:', player.image_url?.substring(0, 50));
 
         return {
           id: player.id,
@@ -318,6 +320,7 @@ export default function PlayerRatings() {
                           src={player.image_url}
                           alt={player.player_name}
                           className="w-full h-full object-cover"
+                          crossOrigin="anonymous"
                           onError={(e) => {
                             console.error('Image failed to load:', player.image_url);
                             e.currentTarget.style.display = 'none';
@@ -380,9 +383,9 @@ export default function PlayerRatings() {
               </div>
 
               {/* Desktop Layout */}
-              <div className="hidden sm:flex items-center justify-between">
+              <div className="hidden sm:flex items-center gap-4">
                 {/* Player Info */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-1">
                   {/* Player Image */}
                   <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-700">
                     {player.image_url ? (
@@ -390,6 +393,7 @@ export default function PlayerRatings() {
                         src={player.image_url}
                         alt={player.player_name}
                         className="w-full h-full object-cover"
+                        crossOrigin="anonymous"
                         onError={(e) => {
                           console.error('Image failed to load:', player.image_url);
                           e.currentTarget.style.display = 'none';
@@ -401,9 +405,9 @@ export default function PlayerRatings() {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Player Details */}
-                  <div>
+                  <div className="min-w-0">
                     <h3 className="font-semibold text-white">{player.player_name}</h3>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <span>{player.position}</span>
@@ -415,11 +419,16 @@ export default function PlayerRatings() {
                   </div>
                 </div>
 
+                {/* Star Rating */}
+                <div className="flex-shrink-0">
+                  <StarRating playerId={player.id} currentRating={playerRating} />
+                </div>
+
                 {/* MOTM Button */}
-                <div className="flex items-center">
+                <div className="flex-shrink-0 w-24 text-center">
                   <button
                     onClick={() => handleMotmSelection(player.id)}
-                    className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors ${
+                    className={`w-full px-4 py-2 rounded-lg font-bold text-sm transition-colors ${
                       motmPlayerId === player.id
                         ? 'bg-yellow-500 text-red-600'
                         : 'bg-red-600 text-white hover:bg-red-700'
@@ -428,9 +437,6 @@ export default function PlayerRatings() {
                     MOTM
                   </button>
                 </div>
-
-                {/* Star Rating */}
-                <StarRating playerId={player.id} currentRating={playerRating} />
               </div>
             </div>
           );

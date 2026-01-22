@@ -1,62 +1,44 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { ExternalLinkDiv } from '@/lib/external-link-utils';
 
-interface LatestVideo {
-  id: number;
-  video_id: string;
+interface Video {
   title: string;
-  thumbnail_url: string;
-  youtube_url: string;
-  description?: string;
-  channel_title?: string;
-  published_at?: string;
-  channel_id?: string;
-  embed_url?: string;
-  thumbnail_width?: number;
-  thumbnail_height?: number;
-  published_at_formatted?: string;
-  created_at?: string;
-  updated_at?: string;
-  fetched_at?: string;
+  url: string;
+  thumbnail: string;
 }
 
 export function YouTubeVideoList() {
-  const [videos, setVideos] = useState<LatestVideo[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchLatestVideos();
+    loadHardcodedVideos();
   }, []);
 
-  const fetchLatestVideos = async () => {
-    try {
-      // Use any to bypass TypeScript until types are regenerated
-      const { data, error } = await (supabase as any)
-        .from('latest_videos')
-        .select('*')
-        .order('published_at', { ascending: false })
-        .limit(5);
+  const loadHardcodedVideos = () => {
+    // Hardcoded list of SPFC videos for demo
+    const hardcodedVideos: Video[] = [
+      {
+        title: 'SPFC vs Winsford - Full Match',
+        url: 'https://www.youtube.com/watch?v=LIw7wfiJ49U',
+        thumbnail: 'https://img.youtube.com/vi/LIw7wfiJ49U/maxresdefault.jpg'
+      },
+      {
+        title: 'SPFC Match Highlights',
+        url: 'https://www.youtube.com/watch?v=x1u3iUPMyRg',
+        thumbnail: 'https://img.youtube.com/vi/x1u3iUPMyRg/maxresdefault.jpg'
+      },
+      {
+        title: 'SPFC Game Review',
+        url: 'https://www.youtube.com/watch?v=Xibq38jCRow',
+        thumbnail: 'https://img.youtube.com/vi/Xibq38jCRow/maxresdefault.jpg'
+      }
+    ];
 
-      if (error) throw error;
-      setVideos(data || []);
-    } catch (error) {
-      console.error('Error fetching videos:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    // Try fallback to a different resolution
-    if (target.src.includes('hqdefault')) {
-      target.src = target.src.replace('hqdefault', 'mqdefault');
-    }
+    setVideos(hardcodedVideos);
+    setLoading(false);
   };
 
   if (loading) {
@@ -68,44 +50,49 @@ export function YouTubeVideoList() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="px-3 sm:px-4 py-6 sm:py-8 flex flex-col items-center">
-        {/* Video List - Single Column, Mobile optimized */}
-        <div className="space-y-6 sm:space-y-8 w-full max-w-[340px] sm:max-w-md">
-          {videos.map((video) => (
-            <div key={video.id} className="flex flex-col items-center">
-              {/* Thumbnail Container */}
-              <ExternalLinkDiv 
-                url={video.youtube_url}
-                className="relative group w-full"
-              >
-                <div className="relative">
-                  <img
-                    src={video.thumbnail_url}
-                    alt={video.title}
-                    className="rounded-lg shadow-lg w-full h-auto border-2 border-red-500 object-contain"
-                    loading="lazy"
-                    onError={handleImageError}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-                    <Play className="h-16 w-16 text-white drop-shadow-lg" />
+    <div className="bg-black px-4 sm:px-8 py-6 sm:py-8">
+      <div className="max-w-5xl mx-auto">
+        {/* Video Grid - Stacked vertically, one per row */}
+        <div className="space-y-6">
+          {videos.length > 0 ? (
+            videos.map((video, index) => (
+              <div key={index} className="flex flex-col">
+                {/* Thumbnail with rounded corners and thin red border */}
+                <ExternalLinkDiv
+                  url={video.url}
+                  className="relative group w-full"
+                >
+                  <div className="relative rounded-lg overflow-hidden border border-red-600 shadow-lg hover:shadow-xl transition-shadow">
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-auto aspect-video object-cover hover:opacity-90 transition-opacity"
+                      loading="lazy"
+                      onError={(e) => {
+                        // Fallback thumbnail
+                        (e.target as HTMLImageElement).src = 'https://img.youtube.com/vi/3KWW17dgzzY/maxresdefault.jpg';
+                      }}
+                    />
+                    {/* Play button overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                      <Play className="h-16 w-16 text-white drop-shadow-lg fill-white" />
+                    </div>
                   </div>
-                </div>
-              </ExternalLinkDiv>
-              
-              {/* Title - Same width as thumbnail */}
-              <h3 className="text-white text-lg sm:text-xl font-bold text-center mt-1 leading-tight w-full px-1">
-                {video.title}
-              </h3>
-            </div>
-          ))}
-        </div>
+                </ExternalLinkDiv>
 
-        {videos.length === 0 && (
-          <div className="text-center text-white">
-            <p>No videos found.</p>
-          </div>
-        )}
+                {/* Video Title - One line header underneath */}
+                <h3 className="text-white text-lg sm:text-xl font-bold mt-2 leading-tight line-clamp-2">
+                  {video.title}
+                </h3>
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-400 py-12">
+              <p className="text-lg">No videos available at the moment.</p>
+              <p className="text-sm mt-2">Check back soon for latest match highlights and content!</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

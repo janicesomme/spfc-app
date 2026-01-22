@@ -32,33 +32,32 @@ export default function PickPlayer() {
     const fetchPlayers = async () => {
       try {
         const { data, error } = await supabase
-          .from('player_images' as any)
-          .select('*');
-        
+          .from('spfc_players' as any)
+          .select('id, name, position, image_url');
+
         if (error) {
           console.error('Error fetching players:', error);
         } else {
-          // Remove duplicates client-side based on player_name
-          const uniquePlayers = (data as any[])?.reduce((acc: any[], current: any) => {
-            const exists = acc.find(player => player.player_name === current.player_name);
-            if (!exists) {
-              acc.push(current);
-            }
-            return acc;
-          }, []).sort((a: any, b: any) => {
+          // Map and transform data to match Player interface
+          const transformedPlayers = (data as any[])?.map((player: any) => ({
+            id: player.id,
+            player_name: player.name,
+            position: player.position,
+            image_url: player.image_url
+          })).sort((a: any, b: any) => {
             const positionOrderA = getPositionOrder(a.position);
             const positionOrderB = getPositionOrder(b.position);
-            
+
             // First sort by position category
             if (positionOrderA !== positionOrderB) {
               return positionOrderA - positionOrderB;
             }
-            
+
             // Then sort alphabetically within each position category
             return a.player_name.localeCompare(b.player_name);
           });
-          
-          setPlayers(uniquePlayers || []);
+
+          setPlayers(transformedPlayers || []);
         }
       } catch (error) {
         console.error('Error fetching players:', error);

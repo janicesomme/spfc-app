@@ -1,52 +1,169 @@
 
-import React, { useEffect } from 'react';
-import { ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { openUrl, isExternalUrl } from '@/lib/external-link-utils';
+import { Menu, X } from 'lucide-react';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { ExternalLinkDiv } from '@/lib/external-link-utils';
 
 export default function Shop() {
   const navigate = useNavigate();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const storeUrl = 'https://futv.teemill.com/collection/new';
+  const navigationItems = [
+    { label: 'Home', path: '/' },
+    { label: 'News', path: '/news' },
+    { label: 'YT Videos', path: '/youtube' },
+    { label: 'Starting XI', path: '/pick-your-xi' },
+    { label: 'Player Ratings', path: '/player-ratings' },
+    { label: 'Final Player Ratings', path: '/final-player-ratings' },
+    { label: 'Shop', path: '/shop' },
+  ];
 
-  useEffect(() => {
-    // Open the store in a new tab when this component mounts
-    openUrl(storeUrl);
-    // Navigate back to the previous page
-    navigate(-1);
-  }, [navigate]);
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsDrawerOpen(false);
+  };
+
+  const shopItems = [
+    {
+      title: 'Team Jersey',
+      description: 'Official SPFC Home Jersey',
+      image: '/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png',
+      url: 'https://stretfordpaddockfc.com/shop'
+    },
+    {
+      title: 'Training Kit',
+      description: 'SPFC Training Wear',
+      image: '/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png',
+      url: 'https://stretfordpaddockfc.com/shop'
+    },
+    {
+      title: 'Accessories',
+      description: 'Caps, Scarves & More',
+      image: '/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png',
+      url: 'https://stretfordpaddockfc.com/shop'
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex flex-col items-center justify-center p-8">
-      <div className="text-center space-y-4">
-        <ExternalLink className="h-12 w-12 text-[#C8102E] mx-auto" />
-        <h1 className="text-2xl font-bold text-[#EAEAEA]">Opening FUTV Official Store</h1>
-        <p className="text-[#A0A0A0] max-w-md">
-          The store is opening in a new tab. If it didn't open automatically, click the button below.
-        </p>
-        <div className="space-y-3">
-          <Button
-            onClick={() => openUrl(storeUrl)}
-            className="bg-[#C8102E] hover:bg-[#A00D26] text-white px-6 py-2"
-            aria-label="Open Store (opens in new tab)"
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Open Store
-            {isExternalUrl(storeUrl) && (
-              <>
-                <span className="ml-1 text-xs" aria-hidden="true">↗</span>
-                <span className="sr-only">(opens in new tab)</span>
-              </>
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => navigate(-1)}
-            className="text-[#A0A0A0] hover:text-[#EAEAEA] hover:bg-[#171717] block mx-auto"
-          >
-            Go Back
-          </Button>
+    <div className="min-h-screen bg-black">
+      {/* Banner Header */}
+      <div className="w-full py-1 sm:py-5 px-4" style={{ backgroundColor: '#ec1c24' }}>
+        <div className="flex items-center justify-center max-w-4xl mx-auto relative">
+          <img
+            src="/sp-logo.webp"
+            alt="SPFC Logo"
+            className="h-20 w-auto sm:h-24 md:h-28 mr-4 sm:mr-6"
+            style={{ marginLeft: '-40px' }}
+          />
+          <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl">
+            Shop
+          </h1>
+
+          {/* Hamburger Menu - Mobile First */}
+          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+            <DrawerTrigger asChild>
+              <button
+                className="absolute md:hidden text-white hover:text-gray-200 transition-colors z-10"
+                style={{
+                  right: '15px',
+                  top: '15px'
+                }}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={24} />
+              </button>
+            </DrawerTrigger>
+            <DrawerContent
+              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
+              style={{ backgroundColor: '#ec1c24' }}
+            >
+              <div className="flex flex-col h-full p-6">
+                {/* Close Button */}
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="self-end text-white hover:text-gray-200 mb-4"
+                  aria-label="Close navigation menu"
+                >
+                  <X size={24} />
+                </button>
+
+                {/* FUTV Logo */}
+                <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
+                  <img
+                    src="/lovable-uploads/703f5319-120d-4554-a7b3-94147e86ee93.png"
+                    alt="FUTV Logo"
+                    className="w-[100px] h-auto border border-white rounded"
+                  />
+                </div>
+
+                {/* Navigation Links */}
+                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-50px' }}>
+                  {navigationItems.map((item, index) => (
+                    <div key={item.path} className="w-full">
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                      {index < navigationItems.length - 1 && (
+                        <div className="w-full h-px bg-white/30" />
+                      )}
+                    </div>
+                  ))}
+                </nav>
+              </div>
+            </DrawerContent>
+          </Drawer>
+        </div>
+      </div>
+
+      {/* Shop Content */}
+      <div className="px-4 sm:px-8 py-6 sm:py-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Shop Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {shopItems.map((item, index) => (
+              <ExternalLinkDiv
+                key={index}
+                url={item.url}
+                className="group rounded-lg overflow-hidden border border-red-600 hover:shadow-xl transition-shadow"
+              >
+                <div className="relative bg-gray-800 aspect-square overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover hover:opacity-90 transition-opacity"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="bg-black p-4">
+                  <h3 className="text-white text-lg font-bold mb-1">{item.title}</h3>
+                  <p className="text-gray-400 text-sm">{item.description}</p>
+                  <div className="mt-3 text-red-600 text-sm font-semibold">Shop Now →</div>
+                </div>
+              </ExternalLinkDiv>
+            ))}
+          </div>
+
+          {/* Call to Action */}
+          <div className="mt-8 bg-red-600/10 border border-red-600 rounded-lg p-6 text-center">
+            <h2 className="text-white text-2xl font-bold mb-2">Complete Store</h2>
+            <p className="text-gray-300 mb-4">Browse our full collection of official SPFC merchandise</p>
+            <ExternalLinkDiv
+              url="https://stretfordpaddockfc.com/shop"
+              className="inline-block"
+            >
+              <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors">
+                Visit Full Store
+              </button>
+            </ExternalLinkDiv>
+          </div>
         </div>
       </div>
     </div>
