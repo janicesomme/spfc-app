@@ -258,10 +258,13 @@ export default function News() {
                     {/* Article image */}
                     <div className="aspect-video overflow-hidden">
                       {article.image_url ? (
-                        <img 
+                        <img
                           src={article.image_url}
                           alt={article.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            e.currentTarget.src = '/sp-logo.webp';
+                          }}
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-[#333] to-[#222] flex items-center justify-center">
@@ -316,10 +319,13 @@ export default function News() {
                     {/* Article image */}
                     <div className="aspect-video overflow-hidden">
                       {article.image_url ? (
-                        <img 
+                        <img
                           src={article.image_url}
                           alt={article.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            e.currentTarget.src = '/sp-logo.webp';
+                          }}
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-[#333] to-[#222] flex items-center justify-center">
