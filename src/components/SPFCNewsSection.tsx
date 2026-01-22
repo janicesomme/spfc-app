@@ -20,25 +20,9 @@ export const SPFCNewsSection = () => {
 
   const fetchRSSFeed = async () => {
     try {
-      // Try direct fetch first (some sites have CORS enabled)
-      let text: string | null = null;
-      let lastError: Error | null = null;
-
-      // Use api.allorigins.win which was working (no timeout - it can be slow)
-      try {
-        const response = await fetch('https://api.allorigins.win/raw?url=https://stretfordpaddockfc.com/feed/');
-        if (response.ok) {
-          text = await response.text();
-        } else {
-          lastError = new Error(`Proxy failed: ${response.status}`);
-        }
-      } catch (err) {
-        lastError = err instanceof Error ? err : new Error(String(err));
-      }
-
-      if (!text) {
-        throw lastError || new Error('All fetch methods failed. Using fallback data.');
-      }
+      // Fetch RSS feed
+      const response = await fetch('https://stretfordpaddockfc.com/feed/');
+      const text = await response.text();
 
       // Parse XML
       const parser = new DOMParser();
@@ -78,16 +62,7 @@ export const SPFCNewsSection = () => {
           }
         }
 
-        // Try to extract image from content:encoded HTML (priority source)
-        if (!imageUrl && contentEl) {
-          const contentHtml = contentEl.textContent || '';
-          const imgMatch = contentHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
-          if (imgMatch) {
-            imageUrl = imgMatch[1];
-          }
-        }
-
-        // Fallback: try to extract image from description HTML
+        // Try to extract image from description HTML
         if (!imageUrl && descEl) {
           const descHtml = descEl.textContent || '';
           const imgMatch = descHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
