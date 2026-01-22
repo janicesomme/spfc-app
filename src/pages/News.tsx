@@ -40,8 +40,36 @@ export default function News() {
 
   const fetchRSSFeed = async () => {
     try {
-      const response = await fetch('https://api.allorigins.win/raw?url=https://stretfordpaddockfc.com/feed/');
-      const text = await response.text();
+      // Try multiple CORS proxies for reliability
+      const proxies = [
+        'https://api.allorigins.win/raw?url=',
+        'https://cors-anywhere.herokuapp.com/',
+        'https://proxy.cors.sh/?url='
+      ];
+
+      let text: string | null = null;
+      let lastError: Error | null = null;
+
+      for (const proxy of proxies) {
+        try {
+          const url = proxy.includes('?url=')
+            ? proxy + 'https://stretfordpaddockfc.com/feed/'
+            : proxy + 'https://stretfordpaddockfc.com/feed/';
+
+          const response = await fetch(url);
+          if (response.ok) {
+            text = await response.text();
+            break;
+          }
+        } catch (err) {
+          lastError = err instanceof Error ? err : new Error(String(err));
+          continue;
+        }
+      }
+
+      if (!text) {
+        throw lastError || new Error('All CORS proxies failed');
+      }
 
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(text, 'text/xml');
