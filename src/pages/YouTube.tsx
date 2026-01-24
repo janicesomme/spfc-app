@@ -68,6 +68,7 @@ export default function YouTube() {
                 {/* Close Button */}
                 <DrawerClose asChild>
                   <button
+                    onClick={() => setIsDrawerOpen(false)}
                     className="self-end text-white hover:text-gray-200 mb-4"
                     aria-label="Close navigation menu"
                   >

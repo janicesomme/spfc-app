@@ -130,6 +130,7 @@ export default function Results() {
               <div className="flex flex-col h-full p-6">
                 <DrawerClose asChild>
                   <button
+                    onClick={() => setIsDrawerOpen(false)}
                     className="self-end text-white hover:text-gray-200 mb-4"
                     aria-label="Close navigation menu"
                   >
