@@ -270,11 +270,11 @@ export default function PlayerRatings() {
                   <X size={24} />
                 </button>
                 
-                {/* FUTV Logo */}
+                {/* SPFC Logo */}
                 <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
-                  <img 
-                    src="/lovable-uploads/703f5319-120d-4554-a7b3-94147e86ee93.png"
-                    alt="FUTV Logo"
+                  <img
+                    src="/sp-logo.webp"
+                    alt="SPFC Logo"
                     className="w-[100px] h-auto border border-white rounded"
                   />
                 </div>
