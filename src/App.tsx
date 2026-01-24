@@ -32,6 +32,9 @@ import PresenterDashboard from "./pages/PresenterDashboard";
 import Impact from "./pages/Impact";
 import PriceworxLanding from "./pages/PriceworxLanding";
 import Membership from "./pages/Membership";
+import League from "./pages/League";
+import Fixtures from "./pages/Fixtures";
+import Results from "./pages/Results";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,6 +74,9 @@ function App() {
               <Route path="/impact" element={<Impact />} />
               <Route path="/priceworx" element={<PriceworxLanding />} />
               <Route path="/membership" element={<Membership />} />
+              <Route path="/league" element={<League />} />
+              <Route path="/fixtures" element={<Fixtures />} />
+              <Route path="/results" element={<Results />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/match-bingo" element={<MatchBingo />} />
               <Route path="/settings" element={<Settings />} />
