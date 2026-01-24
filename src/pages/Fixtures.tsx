@@ -48,10 +48,11 @@ export default function Fixtures() {
 
   const fetchFixtures = async () => {
     try {
-      // Fetch upcoming fixtures (where home_goals is null = not yet played)
+      // Fetch upcoming SPFC fixtures (where home_goals is null = not yet played)
       const { data, error } = await supabase
         .from('fixtures')
         .select('*')
+        .like('external_id', 'spfc_%')
         .is('home_goals', null)
         .order('kickoff', { ascending: true });
 

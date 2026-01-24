@@ -50,10 +50,11 @@ export default function League() {
 
   const fetchLeagueData = async () => {
     try {
-      // Fetch all fixtures
+      // Fetch SPFC fixtures only
       const { data, error } = await supabase
         .from('fixtures')
         .select('*')
+        .like('external_id', 'spfc_%')
         .order('kickoff', { ascending: false });
 
       if (error) throw error;
