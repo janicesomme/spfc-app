@@ -318,10 +318,10 @@ export default function HomePage() {
               {/* Shop Now Button */}
               <button
                 onClick={() => window.open('https://shop.stretfordpaddockfc.com/collections/fused', '_blank')}
-                className="absolute bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap"
+                className="absolute bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-3 sm:px-3.5 rounded-lg transition-colors text-xs sm:text-sm whitespace-nowrap"
                 style={{
                   top: 'calc(50% + 20px)',
-                  left: 'calc(100% - 110px)',
+                  left: 'calc(100% - 100px)',
                   transform: 'translateY(-50%)'
                 }}
               >
