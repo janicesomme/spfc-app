@@ -266,9 +266,9 @@ export default function HomePage() {
 
       {/* Player Ratings Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <div className="bg-blue-950/40 rounded-lg p-6 border border-white">
-          <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">Submit Your Player Ratings</h3>
-          <p className="text-youtube-yellow text-base sm:text-lg text-center mb-0 sm:mb-4">Rate the Players After Every Match</p>
+        <div className="bg-blue-950/40 rounded-lg p-3 sm:p-6 border border-white">
+          <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-2 sm:mt-5">Submit Your Player Ratings</h3>
+          <p className="text-youtube-yellow text-base sm:text-lg text-center mb-2 sm:mb-4">Rate the Players After Every Match</p>
         <button 
           onClick={() => navigate('/player-ratings')}
           className="w-full relative max-w-4xl mx-auto block mt-2.5"
@@ -277,7 +277,7 @@ export default function HomePage() {
             <img
               src="/Rate the Players home page.png"
               alt="Submit Your Player Ratings"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover sm:object-contain"
             />
             {/* Clickable indicator triangle */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90 rounded-full p-4 sm:p-5 shadow-lg">
