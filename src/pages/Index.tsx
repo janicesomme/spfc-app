@@ -54,8 +54,8 @@ export default function HomePage() {
       console.log('Fetching data...');
 
       // Set hardcoded video from YouTube URL
-      const youtubeUrl = 'https://www.youtube.com/watch?v=3KWW17dgzzY&t=3s';
-      const videoId = '3KWW17dgzzY';
+      const youtubeUrl = 'https://www.youtube.com/watch?v=StdEFn9Zt04';
+      const videoId = 'StdEFn9Zt04';
 
       const transformedVideo: Video = {
         video_id: videoId,
@@ -243,8 +243,8 @@ export default function HomePage() {
             className="w-full relative max-w-4xl mx-auto block mt-2.5"
           >
             <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
-              <img 
-                src="/lovable-uploads/0f3f8042-8468-4f58-a444-404003a1b24c.png"
+              <img
+                src="/Startign XI home page image.png"
                 alt="Pick Your XI"
                 className="w-full h-full object-cover"
               />
@@ -274,8 +274,8 @@ export default function HomePage() {
           className="w-full relative max-w-4xl mx-auto block mt-2.5"
         >
           <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
-            <img 
-              src="/lovable-uploads/2fd0f491-ae05-4be2-bb8c-10194730ef07.png"
+            <img
+              src="/Rate the Players home page.png"
               alt="Submit Your Player Ratings"
               className="w-full h-full object-contain"
             />
@@ -307,19 +307,28 @@ export default function HomePage() {
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
         <div className="bg-blue-950/40 rounded-lg p-6 border border-white">
           <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">SHOP THE LATEST MERCH</h3>
-          <p className="text-youtube-yellow text-base sm:text-lg text-center mb-4">Everything FUTV Branded</p>
-          <button 
-            onClick={() => navigate('/shop')}
-            className="w-full relative max-w-4xl mx-auto block mt-2.5"
-          >
+          <p className="text-youtube-yellow text-base sm:text-lg text-center mb-4">Stretford Paddock FC Gear</p>
+          <div className="w-full relative max-w-4xl mx-auto block mt-2.5">
             <div className="relative rounded-lg overflow-hidden w-full">
-              <img 
-                src="/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png"
+              <img
+                src="/Shop Home Page.png"
                 alt="Shop the Latest Merch"
                 className="w-full h-auto object-contain rounded-lg"
               />
+              {/* Shop Now Button */}
+              <button
+                onClick={() => window.open('https://shop.stretfordpaddockfc.com/collections/fused', '_blank')}
+                className="absolute bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap"
+                style={{
+                  top: 'calc(50% + 20px)',
+                  left: 'calc(100% - 110px)',
+                  transform: 'translateY(-50%)'
+                }}
+              >
+                Shop Now
+              </button>
             </div>
-          </button>
+          </div>
         </div>
       </div>
     </div>

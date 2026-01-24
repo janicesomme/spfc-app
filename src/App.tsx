@@ -30,6 +30,8 @@ import CharityHangout from "./pages/CharityHangout";
 import CreatorDashboard from "./pages/CreatorDashboard";
 import PresenterDashboard from "./pages/PresenterDashboard";
 import Impact from "./pages/Impact";
+import PriceworxLanding from "./pages/PriceworxLanding";
+import Membership from "./pages/Membership";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,6 +69,8 @@ function App() {
               <Route path="/creator-dashboard" element={<CreatorDashboard />} />
               <Route path="/presenter-dashboard" element={<PresenterDashboard />} />
               <Route path="/impact" element={<Impact />} />
+              <Route path="/priceworx" element={<PriceworxLanding />} />
+              <Route path="/membership" element={<Membership />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/match-bingo" element={<MatchBingo />} />
               <Route path="/settings" element={<Settings />} />

@@ -78,16 +78,26 @@ export default function FinalPlayerRatings() {
         'Forward': 4
       };
 
-      const mappedPlayers: FinalPlayer[] = data.map((player: any) => ({
-        player_id: player.id,
-        player_name: player.name,
-        position: player.position || 'Unknown',
-        starter: true,
-        average_rating: 0,
-        is_motm: false,
-        match_id: matchId,
-        image_url: player.image_url
-      }));
+      const mappedPlayers: FinalPlayer[] = data.map((player: any) => {
+        // Assign ratings: Mike Taylor gets 8, others get random 6 or 7
+        let rating = 0;
+        if (player.name === 'Mike Taylor') {
+          rating = 8;
+        } else {
+          rating = Math.random() < 0.5 ? 6 : 7;
+        }
+
+        return {
+          player_id: player.id,
+          player_name: player.name,
+          position: player.position || 'Unknown',
+          starter: true,
+          average_rating: rating,
+          is_motm: false,
+          match_id: matchId,
+          image_url: player.image_url
+        };
+      });
 
       const sortedPlayers = mappedPlayers.sort((a, b) => {
         // Sort by position hierarchy
