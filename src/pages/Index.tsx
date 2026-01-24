@@ -238,11 +238,11 @@ export default function HomePage() {
           <div className="w-full h-0.5 bg-red-600 mb-6 max-w-4xl mx-auto"></div>
           <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase">Rate The Match Line-Up</h3>
           <p className="text-youtube-yellow text-base sm:text-lg text-center mb-1 sm:mb-4">Pick It, Share It, Discuss It</p>
-          <button 
+          <button
             onClick={() => navigate('/pick-your-xi')}
             className="w-full relative max-w-4xl mx-auto block mt-2.5"
           >
-            <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
+            <div className="relative rounded-lg overflow-hidden w-full h-[320px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
               <img
                 src="/Startign XI home page image.png"
                 alt="Pick Your XI"
