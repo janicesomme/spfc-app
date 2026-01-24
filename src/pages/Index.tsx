@@ -273,11 +273,11 @@ export default function HomePage() {
           onClick={() => navigate('/player-ratings')}
           className="w-full relative max-w-4xl mx-auto block mt-2.5"
         >
-          <div className="relative rounded-lg overflow-hidden w-full h-[378px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
+          <div className="relative rounded-lg overflow-hidden w-full h-[260px] sm:h-[474px] md:h-[538px] lg:h-[602px]">
             <img
               src="/Rate the Players home page.png"
               alt="Submit Your Player Ratings"
-              className="w-full h-full object-cover sm:object-contain"
+              className="w-full h-full object-contain"
             />
             {/* Clickable indicator triangle */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90 rounded-full p-4 sm:p-5 shadow-lg">
