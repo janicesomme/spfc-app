@@ -305,7 +305,7 @@ export default function HomePage() {
 
       {/* Shop Section */}
       <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 pb-6">
-        <div className="bg-blue-950/40 rounded-lg p-6 border border-white">
+        <div className="bg-blue-950/40 rounded-lg pt-2 px-6 pb-6 border border-white">
           <h3 className="text-white text-xl sm:text-2xl font-bold text-center mb-2 uppercase mt-5">SHOP THE LATEST MERCH</h3>
           <p className="text-youtube-yellow text-base sm:text-lg text-center mb-4">Stretford Paddock FC Gear</p>
           <div className="w-full relative max-w-4xl mx-auto block mt-2.5">
