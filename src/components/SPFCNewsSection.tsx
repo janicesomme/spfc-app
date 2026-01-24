@@ -20,8 +20,8 @@ export const SPFCNewsSection = () => {
 
   const fetchRSSFeed = async () => {
     try {
-      // Fetch RSS feed
-      const response = await fetch('https://stretfordpaddockfc.com/feed/');
+      // Use CORS proxy to fetch RSS feed (stretfordpaddockfc.com blocks direct CORS requests)
+      const response = await fetch('https://api.allorigins.win/raw?url=https://stretfordpaddockfc.com/feed/');
       const text = await response.text();
 
       // Parse XML
@@ -62,7 +62,16 @@ export const SPFCNewsSection = () => {
           }
         }
 
-        // Try to extract image from description HTML
+        // Try to extract image from content:encoded HTML (priority source)
+        if (!imageUrl && contentEl) {
+          const contentHtml = contentEl.textContent || '';
+          const imgMatch = contentHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
+          if (imgMatch) {
+            imageUrl = imgMatch[1];
+          }
+        }
+
+        // Fallback: try to extract image from description HTML
         if (!imageUrl && descEl) {
           const descHtml = descEl.textContent || '';
           const imgMatch = descHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
