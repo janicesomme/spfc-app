@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/drawer";
 
 interface LeagueTeam {
+  position: number;
   team_name: string;
   played: number;
   wins: number;
@@ -50,12 +51,11 @@ export default function League() {
 
   const fetchLeagueData = async () => {
     try {
-      // Fetch SPFC fixtures only
+      // Fetch league standings from league_standings table
       const { data, error } = await supabase
-        .from('fixtures')
+        .from('league_standings')
         .select('*')
-        .like('external_id', 'spfc_%')
-        .order('kickoff', { ascending: false });
+        .order('position', { ascending: true });
 
       if (error) throw error;
 
@@ -65,90 +65,21 @@ export default function League() {
         return;
       }
 
-      // Process data to calculate league standings
-      const leagueMap = new Map<string, LeagueTeam>();
+      // Map database records to LeagueTeam interface
+      const teams: LeagueTeam[] = data.map((row: any) => ({
+        position: row.position,
+        team_name: row.team_name,
+        played: row.played,
+        wins: row.wins,
+        draws: row.draws,
+        losses: row.losses,
+        goals_for: row.goals_for,
+        goals_against: row.goals_against,
+        goal_difference: row.goal_difference,
+        points: row.points,
+      }));
 
-      data.forEach((fixture: any) => {
-        const homeTeam = fixture.home_team || 'Unknown';
-        const awayTeam = fixture.opponent || 'Unknown';
-        const homeGoals = fixture.home_goals;
-        const awayGoals = fixture.away_goals;
-        const hasResult = homeGoals !== null && awayGoals !== null;
-
-        // Only count completed matches
-        if (!hasResult) return;
-
-        // Initialize teams if not exists
-        if (!leagueMap.has(homeTeam)) {
-          leagueMap.set(homeTeam, {
-            team_name: homeTeam,
-            played: 0,
-            wins: 0,
-            draws: 0,
-            losses: 0,
-            goals_for: 0,
-            goals_against: 0,
-            goal_difference: 0,
-            points: 0,
-          });
-        }
-        if (!leagueMap.has(awayTeam)) {
-          leagueMap.set(awayTeam, {
-            team_name: awayTeam,
-            played: 0,
-            wins: 0,
-            draws: 0,
-            losses: 0,
-            goals_for: 0,
-            goals_against: 0,
-            goal_difference: 0,
-            points: 0,
-          });
-        }
-
-        // Update home team
-        const homeTeamData = leagueMap.get(homeTeam)!;
-        homeTeamData.played += 1;
-        homeTeamData.goals_for += homeGoals;
-        homeTeamData.goals_against += awayGoals;
-        homeTeamData.goal_difference = homeTeamData.goals_for - homeTeamData.goals_against;
-
-        if (homeGoals > awayGoals) {
-          homeTeamData.wins += 1;
-          homeTeamData.points += 3;
-        } else if (homeGoals === awayGoals) {
-          homeTeamData.draws += 1;
-          homeTeamData.points += 1;
-        } else {
-          homeTeamData.losses += 1;
-        }
-
-        // Update away team
-        const awayTeamData = leagueMap.get(awayTeam)!;
-        awayTeamData.played += 1;
-        awayTeamData.goals_for += awayGoals;
-        awayTeamData.goals_against += homeGoals;
-        awayTeamData.goal_difference = awayTeamData.goals_for - awayTeamData.goals_against;
-
-        if (awayGoals > homeGoals) {
-          awayTeamData.wins += 1;
-          awayTeamData.points += 3;
-        } else if (homeGoals === awayGoals) {
-          awayTeamData.draws += 1;
-          awayTeamData.points += 1;
-        } else {
-          awayTeamData.losses += 1;
-        }
-      });
-
-      // Sort by points (descending), then goal difference, then goals for
-      const sortedTeams = Array.from(leagueMap.values()).sort((a, b) => {
-        if (b.points !== a.points) return b.points - a.points;
-        if (b.goal_difference !== a.goal_difference) return b.goal_difference - a.goal_difference;
-        return b.goals_for - a.goals_for;
-      });
-
-      setTeams(sortedTeams);
+      setTeams(teams);
     } catch (error) {
       console.error('Error fetching league data:', error);
     } finally {
@@ -247,9 +178,9 @@ export default function League() {
                 </tr>
               </thead>
               <tbody>
-                {teams.map((team, index) => (
+                {teams.map((team) => (
                   <tr key={team.team_name} className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                    <td className="py-3 px-2 text-white font-semibold">{index + 1}</td>
+                    <td className="py-3 px-2 text-white font-semibold">{team.position}</td>
                     <td className="py-3 px-2 text-white">{team.team_name}</td>
                     <td className="text-center py-3 px-2 text-gray-300">{team.played}</td>
                     <td className="text-center py-3 px-2 text-gray-300">{team.wins}</td>
