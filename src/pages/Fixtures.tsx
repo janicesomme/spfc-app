@@ -7,6 +7,8 @@ import {
   DrawerContent,
   DrawerTrigger,
   DrawerClose,
+  DrawerTitle,
+  DrawerDescription,
 } from "@/components/ui/drawer";
 
 interface Fixture {
@@ -112,6 +114,8 @@ export default function Fixtures() {
               className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
               style={{ backgroundColor: '#ec1c24' }}
             >
+              <DrawerTitle className="sr-only">Navigation Menu</DrawerTitle>
+              <DrawerDescription className="sr-only">Mobile navigation menu</DrawerDescription>
               <div className="flex flex-col h-full p-6">
                 <DrawerClose asChild>
                   <button
