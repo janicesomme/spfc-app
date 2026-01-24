@@ -6,6 +6,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerTrigger,
+  DrawerClose,
 } from "@/components/ui/drawer";
 
 interface Fixture {
@@ -112,13 +113,14 @@ export default function Fixtures() {
               style={{ backgroundColor: '#ec1c24' }}
             >
               <div className="flex flex-col h-full p-6">
-                <button
-                  onClick={() => setIsDrawerOpen(false)}
-                  className="self-end text-white hover:text-gray-200 mb-4"
-                  aria-label="Close navigation menu"
-                >
-                  <X size={24} />
-                </button>
+                <DrawerClose asChild>
+                  <button
+                    className="self-end text-white hover:text-gray-200 mb-4"
+                    aria-label="Close navigation menu"
+                  >
+                    <X size={24} />
+                  </button>
+                </DrawerClose>
 
                 <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
                   <img

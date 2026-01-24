@@ -6,6 +6,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerTrigger,
+  DrawerClose,
 } from "@/components/ui/drawer";
 import { ExternalLinkDiv } from '@/lib/external-link-utils';
 
@@ -87,13 +88,14 @@ export default function Shop() {
             >
               <div className="flex flex-col h-full p-6">
                 {/* Close Button */}
-                <button
-                  onClick={() => setIsDrawerOpen(false)}
-                  className="self-end text-white hover:text-gray-200 mb-4"
-                  aria-label="Close navigation menu"
-                >
-                  <X size={24} />
-                </button>
+                <DrawerClose asChild>
+                  <button
+                    className="self-end text-white hover:text-gray-200 mb-4"
+                    aria-label="Close navigation menu"
+                  >
+                    <X size={24} />
+                  </button>
+                </DrawerClose>
 
                 {/* SPFC Logo */}
                 <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>

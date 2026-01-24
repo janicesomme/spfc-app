@@ -40,113 +40,42 @@ export default function News() {
 
   const fetchRSSFeed = async () => {
     try {
-      // Use api.allorigins.win proxy (no timeout - it can be slow but it works)
-      let text: string | null = null;
+      console.log('📰 Fetching articles from Supabase Edge Function...');
 
-      try {
-        const response = await fetch('https://api.allorigins.win/raw?url=https://stretfordpaddockfc.com/feed/');
-        if (response.ok) {
-          text = await response.text();
-        } else {
-          throw new Error(`Proxy returned ${response.status}`);
-        }
-      } catch (err) {
-        throw err instanceof Error ? err : new Error(String(err));
+      // Fetch directly from Edge Function - returns clean, deduplicated articles with real images
+      const response = await fetch(
+        'https://jckkhfqswiasnepshxbr.supabase.co/functions/v1/fetch-rss-feed'
+      );
+
+      if (!response.ok) {
+        throw new Error(`Edge function returned ${response.status}`);
       }
 
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, 'text/xml');
-
-      if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
-        throw new Error('Failed to parse RSS feed');
+      const data = await response.json();
+      if (!data.success || !data.articles) {
+        console.warn('⚠️ No articles from RSS feed');
+        setArticles([]);
+        setFilteredArticles([]);
+        setLoading(false);
+        return;
       }
 
-      const items = xmlDoc.getElementsByTagName('item');
-      const parsedArticles: NewsArticle[] = [];
+      // Transform RSS articles to NewsArticle format
+      const articles: NewsArticle[] = data.articles.map((article: any, index: number) => ({
+        id: article.link || `article-${index}`,
+        title: article.title || 'Untitled',
+        description: article.description || '',
+        url: article.link || '',
+        image: article.image || undefined,
+        pubDate: article.pubDate || new Date().toISOString()
+      }));
 
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-
-        const titleEl = item.getElementsByTagName('title')[0];
-        const linkEl = item.getElementsByTagName('link')[0];
-        const descEl = item.getElementsByTagName('description')[0];
-        const contentEl = item.getElementsByTagName('content:encoded')[0];
-        const pubDateEl = item.getElementsByTagName('pubDate')[0];
-
-        // Extract image from various sources (same logic as SPFCNewsSection)
-        let imageUrl: string | undefined;
-
-        // Check media:content
-        const mediaContent = item.getElementsByTagName('media:content')[0];
-        if (mediaContent) {
-          imageUrl = mediaContent.getAttribute('url') || undefined;
-        }
-
-        // Check media:thumbnail
-        if (!imageUrl) {
-          const mediaThumbnail = item.getElementsByTagName('media:thumbnail')[0];
-          if (mediaThumbnail) {
-            imageUrl = mediaThumbnail.getAttribute('url') || undefined;
-          }
-        }
-
-        // Try to extract image from content:encoded HTML
-        if (!imageUrl && contentEl) {
-          const contentHtml = contentEl.textContent || '';
-          const imgMatch = contentHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
-          if (imgMatch) {
-            imageUrl = imgMatch[1];
-          }
-        }
-
-        // Fallback: try to extract image from description HTML
-        if (!imageUrl && descEl) {
-          const descHtml = descEl.textContent || '';
-          const imgMatch = descHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
-          if (imgMatch) {
-            imageUrl = imgMatch[1];
-          }
-        }
-
-        const title = titleEl?.textContent || 'Untitled';
-        const link = linkEl?.textContent || '';
-
-        // Extract text content
-        let description = '';
-        if (descEl?.textContent) {
-          description = descEl.textContent;
-        } else if (contentEl?.textContent) {
-          description = contentEl.textContent;
-        }
-
-        // Clean HTML tags from description
-        description = description.replace(/<[^>]*>/g, '').trim();
-
-        // Extract first 2-3 sentences
-        const sentences = description.match(/[^.!?]+[.!?]+/g) || [];
-        description = sentences
-          .slice(0, 3)
-          .map(s => s.trim())
-          .join(' ')
-          .substring(0, 300);
-
-        if (link) {
-          parsedArticles.push({
-            id: `${link}-${i}`,
-            title: title.substring(0, 100),
-            description,
-            url: link,
-            image: imageUrl,
-            pubDate: pubDateEl?.textContent || new Date().toISOString()
-          });
-        }
-      }
-
-      setArticles(parsedArticles);
-      setFilteredArticles(parsedArticles);
+      setArticles(articles);
+      setFilteredArticles(articles);
       setLoading(false);
+      console.log(`✅ Loaded ${articles.length} articles from RSS feed`);
     } catch (err) {
-      console.error('Error fetching RSS feed:', err);
+      console.error('❌ Error fetching from RSS feed:', err);
       setLoading(false);
     }
   };
