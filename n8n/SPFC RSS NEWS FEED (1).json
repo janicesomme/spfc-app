@@ -1,0 +1,840 @@
+{
+  "name": "SPFC RSS NEWS FEED",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "c3720b8d-6195-4b9a-a202-e4c1515c3476",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// RSS Parser with comprehensive error handling - No external dependencies\nconst crypto = require('crypto');\n\n// Simple XML parser function (no dependencies needed)\nfunction parseSimpleXML(xmlString) {\n  const items = [];\n  \n  // Extract items using regex (more reliable in n8n)\n  const itemRegex = /<item[^>]*>([\\s\\S]*?)<\\/item>/gi;\n  const matches = xmlString.matchAll(itemRegex);\n  \n  for (const match of matches) {\n    const itemXML = match[1];\n    \n    // Extract individual fields\n    const title = extractXMLContent(itemXML, 'title');\n    const description = extractXMLContent(itemXML, 'description');\n    const link = extractXMLContent(itemXML, 'link');\n    const pubDate = extractXMLContent(itemXML, 'pubDate') || \n                   extractXMLContent(itemXML, 'published') ||\n                   extractXMLContent(itemXML, 'updated');\n    \n    // Extract images from various sources\n    const enclosureMatch = itemXML.match(/<enclosure[^>]+url=[\"']([^\"']+)[\"']/i);\n    const mediaContentMatch = itemXML.match(/<media:content[^>]+url=[\"']([^\"']+)[\"']/i);\n    const mediaThumbnailMatch = itemXML.match(/<media:thumbnail[^>]+url=[\"']([^\"']+)[\"']/i);\n    const descriptionImageMatch = description?.match(/<img[^>]+src=[\"']([^\"']+)[\"']/i);\n    \n    const extractedImage = enclosureMatch?.[1] || \n                          mediaContentMatch?.[1] || \n                          mediaThumbnailMatch?.[1] || \n                          descriptionImageMatch?.[1] || \n                          null;\n    \n    if (title) { // Only add items with titles\n      items.push({\n        title: cleanText(title),\n        description: cleanText(description),\n        link: cleanText(link),\n        pubDate: cleanText(pubDate),\n        extractedImage: extractedImage\n      });\n    }\n  }\n  \n  return items;\n}\n\n// Extract content from XML tags\nfunction extractXMLContent(xml, tagName) {\n  const regex = new RegExp(`<${tagName}[^>]*><!\\\\[CDATA\\\\[([\\\\s\\\\S]*?)\\\\]\\\\]><\\/${tagName}>`, 'i');\n  const cdataMatch = xml.match(regex);\n  if (cdataMatch) return cdataMatch[1];\n  \n  const simpleRegex = new RegExp(`<${tagName}[^>]*>([\\\\s\\\\S]*?)<\\/${tagName}>`, 'i');\n  const simpleMatch = xml.match(simpleRegex);\n  return simpleMatch ? simpleMatch[1] : '';\n}\n\n// Clean text content\nfunction cleanText(text) {\n  if (!text) return '';\n  return text.replace(/<[^>]*>/g, '').trim();\n}\n\n// Enhanced image extraction function\nfunction extractBestImage(item) {\n  if (!item.extractedImage) return null;\n  \n  const url = item.extractedImage;\n  // Prioritize by likely quality\n  if (url.includes('1200x') || url.includes('large') || \n      url.includes('main') || (!url.includes('thumb') && !url.includes('small'))) {\n    return url;\n  }\n  return url;\n}\n\n// Title normalization for deduplication\nfunction normalizeTitle(title) {\n  if (!title) return '';\n  return title\n    .toLowerCase()\n    .replace(/[^\\w\\s]/g, '')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\n// URL normalization\nfunction normalizeUrl(url) {\n  if (!url) return '';\n  try {\n    const cleanUrl = new URL(url);\n    cleanUrl.search = '';\n    return cleanUrl.toString();\n  } catch {\n    return url;\n  }\n}\n\n// Create content hash for deduplication\nfunction createContentHash(title, url) {\n  const normalized = normalizeTitle(title) + normalizeUrl(url);\n  return crypto.createHash('md5').update(normalized).digest('hex');\n}\n\n// Get source logo\nfunction getSourceLogo(source) {\n  const logos = {\n    'BBC Sport': 'https://ichef.bbci.co.uk/news/1024/cpsprodpb/6A4B/production/_107435678_bbc_sport_logo_16x9.png',\n    'The Peoples Person': 'https://thepeoplesperson.com/wp-content/uploads/2019/01/cropped-TPP-Favicon-32x32.png',\n    'Manchester Evening News': 'https://www.manchestereveningnews.co.uk/apple-touch-icon.png',\n    'Old Trafford Faithful': 'https://oldtraffordfaithful.com/wp-content/uploads/2015/08/cropped-otf-favicon-32x32.png'\n  };\n  return logos[source] || null;\n}\n\n// Main processing\nconst items = $input.all();\nconst processedItems = [];\n\n// Define source names based on your RSS feeds\nconst sourceNames = ['BBC Sport', 'The Peoples Person', 'Manchester Evening News', 'Old Trafford Faithful'];\n\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  const sourceName = sourceNames[i] || 'Unknown';\n  \n  if (item.json.statusCode && item.json.statusCode !== 200) {\n    // Log error for monitoring\n    processedItems.push({\n      json: {\n        error: true,\n        source: sourceName,\n        statusCode: item.json.statusCode,\n        timestamp: new Date().toISOString()\n      }\n    });\n    continue;\n  }\n  \n  try {\n    // Get the XML content\n    const xmlString = typeof item.json === 'string' ? item.json : item.json.body;\n    \n    if (!xmlString) {\n      throw new Error('No XML content found');\n    }\n    \n    // Parse the RSS feed\n    const articles = parseSimpleXML(xmlString);\n    \n    for (const article of articles) {\n      const processedArticle = {\n        title: article.title,\n        description: article.description,\n        link: article.link,\n        pubDate: article.pubDate,\n        source: sourceName,\n        extractedImage: extractBestImage(article),\n        publishedDate: new Date(article.pubDate || Date.now()),\n        contentHash: createContentHash(article.title, article.link),\n        sourceLogo: getSourceLogo(sourceName)\n      };\n      \n      processedItems.push({ json: processedArticle });\n    }\n  } catch (error) {\n    // Log parsing error\n    processedItems.push({\n      json: {\n        error: true,\n        source: sourceName,\n        parseError: error.message,\n        timestamp: new Date().toISOString()\n      }\n    });\n  }\n}\n\nconsole.log(`RSS Parser Results: Processed ${processedItems.length} items from ${items.length} sources`);\nreturn processedItems;"
+      },
+      "id": "56a47382-2752-4d62-8e7e-5f12266d6509",
+      "name": "RSS Parser & Image Extractor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Smart Stretford Paddock FC content filtering\nfunction isStretfordPaddockRelevant(item) {\n  const title = (item.title || '').toLowerCase();\n  const description = (item.description || '').toLowerCase();\n  const content = (title + ' ' + description).toLowerCase();\n  \n  // Skip error items\n  if (item.error) return false;\n  \n  // Primary keywords for Stretford Paddock FC\n  const primaryKeywords = [\n    'stretford paddock', 'stretford paddock fc', 'spfc',\n    'paddock'\n  ];\n  \n  // Check for primary keywords first\n  if (primaryKeywords.some(keyword => content.includes(keyword))) {\n    return true;\n  }\n  \n  // If it's from the official Stretford Paddock RSS feed, accept most content\n  // (since the feed is already filtered to their content)\n  // Only reject obvious spam or completely irrelevant content\n  const rejectionKeywords = [\n    'spam', 'advertisement', 'click here', 'buy now'\n  ];\n  \n  if (rejectionKeywords.some(keyword => content.includes(keyword))) {\n    return false;\n  }\n  \n  // Accept everything else from the feed (it's already filtered)\n  return true;\n}\n\n// Filter items\nconst items = $input.all();\nconst relevantItems = [];\nconst errorItems = [];\n\nfor (const item of items) {\n  if (item.json.error) {\n    errorItems.push(item);\n  } else if (isStretfordPaddockRelevant(item.json)) {\n    relevantItems.push(item);\n  }\n}\n\n// Log filtering statistics\nconsole.log(`Content Filter Results:`);\nconsole.log(`- Total items processed: ${items.length}`);\nconsole.log(`- Relevant Stretford Paddock items: ${relevantItems.length}`);\nconsole.log(`- Error items: ${errorItems.length}`);\n\n// Return relevant items and pass errors for monitoring\nreturn [...relevantItems, ...errorItems];\n"
+      },
+      "id": "e92cf01d-7411-4318-bfe7-bb0a531237c6",
+      "name": "Smart Content Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Advanced deduplication without external dependencies\nconst items = $input.all();\nconst seenHashes = new Set();\nconst seenTitles = [];\nconst uniqueItems = [];\nconst errorItems = [];\n\n// Simple similarity function (no external library needed)\nfunction calculateSimilarity(str1, str2) {\n  if (!str1 || !str2) return 0;\n  \n  // Normalize strings\n  const s1 = str1.toLowerCase().replace(/[^\\w\\s]/g, '').replace(/\\s+/g, ' ').trim();\n  const s2 = str2.toLowerCase().replace(/[^\\w\\s]/g, '').replace(/\\s+/g, ' ').trim();\n  \n  if (s1 === s2) return 1;\n  \n  // Simple word-based similarity\n  const words1 = s1.split(' ');\n  const words2 = s2.split(' ');\n  \n  const commonWords = words1.filter(word => \n    word.length > 3 && words2.includes(word)\n  ).length;\n  \n  const totalWords = Math.max(words1.length, words2.length);\n  \n  return totalWords > 0 ? commonWords / totalWords : 0;\n}\n\n// Check if title is similar to existing titles\nfunction isSimilarTitle(newTitle, existingTitles, threshold = 0.7) {\n  return existingTitles.some(existingTitle => \n    calculateSimilarity(newTitle, existingTitle) > threshold\n  );\n}\n\n// Process items\nfor (const item of items) {\n  // Pass through error items for monitoring\n  if (item.json.error) {\n    errorItems.push(item);\n    continue;\n  }\n  \n  const hash = item.json.contentHash;\n  const title = item.json.title || '';\n  \n  // Check exact hash match first (most reliable)\n  if (seenHashes.has(hash)) {\n    continue; // Skip duplicate\n  }\n  \n  // Check for similar titles (fuzzy matching)\n  if (isSimilarTitle(title, seenTitles)) {\n    continue; // Skip similar article\n  }\n  \n  // Add to seen collections\n  seenHashes.add(hash);\n  seenTitles.push(title);\n  uniqueItems.push(item);\n}\n\n// Log deduplication statistics\nconsole.log(`Deduplication Results:`);\nconsole.log(`- Input items: ${items.length}`);\nconsole.log(`- Unique items: ${uniqueItems.length}`);\nconsole.log(`- Error items: ${errorItems.length}`);\nconsole.log(`- Duplicates removed: ${items.length - uniqueItems.length - errorItems.length}`);\n\n// Return unique items plus errors for monitoring\nreturn [...uniqueItems, ...errorItems];"
+      },
+      "id": "9051ef2e-e6d3-413b-87be-6221a72cf104",
+      "name": "Advanced Deduplication",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "error-check",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            },
+            {
+              "id": "456ae75a-55ea-4f92-af9b-45589ee46b66",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2886f11f-9072-4174-b671-b211b1646805",
+      "name": "Error Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        992,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "Manchester United OR \"Man Utd\" OR MUFC"
+            },
+            {
+              "name": "language",
+              "value": "en"
+            },
+            {
+              "name": "sortBy",
+              "value": "publishedAt"
+            },
+            {
+              "name": "pageSize",
+              "value": "20"
+            },
+            {
+              "name": "from",
+              "value": "={{ $now.minus({days: 7}).toISODate() }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "7557eb00e47b4673bab59aac247f41da"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "id": "0e451fc4-f9d3-4665-a60e-fd09abef09d5",
+      "name": "NewsAPI Enrichment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1360,
+        432
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Open Graph image scraper - Browser compatible (no Node.js modules)\nconst items = $input.all();\nconst processedItems = [];\n\n// Simple cache to avoid duplicate requests\nconst cache = new Map();\nlet lastRequest = 0;\nconst minDelay = 2000; // 2 seconds between requests\n\n// Rate-limited fetch function\nasync function rateLimitedFetch(url) {\n  // Check cache first\n  if (cache.has(url)) {\n    return cache.get(url);\n  }\n\n  // Rate limiting\n  const now = Date.now();\n  const timeSinceLastRequest = now - lastRequest;\n  if (timeSinceLastRequest < minDelay) {\n    await new Promise(resolve => setTimeout(resolve, minDelay - timeSinceLastRequest));\n  }\n  lastRequest = Date.now();\n\n  try {\n    // Use n8n's built-in fetch (browser-compatible)\n    const response = await fetch(url, {\n      method: 'GET',\n      headers: {\n        'User-Agent': 'Mozilla/5.0 (compatible; NewsBot/1.0)',\n        'Accept': 'text/html,application/xhtml+xml',\n      },\n      signal: AbortSignal.timeout(5000) // 5 second timeout\n    });\n\n    if (!response.ok) {\n      throw new Error(`HTTP ${response.status}`);\n    }\n\n    // Read response as text\n    const html = await response.text();\n    \n    // Extract Open Graph image\n    const ogMatch = html.match(/<meta\\s+property=[\"']og:image[\"']\\s+content=[\"']([^\"']+)[\"']/i);\n    const imageUrl = ogMatch ? ogMatch[1] : null;\n    \n    // Cache result\n    cache.set(url, imageUrl);\n    return imageUrl;\n    \n  } catch (error) {\n    console.log(`OG scrape failed for ${url}: ${error.message}`);\n    cache.set(url, null);\n    return null;\n  }\n}\n\n// Process items\nlet processedCount = 0;\nconst maxToProcess = 5; // Limit OG scraping to avoid timeouts\n\nfor (const item of items) {\n  // Pass through error items unchanged\n  if (item.json.error) {\n    processedItems.push(item);\n    continue;\n  }\n  \n  const processedItem = { ...item };\n  \n  // Only try OG scraping if:\n  // 1. No image exists already\n  // 2. We have a valid URL\n  // 3. We haven't processed too many items\n  if (!processedItem.json.extractedImage && \n      processedItem.json.link && \n      processedCount < maxToProcess) {\n    \n    try {\n      console.log(`Attempting OG scrape for: ${processedItem.json.title}`);\n      processedItem.json.ogImage = await rateLimitedFetch(processedItem.json.link);\n      processedCount++;\n      \n      if (processedItem.json.ogImage) {\n        console.log(`✅ Found OG image: ${processedItem.json.ogImage}`);\n      }\n    } catch (error) {\n      console.log(`❌ OG scrape error: ${error.message}`);\n      processedItem.json.ogImage = null;\n    }\n  } else {\n    // Skip OG scraping\n    processedItem.json.ogImage = null;\n  }\n  \n  processedItems.push(processedItem);\n}\n\nconsole.log(`Open Graph Scraper Results:`);\nconsole.log(`- Total items processed: ${items.length}`);\nconsole.log(`- OG scrapes attempted: ${processedCount}`);\nconsole.log(`- Items with existing images: ${items.filter(i => i.json.extractedImage).length}`);\n\nreturn processedItems;"
+      },
+      "id": "83fc4e96-a9ab-4e27-8dea-0387250cc3d5",
+      "name": "Open Graph Scraper",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Error logger and monitoring\nconst items = $input.all();\nconst errors = [];\nconst errorStats = {\n  total: 0,\n  bySource: {},\n  timestamp: new Date().toISOString()\n};\n\nfor (const item of items) {\n  if (item.json.error) {\n    const error = {\n      timestamp: new Date().toISOString(),\n      source: item.json.source || 'Unknown',\n      error: item.json.parseError || 'HTTP Error',\n      statusCode: item.json.statusCode,\n      severity: item.json.statusCode ? 'medium' : 'high'\n    };\n    \n    errors.push({ json: error });\n    errorStats.total++;\n    errorStats.bySource[error.source] = (errorStats.bySource[error.source] || 0) + 1;\n  }\n}\n\n// Log error statistics\nif (errors.length > 0) {\n  console.error('Error Summary:', JSON.stringify(errorStats, null, 2));\n}\n\n// Return error items for alerting\nreturn errors;"
+      },
+      "id": "de6f1d3e-e4e0-472c-ae03-1f6049c7cdab",
+      "name": "Error Logger",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "error-count-check",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 3,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d642c098-7633-45ef-8f50-75dc4c6fcf9d",
+      "name": "Alert Condition",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Merge NewsAPI results with existing items - Fixed n8n syntax\nconst crypto = require('crypto');\n\n// Get all inputs - this node receives data from multiple sources\nconst allInputs = $input.all();\n\nconsole.log(`Merge NewsAPI: Received ${allInputs.length} input batches`);\n\n// Separate the inputs\nlet mainItems = [];\nlet newsApiResponse = null;\n\n// Process all inputs and combine them\nfor (const input of allInputs) {\n  if (input.json) {\n    // Check if this looks like a NewsAPI response\n    if (input.json.articles && Array.isArray(input.json.articles)) {\n      newsApiResponse = input.json;\n      console.log(`Found NewsAPI response with ${input.json.articles.length} articles`);\n    } else if (input.json.title) {\n      // This looks like a regular article\n      mainItems.push(input.json);\n    } else {\n      // This might be an array of articles or other format\n      if (Array.isArray(input.json)) {\n        mainItems.push(...input.json);\n      } else {\n        mainItems.push(input.json);\n      }\n    }\n  }\n}\n\nconsole.log(`Main items: ${mainItems.length}`);\n\n// Process NewsAPI articles if we have them\nconst newsApiItems = [];\nif (newsApiResponse && newsApiResponse.articles) {\n  for (const article of newsApiResponse.articles) {\n    // Convert NewsAPI format to our format\n    const newsApiItem = {\n      title: article.title || '',\n      description: article.description || '',\n      link: article.url || '',\n      pubDate: article.publishedAt || '',\n      source: 'NewsAPI',\n      extractedImage: article.urlToImage || null,\n      publishedDate: new Date(article.publishedAt || Date.now()),\n      contentHash: crypto.createHash('md5').update((article.title || '') + (article.url || '')).digest('hex'),\n      sourceLogo: null,\n      newsApiSource: article.source?.name || 'Unknown',\n      ogImage: null // NewsAPI items don't need OG scraping\n    };\n    \n    newsApiItems.push(newsApiItem);\n  }\n  console.log(`Converted ${newsApiItems.length} NewsAPI articles`);\n}\n\n// Combine all items\nconst allItems = [...mainItems, ...newsApiItems];\n\nconsole.log(`Merge Results: ${allItems.length} total articles`);\n\n// Return all items in the correct format\nreturn allItems.map(item => ({ json: item }));"
+      },
+      "id": "22952f67-890b-4968-86ca-fc8cc5239788",
+      "name": "Merge NewsAPI Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconsole.log(`\\n=== FORMATTER DEBUG ===`);\nconsole.log(`Input type: ${typeof items}`);\nconsole.log(`Is array: ${Array.isArray(items)}`);\nconsole.log(`Number of items: ${items.length}`);\n\nif (!items || items.length === 0) {\n  console.log('❌ NO ITEMS TO PROCESS');\n  return [];\n}\n\nif (items.length > 0) {\n  const firstItem = items[0];\n  console.log(`\\nFirst item keys:`, Object.keys(firstItem));\n  const data = firstItem.json || firstItem;\n  console.log(`First item data keys:`, Object.keys(data));\n  console.log(`First item title: \"${data.title}\"`);\n  console.log(`First item ogImage: \"${data.ogImage}\"`);\n  console.log(`First item extractedImage: \"${data.extractedImage}\"`);\n}\n\nconst formattedItems = [];\n\nfor (let i = 0; i < items.length; i++) {\n  try {\n    const item = items[i];\n    const data = item.json || item;\n    \n    if (!data.title) {\n      console.log(`Item ${i}: No title`);\n      continue;\n    }\n    \n    const formatted = {\n      id: data.contentHash || `article_${i}`,\n      title: data.title,\n      description: data.description || '',\n      url: data.link || '',\n      source: data.source || 'Stretford Paddock FC',\n      source_logo: data.sourceLogo || null,\n      published_at: data.publishedDate || data.pubDate || new Date().toISOString(),\n      image_url: data.scrapedImage || data.ogImage || data.extractedImage || 'https://images.unsplash.com/photo-1549484388-23526dedc09a?w=600&h=400&fit=crop&q=80',\n      category: 'Stretford Paddock FC',\n      relevance_score: 50,\n      created_at: new Date().toISOString(),\n      has_image: !!(data.ogImage || data.extractedImage),\n      is_breaking: false,\n      is_transfer: false,\n      is_match_report: (data.title || '').toLowerCase().includes('report'),\n      is_active: true,\n      rank: i + 1\n    };\n    \n    formattedItems.push({ json: formatted });\n    console.log(`Item ${i}: ${data.title.substring(0, 40)} - Image: ${formatted.image_url.substring(0, 50)}`);\n    \n  } catch (error) {\n    console.log(`Item ${i}: Error - ${error.message}`);\n  }\n}\n\nconsole.log(`\\nFormatted items: ${formattedItems.length}`);\n\nreturn formattedItems;"
+      },
+      "id": "259cc183-25ba-4d7a-808f-e748d4c4a56a",
+      "name": "Final Data Formatter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://jckkhfqswiasnepshxbr.supabase.co/functions/v1/news-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "articles",
+              "value": "={\n  \"articles\": \"{{ $json }}\",\n  \"timestamp\": \"{{ $now.toISO() }}\",\n  \"count\": \"{{ $input.all().length }}\"\n}"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}"
+            },
+            {
+              "name": "count",
+              "value": "={{ $input.all().length }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "17de5213-9d68-4751-801a-194baf97c0e4",
+      "name": "Webhook Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1984,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "7a4c80c2-b927-4b51-947a-4f47f5a7d653",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -48,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Workflow statistics and performance monitoring\nconst items = $input.all();\nconst stats = {\n  timestamp: new Date().toISOString(),\n  totalArticles: items.length,\n  articlesWithImages: items.filter(item => item.json.hasImage).length,\n  sourceBreakdown: {},\n  averageRelevanceScore: 0,\n  breakingNewsCount: items.filter(item => item.json.categories?.isBreaking).length,\n  transferNewsCount: items.filter(item => item.json.categories?.isTransfer).length,\n  matchReportCount: items.filter(item => item.json.categories?.isMatchReport).length,\n  processingTime: Date.now() - $workflow.startTime\n};\n\n// Calculate source breakdown\nfor (const item of items) {\n  const source = item.json.source?.name || 'Unknown';\n  stats.sourceBreakdown[source] = (stats.sourceBreakdown[source] || 0) + 1;\n}\n\n// Calculate average relevance score\nif (items.length > 0) {\n  stats.averageRelevanceScore = items.reduce((sum, item) => sum + (item.json.relevanceScore || 0), 0) / items.length;\n}\n\n// Calculate image coverage percentage\nstats.imageCoveragePercent = items.length > 0 ? (stats.articlesWithImages / items.length) * 100 : 0;\n\n// Log statistics\nconsole.log('Workflow Statistics:', JSON.stringify(stats, null, 2));\n\nreturn [{ json: stats }];"
+      },
+      "id": "553a1c4c-1f3b-4309-823f-f0fe8fb99907",
+      "name": "Workflow Statistics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2208,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "man_utd_news",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $json.title }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $json.description }}"
+            },
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $json.url }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "={{ $json.source.name || $json.source }}"
+            },
+            {
+              "fieldId": "source_logo",
+              "fieldValue": "={{ $json.source_logo }}"
+            },
+            {
+              "fieldId": "published_at",
+              "fieldValue": "={{ $json.published_at }}"
+            },
+            {
+              "fieldId": "image_url",
+              "fieldValue": "={{ $json.image_url }}"
+            },
+            {
+              "fieldId": "relevance_score",
+              "fieldValue": "={{ $json.relevance_score }}"
+            },
+            {
+              "fieldId": "rank",
+              "fieldValue": "={{ $json.rank }}"
+            },
+            {
+              "fieldId": "has_image",
+              "fieldValue": "={{ $json.has_image }}"
+            },
+            {
+              "fieldId": "is_breaking",
+              "fieldValue": "={{ $json.is_breaking }}"
+            },
+            {
+              "fieldId": "is_transfer",
+              "fieldValue": "={{ $json.is_transfer }}"
+            },
+            {
+              "fieldId": "is_match_report",
+              "fieldValue": "={{ $json.is_match_report }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        48
+      ],
+      "id": "87323fe4-5473-4b1f-b120-0d8bb1fa5096",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yKtgPDoaI9qXs3zy",
+          "name": "TUS_APP_SYSTEM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "crm2263@gmail.com",
+        "subject": "The workflow didn't work",
+        "message": "The workflow didn't work",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1760,
+        -176
+      ],
+      "id": "7d703867-b19d-4d4d-ab4d-a58ec6a72bc7",
+      "name": "Send a message",
+      "webhookId": "67b2dc2f-89db-4732-9c73-f35f3ea0b3a4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ok8t2WuutWbYoFA7",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.manchestereveningnews.co.uk/sport/?service=rss&date=today ",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "string"
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "id": "805c27a0-1734-41f7-a385-8af3af4e73b3",
+      "name": "M.E.N. news",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        208,
+        192
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "url": "https://thepeoplesperson.com/feed?date=today",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "string"
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "id": "3590ac03-4845-4f2f-afaa-c1e9935512d0",
+      "name": "Peoples Person RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        208,
+        32
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "url": "https://oldtraffordfaithful.com/feed?date=today",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "string"
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "id": "1f9aeae7-1d34-4340-b916-719fc4a9af21",
+      "name": "Old Trafford Faithful RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        208,
+        368
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "url": "https://stretfordpaddockfc.com/feed/",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "string"
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "id": "ac2bfef7-a242-4067-b80f-f68b3c918a1f",
+      "name": "spfc rss news",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        224,
+        -160
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://jckkhfqswiasnepshxbr.supabase.co/functions/v1/scrape-news-image",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={ \"title\": \"{{ $json.title }}\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1536,
+        80
+      ],
+      "id": "93383623-430e-49f7-aa3d-da1d69b873ba",
+      "name": "Scrape SPFC News Image"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "31da2bbb-27b9-420a-bf6a-49cb619ce0be",
+              "leftValue": "{{ $json.source }}",
+              "rightValue": "Stretford Paddock FC",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1344,
+        208
+      ],
+      "id": "eda05698-0f58-45be-9581-7e9e55ad224c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Add scraped image to item data\nconst items = $input.all();\nconst processedItems = [];\n\nfor (const item of items) {\n  const data = item.json;\n  \n  // If this has a scraped image response, add it\n  if (data.image && data.success) {\n    data.scrapedImage = data.image;\n  }\n  \n  processedItems.push({ json: data });\n}\n\nreturn processedItems;"
+      },
+      "id": "merge-scraped-image-node",
+      "name": "Add Scraped Image",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1640,
+        80
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "spfc rss news",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "spfc rss news",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Parser & Image Extractor": {
+      "main": [
+        [
+          {
+            "node": "Smart Content Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Content Filter": {
+      "main": [
+        [
+          {
+            "node": "Advanced Deduplication",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Advanced Deduplication": {
+      "main": [
+        [
+          {
+            "node": "Error Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Router": {
+      "main": [
+        [
+          {
+            "node": "Error Logger",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Open Graph Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NewsAPI Enrichment": {
+      "main": [
+        []
+      ]
+    },
+    "Error Logger": {
+      "main": [
+        [
+          {
+            "node": "Alert Condition",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge NewsAPI Results": {
+      "main": [
+        []
+      ]
+    },
+    "Final Data Formatter": {
+      "main": [
+        [
+          {
+            "node": "Webhook Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Notification": {
+      "main": [
+        [
+          {
+            "node": "Workflow Statistics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert Condition": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Open Graph Scraper": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "M.E.N. news": {
+      "main": [
+        [
+          {
+            "node": "RSS Parser & Image Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Peoples Person RSS": {
+      "main": [
+        []
+      ]
+    },
+    "Old Trafford Faithful RSS": {
+      "main": [
+        []
+      ]
+    },
+    "spfc rss news": {
+      "main": [
+        [
+          {
+            "node": "RSS Parser & Image Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Scrape SPFC News Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final Data Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape SPFC News Image": {
+      "main": [
+        [
+          {
+            "node": "Add Scraped Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Scraped Image": {
+      "main": [
+        [
+          {
+            "node": "Final Data Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "versionId": "c29cffec-7450-4359-ae5b-fdd7c6399993",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "06513859936cc03887d00d3bb780b84c15970a8e660a2368d2582eeca9892f4b"
+  },
+  "id": "BCHALve12HVcgW01",
+  "tags": [
+    {
+      "updatedAt": "2025-07-11T13:55:02.800Z",
+      "createdAt": "2025-07-11T13:55:02.800Z",
+      "id": "8hwCAD7nFCC5WmD5",
+      "name": "News Aggregation"
+    },
+    {
+      "updatedAt": "2025-07-11T13:55:02.768Z",
+      "createdAt": "2025-07-11T13:55:02.768Z",
+      "id": "nJRPL26qigaXVuR0",
+      "name": "Production"
+    }
+  ]
+}
