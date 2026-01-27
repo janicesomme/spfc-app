@@ -138,22 +138,20 @@ export default function PickYourXI() {
               </button>
             </DrawerTrigger>
             <DrawerContent
-              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
+              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none overflow-y-auto"
               style={{ backgroundColor: '#ec1c24' }}
             >
               <DrawerTitle className="sr-only">Navigation Menu</DrawerTitle>
               <DrawerDescription className="sr-only">Mobile navigation menu</DrawerDescription>
-              <div className="flex flex-col h-full p-6">
+              <div className="flex flex-col p-6">
                 {/* Close Button */}
-                <DrawerClose asChild>
-                  <button
-                    onClick={() => setIsDrawerOpen(false)}
-                    className="self-end text-white hover:text-gray-200 mb-4"
-                    aria-label="Close navigation menu"
-                  >
-                    <X size={24} />
-                  </button>
-                </DrawerClose>
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="self-end text-white hover:text-gray-200 mb-4"
+                  aria-label="Close navigation menu"
+                >
+                  <X size={24} />
+                </button>
                 
                 {/* SPFC Logo */}
                 <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>

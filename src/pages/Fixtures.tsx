@@ -112,21 +112,19 @@ export default function Fixtures() {
               </button>
             </DrawerTrigger>
             <DrawerContent
-              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none"
+              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none overflow-y-auto"
               style={{ backgroundColor: '#ec1c24' }}
             >
               <DrawerTitle className="sr-only">Navigation Menu</DrawerTitle>
               <DrawerDescription className="sr-only">Mobile navigation menu</DrawerDescription>
-              <div className="flex flex-col h-full p-6">
-                <DrawerClose asChild>
-                  <button
-                    onClick={() => setIsDrawerOpen(false)}
-                    className="self-end text-white hover:text-gray-200 mb-4"
-                    aria-label="Close navigation menu"
-                  >
-                    <X size={24} />
-                  </button>
-                </DrawerClose>
+              <div className="flex flex-col p-6">
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="self-end text-white hover:text-gray-200 mb-4"
+                  aria-label="Close navigation menu"
+                >
+                  <X size={24} />
+                </button>
 
                 <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
                   <img
