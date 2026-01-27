@@ -165,47 +165,48 @@ export default function FinalPlayerRatings() {
               </button>
             </DrawerTrigger>
             <DrawerContent
-              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none overflow-y-auto"
-              style={{ backgroundColor: '#ec1c24' }}
+              className="h-full w-[75%] ml-auto mr-0 rounded-none border-none flex flex-col"
+              style={{ backgroundColor: "#ec1c24" }}
             >
               <DrawerTitle className="sr-only">Navigation Menu</DrawerTitle>
               <DrawerDescription className="sr-only">Mobile navigation menu</DrawerDescription>
-              <div className="flex flex-col p-6">
-                {/* Close Button */}
+
+              {/* Close Button - Fixed at top */}
+              <div className="p-6 pb-0">
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="self-end text-white hover:text-gray-200 mb-4"
+                  className="self-end text-white hover:text-gray-200 mb-4 block"
                   aria-label="Close navigation menu"
                 >
                   <X size={24} />
                 </button>
-                
-                {/* SPFC Logo */}
-                <div className="flex justify-center mb-8" style={{ marginTop: '-80px' }}>
-                  <img
-                    src="/sp-logo.webp"
-                    alt="SPFC Logo"
-                    className="w-[100px] h-auto border border-white rounded"
-                  />
-                </div>
-                
-                {/* Navigation Links */}
-                <nav className="flex flex-col items-start space-y-0" style={{ marginTop: '-50px' }}>
-                  {navigationItems.map((item, index) => (
-                    <div key={item.path} className="w-full">
-                      <button
-                        onClick={() => handleNavigation(item.path)}
-                        className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
-                      >
-                        {item.label}
-                      </button>
-                      {index < navigationItems.length - 1 && (
-                        <div className="w-full h-px bg-white/30" />
-                      )}
-                    </div>
-                  ))}
-                </nav>
               </div>
+
+              {/* SPFC Logo */}
+              <div className="flex justify-center mb-8 px-6" style={{ marginTop: "-60px" }}>
+                <img
+                  src="/sp-logo.webp"
+                  alt="SPFC Logo"
+                  className="w-[100px] h-auto border border-white rounded"
+                />
+              </div>
+
+              {/* Navigation Links - Scrollable */}
+              <nav className="flex-1 overflow-y-auto px-6 space-y-0">
+                {navigationItems.map((item, index) => (
+                  <div key={item.path} className="w-full">
+                    <button
+                      onClick={() => handleNavigation(item.path)}
+                      className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                    {index < navigationItems.length - 1 && (
+                      <div className="w-full h-px bg-white/30" />
+                    )}
+                  </div>
+                ))}
+              </nav>
             </DrawerContent>
           </Drawer>
         </div>
