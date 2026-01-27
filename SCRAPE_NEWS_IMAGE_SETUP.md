@@ -83,63 +83,118 @@ supabase functions deploy scrape-news-image --project-id your-project-id
 
 ## Integration with n8n Workflow
 
+### EXACT WORKFLOW POSITIONING
+
+Your workflow structure should be:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ 1. RSS Feed Node (reads RSS, gets article data)          │
+│    Output: title, description, link, image, etc.         │
+└────────────────┬────────────────────────────────────────┘
+                 │
+                 ↓
+┌─────────────────────────────────────────────────────────┐
+│ 2. IF/Loop Node (optional, if looping through articles)  │
+│    If you process multiple articles: use Loop            │
+│    If single article: skip this                          │
+└────────────────┬────────────────────────────────────────┘
+                 │
+                 ↓
+┌─────────────────────────────────────────────────────────┐
+│ 3. **HTTP REQUEST NODE (NEW - ADD THIS)**                │
+│    Name: "Scrape Website Image"                         │
+│    Method: POST                                          │
+│    URL: https://jckkhfqswiasnepshxbr.supabase.co/       │
+│           functions/v1/scrape-news-image                │
+│    Body: { "title": "{{ $node['RSS Feed'].json.title }}"│
+│           }                                              │
+│    THIS NODE GOES HERE - AFTER RSS, BEFORE SUPABASE     │
+└────────────────┬────────────────────────────────────────┘
+                 │
+                 ↓
+┌─────────────────────────────────────────────────────────┐
+│ 4. Supabase Insert/Update Node (save to database)        │
+│    Fields to set:                                        │
+│    - title: {{ $node['RSS Feed'].json.title }}           │
+│    - description: {{ $node['RSS Feed'].json.description }}│
+│    - link: {{ $node['RSS Feed'].json.link }}             │
+│    - image: {{ $node['Scrape Website Image']             │
+│                .json.image ||                            │
+│                $node['RSS Feed'].json.image }}           │
+│              ^^^ USE THIS FOR IMAGE ^^^                  │
+└─────────────────────────────────────────────────────────┘
+```
+
 ### Step-by-Step Setup
 
 1. **Open your existing news workflow in n8n**
-   - This is the workflow that pulls from RSS and updates the Supabase news table
 
-2. **Add an HTTP Request node**
-   - After extracting the article title from RSS but before updating Supabase
-   - Position it between your RSS node and your Supabase update node
+2. **Locate your Supabase node** (the one that inserts/updates news articles)
+   - This is your insertion point reference
 
-3. **Configure the HTTP node:**
+3. **Add an HTTP Request node RIGHT BEFORE the Supabase node**
+   - Click the connector arrow from your RSS/Loop node
+   - Select "Add Node"
+   - Choose "HTTP Request"
+   - Name it: "Scrape Website Image"
 
-   **Node Name:** "Get Article Image from Website" (optional, for clarity)
+4. **Configure the HTTP node EXACTLY:**
 
-   **Method:** POST
+   | Setting | Value |
+   |---------|-------|
+   | **Method** | POST |
+   | **URL** | `https://jckkhfqswiasnepshxbr.supabase.co/functions/v1/scrape-news-image` |
+   | **Body (Content-Type: JSON)** | See below |
 
-   **URL:**
-   ```
-   https://jckkhfqswiasnepshxbr.supabase.co/functions/v1/scrape-news-image
-   ```
-
-   **Body (select JSON):**
+   **Body Content:**
    ```json
    {
      "title": "{{ $node['RSS Feed'].json.title }}"
    }
    ```
 
-   **Note:** Replace `'RSS Feed'` with the actual name of your RSS node
+   **IMPORTANT:** Replace `'RSS Feed'` with the EXACT name of your RSS node shown in n8n
 
-4. **Handle the response**
+5. **Connect the HTTP node to your Supabase node**
+   - Draw connector FROM "Scrape Website Image" node
+   - TO your "Upsert Records" (or Insert) Supabase node
 
-   The node will return an object with `image` and `success` fields.
+6. **Update your Supabase node's image field**
 
-5. **Update your Supabase insert/update node**
+   In your Supabase node, find where you set the `image` column:
 
-   When setting the image column for your news record, use conditional logic:
-
-   ```javascript
-   // Use returned image if available, otherwise use RSS image
-   $node['Get Article Image from Website'].json.image || $node['RSS Feed'].json.image
+   **OLD (if it was just RSS image):**
+   ```
+   {{ $node['RSS Feed'].json.image }}
    ```
 
-   Or in n8n's UI:
-   - Set image field to: `{{ $node['Get Article Image from Website'].json.image || $node['RSS Feed'].json.image }}`
+   **NEW (with fallback logic):**
+   ```
+   {{ $node['Scrape Website Image'].json.image || $node['RSS Feed'].json.image }}
+   ```
 
-### Example Workflow Structure
+   This means: "Use website image if available, otherwise use RSS image"
+
+### Quick Reference: Exact Node Order
 
 ```
-1. RSS Feed Node
-   ↓
-2. Loop through articles
-   ↓
-3. For each article:
-   a. Extract: title, description, link, etc.
-   b. HTTP Request → scrape-news-image (get website image)
-   c. Upsert to Supabase with: title, description, link, image (from website or RSS)
+RSS Feed Node
+    ↓
+[Optional: Loop/If Node]
+    ↓
+HTTP Request: "Scrape Website Image" ← ADD THIS NODE HERE
+    ↓
+Supabase Insert/Update Node
 ```
+
+### What Each Node Does
+
+| Node | Input | Output |
+|------|-------|--------|
+| **RSS Feed** | - | `title`, `description`, `image`, etc. |
+| **HTTP Request** | RSS `title` | Website `image` URL (or null) |
+| **Supabase** | All fields including new `image` | Success/error |
 
 ## Testing
 
