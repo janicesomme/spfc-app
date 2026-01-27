@@ -20,98 +20,28 @@ export const SPFCNewsSection = () => {
 
   const fetchRSSFeed = async () => {
     try {
-      // Use CORS proxy to fetch RSS feed (stretfordpaddockfc.com blocks direct CORS requests)
-      const response = await fetch('https://api.allorigins.win/raw?url=https://stretfordpaddockfc.com/feed/');
-      const text = await response.text();
+      // Use Supabase Edge Function to fetch RSS feed (works on localhost and production)
+      const response = await fetch('https://jckkhfqswiasnepshxbr.supabase.co/functions/v1/fetch-rss-feed');
 
-      // Parse XML
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, 'text/xml');
-
-      if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
-        throw new Error('Failed to parse RSS feed');
+      if (!response.ok) {
+        throw new Error(`Edge function returned ${response.status}`);
       }
 
-      // Extract items
-      const items = xmlDoc.getElementsByTagName('item');
-      const parsedArticles: RSSArticle[] = [];
-
-      for (let i = 0; i < Math.min(items.length, 5); i++) {
-        const item = items[i];
-
-        const titleEl = item.getElementsByTagName('title')[0];
-        const linkEl = item.getElementsByTagName('link')[0];
-        const descEl = item.getElementsByTagName('description')[0];
-        const contentEl = item.getElementsByTagName('content:encoded')[0];
-        const pubDateEl = item.getElementsByTagName('pubDate')[0];
-
-        // Try to extract image from various sources
-        let imageUrl: string | undefined;
-
-        // Check media:content
-        const mediaContent = item.getElementsByTagName('media:content')[0];
-        if (mediaContent) {
-          imageUrl = mediaContent.getAttribute('url') || undefined;
-        }
-
-        // Check media:thumbnail
-        if (!imageUrl) {
-          const mediaThumbnail = item.getElementsByTagName('media:thumbnail')[0];
-          if (mediaThumbnail) {
-            imageUrl = mediaThumbnail.getAttribute('url') || undefined;
-          }
-        }
-
-        // Try to extract image from content:encoded HTML (priority source)
-        if (!imageUrl && contentEl) {
-          const contentHtml = contentEl.textContent || '';
-          const imgMatch = contentHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
-          if (imgMatch) {
-            imageUrl = imgMatch[1];
-          }
-        }
-
-        // Fallback: try to extract image from description HTML
-        if (!imageUrl && descEl) {
-          const descHtml = descEl.textContent || '';
-          const imgMatch = descHtml.match(/src=["']([^"']*\.(?:jpg|jpeg|png|gif|webp))["']/i);
-          if (imgMatch) {
-            imageUrl = imgMatch[1];
-          }
-        }
-
-        const title = titleEl?.textContent || 'Untitled';
-        const link = linkEl?.textContent || '';
-
-        // Extract text content (2-3 sentences)
-        let description = '';
-        if (descEl?.textContent) {
-          description = descEl.textContent;
-        } else if (contentEl?.textContent) {
-          description = contentEl.textContent;
-        }
-
-        // Clean HTML tags from description
-        description = description.replace(/<[^>]*>/g, '').trim();
-
-        // Extract first 2-3 sentences
-        const sentences = description.match(/[^.!?]+[.!?]+/g) || [];
-        description = sentences
-          .slice(0, 3)
-          .map(s => s.trim())
-          .join(' ')
-          .substring(0, 300);
-
-        if (link) {
-          parsedArticles.push({
-            title: title.substring(0, 100), // Truncate title if needed
-            link,
-            description,
-            image: imageUrl,
-            pubDate: pubDateEl?.textContent || new Date().toISOString()
-          });
-        }
+      const data = await response.json();
+      if (!data.success || !data.articles) {
+        setArticles([]);
+        setLoading(false);
+        return;
       }
+
+      // Transform RSS articles to RSSArticle format
+      const parsedArticles: RSSArticle[] = data.articles.slice(0, 5).map((article: any) => ({
+        title: article.title || 'Untitled',
+        link: article.link || '',
+        description: article.description || '',
+        image: article.image || undefined,
+        pubDate: article.pubDate || new Date().toISOString()
+      }))
 
       setArticles(parsedArticles);
       setLoading(false);
