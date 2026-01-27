@@ -67,6 +67,7 @@ export default function PickYourXI() {
     { label: 'Player Ratings', path: '/player-ratings' },
     { label: 'Final Player Ratings', path: '/final-player-ratings' },
     { label: 'Shop', path: '/shop' },
+    { label: 'Socials', path: '/socials' },
   ];
 
   const handleNavigation = (path: string) => {

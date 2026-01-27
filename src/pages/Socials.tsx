@@ -1,7 +1,6 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Facebook, Instagram, Twitter, Play } from 'lucide-react';
 import {
   Drawer,
   DrawerContent,
@@ -10,9 +9,8 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "@/components/ui/drawer";
-import { ExternalLinkDiv } from '@/lib/external-link-utils';
 
-export default function Shop() {
+export default function Socials() {
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -35,24 +33,34 @@ export default function Shop() {
     setIsDrawerOpen(false);
   };
 
-  const shopItems = [
+  const socialPlatforms = [
     {
-      title: 'Team Jersey',
-      description: 'Official SPFC Home Jersey',
-      image: '/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png',
-      url: 'https://stretfordpaddockfc.com/shop'
+      name: 'Instagram',
+      followers: '40.2K',
+      url: 'https://www.instagram.com/stretfordpaddck',
+      icon: Instagram,
+      color: 'from-pink-500 to-purple-600'
     },
     {
-      title: 'Training Kit',
-      description: 'SPFC Training Wear',
-      image: '/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png',
-      url: 'https://stretfordpaddockfc.com/shop'
+      name: 'Facebook',
+      followers: '20K',
+      url: 'https://www.facebook.com/StretfordPaddck/',
+      icon: Facebook,
+      color: 'from-blue-600 to-blue-700'
     },
     {
-      title: 'Accessories',
-      description: 'Caps, Scarves & More',
-      image: '/lovable-uploads/a96c0d33-e126-4bfe-8dc4-47c4088dcb9f.png',
-      url: 'https://stretfordpaddockfc.com/shop'
+      name: 'X',
+      followers: '18.2K',
+      url: 'https://x.com/SPaddockFC',
+      icon: Twitter,
+      color: 'from-gray-800 to-black'
+    },
+    {
+      name: 'Twitch',
+      followers: '1.3K',
+      url: 'https://www.twitch.tv/stretford_paddock_fc',
+      icon: Play,
+      color: 'from-purple-500 to-purple-700'
     }
   ];
 
@@ -68,7 +76,7 @@ export default function Shop() {
             style={{ marginLeft: '-40px' }}
           />
           <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl">
-            Shop
+            Socials
           </h1>
 
           {/* Hamburger Menu - Mobile First */}
@@ -134,46 +142,39 @@ export default function Shop() {
         </div>
       </div>
 
-      {/* Shop Content */}
+      {/* Socials Content */}
       <div className="px-4 sm:px-8 py-6 sm:py-8">
         <div className="max-w-5xl mx-auto">
-          {/* Shop Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {shopItems.map((item, index) => (
-              <ExternalLinkDiv
-                key={index}
-                url={item.url}
-                className="group rounded-lg overflow-hidden border border-red-600 hover:shadow-xl transition-shadow"
-              >
-                <div className="relative bg-gray-800 aspect-square overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover hover:opacity-90 transition-opacity"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="bg-black p-4">
-                  <h3 className="text-white text-lg font-bold mb-1">{item.title}</h3>
-                  <p className="text-gray-400 text-sm">{item.description}</p>
-                  <div className="mt-3 text-red-600 text-sm font-semibold">Shop Now →</div>
-                </div>
-              </ExternalLinkDiv>
-            ))}
-          </div>
+          {/* Socials Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+            {socialPlatforms.map((platform, index) => {
+              const IconComponent = platform.icon;
+              return (
+                <div
+                  key={index}
+                  className="rounded-lg overflow-hidden border border-red-600 bg-gray-900 hover:shadow-xl transition-shadow"
+                >
+                  {/* Platform Header with Icon */}
+                  <div className={`bg-gradient-to-r ${platform.color} p-6 flex items-center justify-between`}>
+                    <div>
+                      <h3 className="text-white text-2xl font-bold">{platform.name}</h3>
+                      <p className="text-white/80 text-lg">{platform.followers} followers</p>
+                    </div>
+                    <IconComponent size={48} className="text-white" />
+                  </div>
 
-          {/* Call to Action */}
-          <div className="mt-8 bg-red-600/10 border border-red-600 rounded-lg p-6 text-center">
-            <h2 className="text-white text-2xl font-bold mb-2">Complete Store</h2>
-            <p className="text-gray-300 mb-4">Browse our full collection of official SPFC merchandise</p>
-            <ExternalLinkDiv
-              url="https://stretfordpaddockfc.com/shop"
-              className="inline-block"
-            >
-              <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors">
-                Visit Full Store
-              </button>
-            </ExternalLinkDiv>
+                  {/* Follow Button */}
+                  <div className="bg-black p-6 flex justify-center">
+                    <button
+                      onClick={() => window.open(platform.url, '_blank')}
+                      className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg"
+                    >
+                      Follow
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
