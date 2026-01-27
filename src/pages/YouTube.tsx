@@ -34,6 +34,17 @@ export default function YouTube() {
     navigate(path);
     setIsDrawerOpen(false);
   };
+
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsDrawerOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
+
   return (
     <div className="min-h-screen bg-black">
       {/* Banner Header - exact replica of home page */}
@@ -71,10 +82,10 @@ export default function YouTube() {
               <DrawerDescription className="sr-only">Mobile navigation menu</DrawerDescription>
 
               {/* Close Button - Fixed at top */}
-              <div className="p-6 pb-0">
+              <div className="flex justify-end p-6 pb-0 relative z-50">
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="self-end text-white hover:text-gray-200 mb-4 block"
+                  className="text-white hover:text-gray-200 mb-4 cursor-pointer"
                   aria-label="Close navigation menu"
                 >
                   <X size={24} />

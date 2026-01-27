@@ -52,9 +52,49 @@ export default function PlayerRatings() {
   ];
 
   const handleNavigation = (path: string) => {
+
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsDrawerOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
     navigate(path);
+
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsDrawerOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
     setIsDrawerOpen(false);
+
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsDrawerOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
   };
+
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsDrawerOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
 
   // For demo purposes, using a fixture_id. In production, this would come from route params or context
   const fixtureId = 'fixture-mufc-chelsea-2025-07-19';
@@ -271,10 +311,10 @@ export default function PlayerRatings() {
               <DrawerDescription className="sr-only">Mobile navigation menu</DrawerDescription>
 
               {/* Close Button - Fixed at top */}
-              <div className="p-6 pb-0">
+              <div className="flex justify-end p-6 pb-0 relative z-50">
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="self-end text-white hover:text-gray-200 mb-4 block"
+                  className="text-white hover:text-gray-200 mb-4 cursor-pointer"
                   aria-label="Close navigation menu"
                 >
                   <X size={24} />
