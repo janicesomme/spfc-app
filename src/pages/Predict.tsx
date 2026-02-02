@@ -10,9 +10,9 @@ import { ShotsPredictor } from "@/components/predict/ShotsPredictor";
 const Predict = () => {
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
-  const [firstScorer, setFirstScorer] = useState("benjamin-sesko");
-  const [possession, setPossession] = useState([55]);
-  const [shotsOnTarget, setShotsOnTarget] = useState("7");
+  const [firstScorer, setFirstScorer] = useState("joao-de-andrade");
+  const [motm, setMotm] = useState("joao-de-andrade");
+  const [cleanSheet, setCleanSheet] = useState("yes");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedOdds, setSelectedOdds] = useState<string | null>(null);
   
@@ -43,8 +43,8 @@ const Predict = () => {
       homeScore: parseInt(homeScore),
       awayScore: parseInt(awayScore),
       firstScorer,
-      possession: possession[0],
-      shotsOnTarget: parseInt(shotsOnTarget),
+      motm,
+      cleanSheet,
       selectedOddsFraction: selectedOdds,
       timestamp: new Date().toISOString()
     }));
@@ -83,8 +83,8 @@ const Predict = () => {
         <div className="container mx-auto px-4 pt-3 pb-0.5 max-w-md">
           {/* Header */}
           <div className="text-center text-white">
-            <h1 className="text-2xl font-extrabold mb-2">Man City vs Man Utd</h1>
-            <h2 className="text-lg font-bold mb-4">Emirates Stadium — Sept 14, 4:30pm</h2>
+            <h1 className="text-2xl font-extrabold mb-2">Daten vs Stretford Paddock FC</h1>
+            <h2 className="text-lg font-bold mb-4">Culcheth Sports Club — Jan 24, 2:00pm</h2>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@ const Predict = () => {
         {/* Winner Banner with margin */}
         <div className="bg-yellow-400 rounded-2xl p-4 mb-8 border-2 border-black mt-[35px] md:mt-[5px]">
           <p className="text-black font-bold text-base">
-            🎉 Last Week's Winner: <span className="text-red-600 font-extrabold">JaniceS</span> — £674 Won
+            🎉 Last Week's Winner: <span className="text-red-600 font-extrabold">JaniceS</span> — 674 pts Won
           </p>
         </div>
 
@@ -115,17 +115,17 @@ const Predict = () => {
             onBetAmountChange={setScorerBet}
           />
 
-          <PossessionPredictor 
-            possession={possession}
+          <PossessionPredictor
+            possession={motm}
             betAmount={possessionBet}
-            onPossessionChange={setPossession}
+            onPossessionChange={setMotm}
             onBetAmountChange={setPossessionBet}
           />
 
-          <ShotsPredictor 
-            shotsOnTarget={shotsOnTarget}
+          <ShotsPredictor
+            shotsOnTarget={cleanSheet}
             betAmount={shotsBet}
-            onShotsChange={setShotsOnTarget}
+            onShotsChange={setCleanSheet}
             onBetAmountChange={setShotsBet}
           />
         </div>

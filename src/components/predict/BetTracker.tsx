@@ -26,10 +26,10 @@ export const BetTracker = ({ totalBet, canSubmit }: BetTrackerProps) => {
         <span className="font-bold text-sm md:text-lg text-white">Total Bets</span>
       </div>
       <div className="text-lg md:text-2xl font-extrabold text-white text-center -mt-2 md:-mt-3">
-        £{totalBet.toFixed(0)}/£100
+        {totalBet.toFixed(0)} pts/100 pts
       </div>
       <p className="text-xs text-white/90 text-center -mt-1 md:-mt-2">
-        You must bet exactly £100 to lock in!
+        You must bet exactly 100 pts to lock in!
       </p>
     </div>
   );

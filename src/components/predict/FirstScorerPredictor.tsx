@@ -15,30 +15,21 @@ interface FirstScorerPredictorProps {
 }
 
 const unitedPlayers = [
-  { value: "benjamin-sesko", label: "Benjamin Sesko" },
-  { value: "chido-obi-martin", label: "Chido Obi-Martin" },
-  { value: "joshua-zirkzee", label: "Joshua Zirkzee" },
-  { value: "mattheus-cunha", label: "Mattheus Cunha" },
-  { value: "bryan-mbuemo", label: "Bryan Mbuemo" },
-  { value: "amad-diallo", label: "Amad-Diallo" },
-  { value: "bruno-fernandes", label: "Bruno Fernandes" },
-  { value: "carlos-casemiro", label: "Casemiro" },
-  { value: "mason-mount", label: "Mason Mount" },
-  { value: "matijis-deligt", label: "Matijis DeLigt" },
-  { value: "manuel-ugarte", label: "Manuel Ugarte" },
-  { value: "kobbie-manioo", label: "Koddie Mainoo" },
-  { value: "ethan-wheatly", label: "Ethan Wheatley" },
-  { value: "patrick-dorgu", label: "Patrick Dorgu" },
-  { value: "leny-yoro", label: "Leny Yoro" },
-  { value: "noussair-mazraoui", label: "Noussair Mazraoui" },
-  { value: "ayden-heaven", label: "Ayden Heaven" },
-  { value: "tyler-fredricson", label: "Tyler Fredricson" },
-  { value: "harry-amass", label: "Harry Amass" },
-  { value: "lisandro-martinez", label: "Lisandro Martinez" },
-  { value: "luke-shaw", label: "Luke Shaw" },
-  { value: "diogo-dalot", label: "Diogo Dalot" },
-  { value: "altay-bayindir", label: "Altay Bayindir" },
-  { value: "andre-onana", label: "Andre Onana" },
+  { value: "joao-de-andrade", label: "Joao de Andrade" },
+  { value: "sam-pratt", label: "Sam Pratt" },
+  { value: "josh-mbala", label: "Josh Mbala" },
+  { value: "ronaldo-brown", label: "Ronaldo Brown" },
+  { value: "zacharias-bell", label: "Zacharias Bell" },
+  { value: "ellis-pacer", label: "Ellis Pacer" },
+  { value: "joseph-coleman", label: "Joseph Coleman" },
+  { value: "kayode-adewale", label: "Kayode Adewale" },
+  { value: "alexander-black", label: "Alexander Black" },
+  { value: "michael-taylor", label: "Michael Taylor" },
+  { value: "omar-sinclair", label: "Omar Sinclair" },
+  { value: "dion-kemp", label: "Dion Kemp" },
+  { value: "sam-walker", label: "Sam Walker" },
+  { value: "ryan-liddle", label: "Ryan Liddle" },
+  { value: "michael-olatunji", label: "Michael Olatunji" },
 ];
 
 export const FirstScorerPredictor = ({
@@ -54,7 +45,7 @@ export const FirstScorerPredictor = ({
     const fetchOdds = async () => {
       const playerSlugs = unitedPlayers.map(p => p.value);
       const { data, error } = await (supabase as any)
-        .from('first_scorer_odds')
+        .from('spfc_first_scorer_odds')
         .select('player_slug, fraction')
         .in('player_slug', playerSlugs);
       
@@ -83,14 +74,14 @@ export const FirstScorerPredictor = ({
       <Card className="shadow-2xl drop-shadow-lg rounded-2xl overflow-hidden bg-white border-4 border-black relative z-10">
         <CardHeader className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
           <CardTitle className="text-2xl font-extrabold text-center flex items-center justify-between">
-            <span>FIRST UNITED SCORER</span>
+            <span>FIRST SPFC SCORER</span>
             <Crown className="w-8 h-8" />
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6 space-y-6 bg-white">
           <div className="space-y-3">
             <label className="block text-lg font-bold text-center text-gray-700">
-              🔴 Who scores first for United?
+              🔴 Who scores first for SPFC?
             </label>
             <Select value={selectedPlayer} onValueChange={handlePlayerChange}>
               <SelectTrigger className="h-16 text-2xl font-bold shadow-lg border-2 border-gray-300 rounded-xl bg-gray-100 text-black">
@@ -139,7 +130,7 @@ export const FirstScorerPredictor = ({
           <div className="flex justify-center mt-3">
             {betAmount && parseFloat(betAmount) > 0 ? (
               <div className="bg-green-600 text-white border-black border-2 px-3 py-1 text-sm font-bold rounded">
-                Potential winnings: £{(parseFloat(betAmount) * 3.0).toFixed(2)}
+                Potential winnings: {(parseFloat(betAmount) * 3.0).toFixed(2)} pts
               </div>
             ) : (
               <div className="border-blue-500 border text-blue-600 px-3 py-1 text-xs rounded">

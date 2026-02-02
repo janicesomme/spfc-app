@@ -156,7 +156,7 @@ export const ScorePredictor = ({
             <div className="flex justify-center mt-3">
               {currentOdds && betAmount && parseFloat(betAmount) > 0 ? (
                 <Badge variant="secondary" className="bg-green-600 text-white border-black border-2 px-3 py-1 text-sm font-bold">
-                  You will win £{(parseFloat(betAmount) * convertFractionalToDecimal(currentOdds)).toFixed(2)}
+                  You will win {(parseFloat(betAmount) * convertFractionalToDecimal(currentOdds)).toFixed(2)} pts
                 </Badge>
               ) : currentOdds && (!betAmount || parseFloat(betAmount) === 0) ? (
                 <Badge variant="outline" className="border-blue-500 text-blue-600 px-3 py-1 text-xs">

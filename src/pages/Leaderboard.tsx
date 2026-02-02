@@ -7,16 +7,16 @@ const Leaderboard = () => {
   const [showMyRank, setShowMyRank] = useState(false);
 
   const leaderboardData = [
-    { rank: 1, name: "JaniceS", points: 2215, trend: "up" },
-    { rank: 2, name: "The Realist", points: 2012, trend: "up" },
-    { rank: 3, name: "Silverback", points: 1910, trend: "down" },
-    { rank: 4, name: "Gregg", points: 1899, trend: "up" },
-    { rank: 5, name: "Tom Porter", points: 1878, trend: "same" },
-    { rank: 6, name: "Real Real", points: 1767, trend: "down" },
-    { rank: 7, name: "Chris Mac", points: 1766, trend: "up" },
-    { rank: 8, name: "Graham Wilde", points: 1525, trend: "same" },
-    { rank: 9, name: "UnitedSpotlight", points: 1489, trend: "down" },
-    { rank: 10, name: "AdamFUTV", points: 1438, trend: "up" },
+    { rank: 1, name: "Janice Sommerville", points: 2215, trend: "up" },
+    { rank: 2, name: "Janet Pool", points: 2012, trend: "up" },
+    { rank: 3, name: "Stuart Harrowing", points: 1910, trend: "down" },
+    { rank: 4, name: "Flashburn52", points: 1899, trend: "up" },
+    { rank: 5, name: "Michael Sanders", points: 1878, trend: "same" },
+    { rank: 6, name: "Matt Vickers", points: 1767, trend: "down" },
+    { rank: 7, name: "Alex Bailey", points: 1766, trend: "up" },
+    { rank: 8, name: "Chris", points: 1525, trend: "same" },
+    { rank: 9, name: "Allan Pearson", points: 1489, trend: "down" },
+    { rank: 10, name: "Liam Sheasby", points: 1438, trend: "up" },
   ];
 
   const getTrendIcon = (trend: string) => {
@@ -61,7 +61,7 @@ const Leaderboard = () => {
         <Card className="shadow-lg mb-6">
           <CardHeader className="bg-red-600">
             <CardTitle className="text-center text-xl text-white">
-              Week 3 Standings
+              Latest Standings
             </CardTitle>
           </CardHeader>
           
@@ -94,7 +94,7 @@ const Leaderboard = () => {
                   
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary" className="font-bold">
-                      £{player.points}
+                      {player.points} pts
                     </Badge>
                     <span className="text-lg">
                       {getTrendIcon(player.trend)}
@@ -129,7 +129,7 @@ const Leaderboard = () => {
                       </div>
                   </div>
                   <Badge variant="secondary" className="font-bold">
-                    £2
+                    2 pts
                   </Badge>
                 </div>
               </CardContent>
