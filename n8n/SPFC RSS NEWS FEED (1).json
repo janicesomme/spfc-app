@@ -96,64 +96,6 @@
     },
     {
       "parameters": {
-        "url": "https://newsapi.org/v2/everything",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "q",
-              "value": "Manchester United OR \"Man Utd\" OR MUFC"
-            },
-            {
-              "name": "language",
-              "value": "en"
-            },
-            {
-              "name": "sortBy",
-              "value": "publishedAt"
-            },
-            {
-              "name": "pageSize",
-              "value": "20"
-            },
-            {
-              "name": "from",
-              "value": "={{ $now.minus({days: 7}).toISODate() }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "X-API-Key",
-              "value": "7557eb00e47b4673bab59aac247f41da"
-            }
-          ]
-        },
-        "options": {
-          "response": {
-            "response": {
-              "neverError": true
-            }
-          },
-          "timeout": 10000
-        }
-      },
-      "id": "0e451fc4-f9d3-4665-a60e-fd09abef09d5",
-      "name": "NewsAPI Enrichment",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.1,
-      "position": [
-        1360,
-        432
-      ],
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000
-    },
-    {
-      "parameters": {
         "jsCode": "// Open Graph image scraper - Browser compatible (no Node.js modules)\nconst items = $input.all();\nconst processedItems = [];\n\n// Simple cache to avoid duplicate requests\nconst cache = new Map();\nlet lastRequest = 0;\nconst minDelay = 2000; // 2 seconds between requests\n\n// Rate-limited fetch function\nasync function rateLimitedFetch(url) {\n  // Check cache first\n  if (cache.has(url)) {\n    return cache.get(url);\n  }\n\n  // Rate limiting\n  const now = Date.now();\n  const timeSinceLastRequest = now - lastRequest;\n  if (timeSinceLastRequest < minDelay) {\n    await new Promise(resolve => setTimeout(resolve, minDelay - timeSinceLastRequest));\n  }\n  lastRequest = Date.now();\n\n  try {\n    // Use n8n's built-in fetch (browser-compatible)\n    const response = await fetch(url, {\n      method: 'GET',\n      headers: {\n        'User-Agent': 'Mozilla/5.0 (compatible; NewsBot/1.0)',\n        'Accept': 'text/html,application/xhtml+xml',\n      },\n      signal: AbortSignal.timeout(5000) // 5 second timeout\n    });\n\n    if (!response.ok) {\n      throw new Error(`HTTP ${response.status}`);\n    }\n\n    // Read response as text\n    const html = await response.text();\n    \n    // Extract Open Graph image\n    const ogMatch = html.match(/<meta\\s+property=[\"']og:image[\"']\\s+content=[\"']([^\"']+)[\"']/i);\n    const imageUrl = ogMatch ? ogMatch[1] : null;\n    \n    // Cache result\n    cache.set(url, imageUrl);\n    return imageUrl;\n    \n  } catch (error) {\n    console.log(`OG scrape failed for ${url}: ${error.message}`);\n    cache.set(url, null);\n    return null;\n  }\n}\n\n// Process items\nlet processedCount = 0;\nconst maxToProcess = 5; // Limit OG scraping to avoid timeouts\n\nfor (const item of items) {\n  // Pass through error items unchanged\n  if (item.json.error) {\n    processedItems.push(item);\n    continue;\n  }\n  \n  const processedItem = { ...item };\n  \n  // Only try OG scraping if:\n  // 1. No image exists already\n  // 2. We have a valid URL\n  // 3. We haven't processed too many items\n  if (!processedItem.json.extractedImage && \n      processedItem.json.link && \n      processedCount < maxToProcess) {\n    \n    try {\n      console.log(`Attempting OG scrape for: ${processedItem.json.title}`);\n      processedItem.json.ogImage = await rateLimitedFetch(processedItem.json.link);\n      processedCount++;\n      \n      if (processedItem.json.ogImage) {\n        console.log(`✅ Found OG image: ${processedItem.json.ogImage}`);\n      }\n    } catch (error) {\n      console.log(`❌ OG scrape error: ${error.message}`);\n      processedItem.json.ogImage = null;\n    }\n  } else {\n    // Skip OG scraping\n    processedItem.json.ogImage = null;\n  }\n  \n  processedItems.push(processedItem);\n}\n\nconsole.log(`Open Graph Scraper Results:`);\nconsole.log(`- Total items processed: ${items.length}`);\nconsole.log(`- OG scrapes attempted: ${processedCount}`);\nconsole.log(`- Items with existing images: ${items.filter(i => i.json.extractedImage).length}`);\n\nreturn processedItems;"
       },
       "id": "83fc4e96-a9ab-4e27-8dea-0387250cc3d5",
@@ -534,7 +476,7 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={ \"title\": \"{{ $json.title }}\" }",
+        "body": "{ \"title\": \"{{ $json.title }}\" }",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -560,6 +502,16 @@
               "id": "31da2bbb-27b9-420a-bf6a-49cb619ce0be",
               "leftValue": "{{ $json.source }}",
               "rightValue": "Stretford Paddock FC",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "no-image-check",
+              "leftValue": "{{ $json.extractedImage || $json.ogImage }}",
+              "rightValue": "",
               "operator": {
                 "type": "string",
                 "operation": "equals",
