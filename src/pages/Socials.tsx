@@ -10,20 +10,30 @@ import {
   DrawerDescription,
 } from "@/components/ui/drawer";
 
+type NavigationItem = {
+  label: string;
+  path?: string;
+  submenu?: Array<{ label: string; path: string }>;
+};
+
 export default function Socials() {
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const navigationItems = [
+  const navigationItems: NavigationItem[] = [
     { label: 'Home', path: '/' },
     { label: 'News', path: '/news' },
     { label: 'YT Videos', path: '/youtube' },
     { label: 'League', path: '/league' },
     { label: 'Fixtures', path: '/fixtures' },
     { label: 'Results', path: '/results' },
-    { label: 'Starting XI', path: '/pick-your-xi' },
-    { label: 'Player Ratings', path: '/player-ratings' },
-    { label: 'Final Player Ratings', path: '/final-player-ratings' },
+    { label: 'Play', submenu: [
+      { label: 'Starting XI', path: '/pick-your-xi' },
+      { label: 'Match Predictions', path: '/predict' },
+      { label: 'Player Ratings', path: '/player-ratings' },
+      { label: 'Final Player Ratings', path: '/final-player-ratings' },
+      { label: 'Leaderboard', path: '/leaderboard' },
+    ]},
     { label: 'Shop', path: '/shop' },
     { label: 'Socials', path: '/socials' },
   ];
@@ -133,13 +143,30 @@ export default function Socials() {
               {/* Navigation Links - Scrollable */}
               <nav className="flex-1 overflow-y-auto px-6 space-y-0">
                 {navigationItems.map((item, index) => (
-                  <div key={item.path} className="w-full">
-                    <button
-                      onClick={() => handleNavigation(item.path)}
-                      className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
-                    >
-                      {item.label}
-                    </button>
+                  <div key={item.label} className="w-full">
+                    {item.submenu ? (
+                      <>
+                        <div className="py-4 text-white text-lg font-medium">
+                          {item.label}
+                        </div>
+                        {item.submenu.map((subitem) => (
+                          <button
+                            key={subitem.path}
+                            onClick={() => handleNavigation(subitem.path)}
+                            className="w-full text-left py-3 pl-4 text-gray-300 hover:text-white text-base font-medium transition-colors"
+                          >
+                            {subitem.label}
+                          </button>
+                        ))}
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="w-full text-left py-4 text-white hover:text-gray-200 text-lg font-medium transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                    )}
                     {index < navigationItems.length - 1 && (
                       <div className="w-full h-px bg-white/30" />
                     )}

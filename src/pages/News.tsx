@@ -149,7 +149,7 @@ export default function News() {
         <>
           {/* Articles grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-            {filteredArticles.map((article) => (
+            {filteredArticles.filter(article => article.image).map((article) => (
               <article
                 key={article.id}
                 className="bg-[#1A1A1A] rounded-lg overflow-hidden hover:bg-[#202126] transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
