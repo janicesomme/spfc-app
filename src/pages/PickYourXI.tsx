@@ -10,6 +10,12 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "@/components/ui/drawer";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Player {
   id: string;
@@ -22,6 +28,58 @@ interface SelectedPlayers {
 }
 
 const formations = {
+  '1-4-2-3-1': {
+    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
+    LB: { top: '55%', left: '12.5%' },
+    CB1: { top: '55%', left: '37.5%' },
+    CB2: { top: '55%', left: '62.5%' },
+    RB: { top: '55%', left: '87.5%' },
+    DM1: { top: '36%', left: '37.5%' },
+    DM2: { top: '36%', left: '62.5%' },
+    LW: { top: '18%', left: '25%' },
+    AM: { top: '18%', left: '50%' },
+    RW: { top: '18%', left: '75%' },
+    ST: { top: '1%', left: '50%' },
+  },
+  '1-4-3-3': {
+    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
+    LB: { top: '55%', left: '12.5%' },
+    CB1: { top: '55%', left: '37.5%' },
+    CB2: { top: '55%', left: '62.5%' },
+    RB: { top: '55%', left: '87.5%' },
+    LM: { top: '36%', left: '25%' },
+    CM: { top: '36%', left: '50%' },
+    RM: { top: '36%', left: '75%' },
+    LW: { top: '14%', left: '25%' },
+    ST: { top: '8%', left: '50%' },
+    RW: { top: '14%', left: '75%' },
+  },
+  '1-4-4-2': {
+    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
+    LB: { top: '55%', left: '12.5%' },
+    CB1: { top: '55%', left: '37.5%' },
+    CB2: { top: '55%', left: '62.5%' },
+    RB: { top: '55%', left: '87.5%' },
+    LM: { top: '35%', left: '7.5%' },
+    CM1: { top: '35%', left: '37.5%' },
+    CM2: { top: '35%', left: '62.5%' },
+    RM: { top: '35%', left: '92.5%' },
+    LW: { top: '12%', left: '37.5%' },
+    RW: { top: '12%', left: '62.5%' },
+  },
+  '1-4-3-2-1': {
+    GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
+    LB: { top: '55%', left: '12.5%' },
+    CB1: { top: '55%', left: '37.5%' },
+    CB2: { top: '55%', left: '62.5%' },
+    RB: { top: '55%', left: '87.5%' },
+    LM: { top: '36%', left: '25%' },
+    CM: { top: '36%', left: '50%' },
+    RM: { top: '36%', left: '75%' },
+    LW: { top: '14%', left: '25%' },
+    RW: { top: '14%', left: '75%' },
+    ST: { top: '8%', left: '50%' },
+  },
   '1-3-4-3': {
     GK: { top: 'calc(75% + 0.5cm)', left: '50%' },
     LB: { top: '55%', left: '25%' },
@@ -34,18 +92,24 @@ const formations = {
     LW: { top: 'calc(12% - 0.5cm)', left: '25%' },
     ST: { top: 'calc(8% - 0.5cm)', left: '50%' },
     RW: { top: 'calc(12% - 0.5cm)', left: '75%' },
-  }
+  },
 };
 
 const positionNames = {
   GK: 'Goalkeeper',
   LB: 'Left Back',
   CB: 'Centre Back',
+  CB1: 'Centre Back',
+  CB2: 'Centre Back',
   RB: 'Right Back',
+  DM1: 'Defensive Mid',
+  DM2: 'Defensive Mid',
   LM: 'Left Midfielder',
+  CM: 'Centre Midfielder',
   CM1: 'Centre Midfielder',
   CM2: 'Centre Midfielder',
   RM: 'Right Midfielder',
+  AM: 'Attacking Midfielder',
   LW: 'Left Winger',
   ST: 'Striker',
   RW: 'Right Winger',
@@ -55,6 +119,7 @@ export default function PickYourXI() {
   const navigate = useNavigate();
   const [selectedPlayers, setSelectedPlayers] = useState<SelectedPlayers>({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedFormation, setSelectedFormation] = useState<string>('1-4-2-3-1');
 
   const navigationItems = [
     { label: 'Home', path: '/' },
@@ -126,7 +191,7 @@ export default function PickYourXI() {
     navigate(`/pick-player?position=${position}`);
   };
 
-  const allPositionsFilled = Object.keys(formations['1-3-4-3']).every(
+  const allPositionsFilled = Object.keys(formations[selectedFormation]).every(
     position => selectedPlayers[position]
   );
 
@@ -233,10 +298,57 @@ export default function PickYourXI() {
           >
             Share
           </Button>
+
+          {/* Formation Selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                className="absolute top-12 right-0 bg-black hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg border border-white shadow-lg"
+                size="sm"
+              >
+                Formation
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-black border border-white text-white min-w-[140px]"
+            >
+              <DropdownMenuItem
+                onClick={() => setSelectedFormation('1-4-2-3-1')}
+                className={`cursor-pointer hover:bg-gray-800 ${selectedFormation === '1-4-2-3-1' ? 'bg-gray-700 font-bold' : ''}`}
+              >
+                1-4-2-3-1
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedFormation('1-4-3-3')}
+                className={`cursor-pointer hover:bg-gray-800 ${selectedFormation === '1-4-3-3' ? 'bg-gray-700 font-bold' : ''}`}
+              >
+                1-4-3-3
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedFormation('1-4-4-2')}
+                className={`cursor-pointer hover:bg-gray-800 ${selectedFormation === '1-4-4-2' ? 'bg-gray-700 font-bold' : ''}`}
+              >
+                1-4-4-2
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedFormation('1-4-3-2-1')}
+                className={`cursor-pointer hover:bg-gray-800 ${selectedFormation === '1-4-3-2-1' ? 'bg-gray-700 font-bold' : ''}`}
+              >
+                1-4-3-2-1
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedFormation('1-3-4-3')}
+                className={`cursor-pointer hover:bg-gray-800 ${selectedFormation === '1-3-4-3' ? 'bg-gray-700 font-bold' : ''}`}
+              >
+                1-3-4-3
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="flex-1 relative max-w-md mx-auto w-full" style={{ marginTop: '0.75cm' }}>
-          {Object.entries(formations['1-3-4-3']).map(([position, coords]) => {
+          {Object.entries(formations[selectedFormation]).map(([position, coords]) => {
             const player = selectedPlayers[position];
             return (
               <button
