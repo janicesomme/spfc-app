@@ -63,10 +63,10 @@ export default function YouTube() {
           {/* Hamburger Menu */}
           <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
             <DrawerTrigger asChild>
-              <button 
+              <button
                 className="absolute md:hidden text-white hover:text-gray-200 transition-colors z-10"
-                style={{ 
-                  left: 'calc(50% + 90px)', // 40px to the right of "YouTube" text
+                style={{
+                  left: 'calc(50% + 190px)', // 140px to the right of "Latest Videos" text
                   top: '15px'
                 }}
                 aria-label="Open navigation menu"
