@@ -67,6 +67,12 @@ export const ScorePredictor = ({
 
   // Fallback odds for specific scorelineswhen not found in database
   const defaultOdds: Record<string, string> = {
+    '0-0': '2/1',
+    '1-0': '3/1',
+    '1-1': '2/1',
+    '2-0': '4/1',
+    '2-1': '5/1',
+    '3-0': '6/1',
     '3-1': '8/1',
   };
 
