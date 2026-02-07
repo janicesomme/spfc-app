@@ -62,7 +62,7 @@ export const ScorePredictor = ({
     fetchOdds();
   }, []);
 
-  // Compute current score key and get odds
+  // Compute current score key and get odds for the selected match
   const currentScoreKey = homeScore && awayScore ? `${homeScore}-${awayScore}` : '';
   const currentOdds = currentScoreKey ? oddsMap[currentScoreKey] : null;
   
