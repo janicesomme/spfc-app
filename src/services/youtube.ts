@@ -1,6 +1,4 @@
 
-import { supabase } from '@/integrations/supabase/client';
-
 const YOUTUBE_CHANNEL_ID = 'UCgKW4TrjzGXiPbJ3yXoEdjQ';
 
 export interface YouTubeVideo {
@@ -14,18 +12,15 @@ export interface YouTubeVideo {
 
 export async function fetchYouTubeVideos(): Promise<YouTubeVideo[]> {
   try {
-    // Get the API key from Supabase secrets
-    const { data: secrets } = await supabase.functions.invoke('get-secret', {
-      body: { name: 'YOUTUBE_API_KEY' }
-    });
-    
-    if (!secrets?.value) {
-      throw new Error('YouTube API key not found');
+    const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
+
+    if (!apiKey) {
+      throw new Error('YouTube API key not configured');
     }
 
     const response = await fetch(
       `https://www.googleapis.com/youtube/v3/search?` +
-      `key=${secrets.value}&` +
+      `key=${apiKey}&` +
       `channelId=${YOUTUBE_CHANNEL_ID}&` +
       `part=snippet&` +
       `order=date&` +
@@ -38,7 +33,7 @@ export async function fetchYouTubeVideos(): Promise<YouTubeVideo[]> {
     }
 
     const data = await response.json();
-    
+
     return data.items.map((item: any) => ({
       id: item.id.videoId,
       title: item.snippet.title,
