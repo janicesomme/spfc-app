@@ -139,18 +139,6 @@ export const ScorePredictor = ({
                 />
               </div>
             </div>
-            
-            {/* Odds Section */}
-            <div className="space-y-3">
-              <label className="block text-lg font-bold text-center text-gray-700">
-                📊 ODDS
-              </label>
-              <div className="flex justify-center">
-                <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
-                  {currentOdds || "ENTER PREDICTION"}
-                </div>
-              </div>
-            </div>
           </div>
 
           <QuickBetButtons
@@ -168,6 +156,18 @@ export const ScorePredictor = ({
               onChange={(e) => onBetAmountChange(e.target.value)}
               className="text-center text-2xl font-bold h-16 border-2 border-gray-300 rounded-xl bg-gray-100 text-black placeholder:text-red-500"
             />
+          </div>
+
+          {/* Odds Section */}
+          <div className="space-y-3">
+            <label className="block text-lg font-bold text-center text-gray-700">
+              📊 ODDS
+            </label>
+            <div className="flex justify-center">
+              <div className="bg-red-600 text-white px-4 py-2 text-lg font-bold rounded-lg min-w-[80px] text-center">
+                {currentOdds || "ENTER PREDICTION"}
+              </div>
+            </div>
           </div>
 
           {/* Potential Winnings Calculator */}
