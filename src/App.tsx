@@ -36,7 +36,6 @@ import League from "./pages/League";
 import Fixtures from "./pages/Fixtures";
 import Results from "./pages/Results";
 import Socials from "./pages/Socials";
-import Community from "./pages/Community";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -80,7 +79,6 @@ function App() {
               <Route path="/fixtures" element={<Fixtures />} />
               <Route path="/results" element={<Results />} />
               <Route path="/socials" element={<Socials />} />
-              <Route path="/community" element={<Community />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/match-bingo" element={<MatchBingo />} />
               <Route path="/settings" element={<Settings />} />

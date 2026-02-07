@@ -29,7 +29,6 @@ const allTabs: Tab[] = [
       { label: "Leaderboard", path: "/leaderboard" },
     ],
   },
-  { label: "Community", path: "/community" },
 ];
 
 export function TopNavTabs() {
