@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 import { Menu, X } from 'lucide-react';
+import { fetchYouTubeVideos } from '@/services/youtube';
 import {
   Drawer,
   DrawerContent,
@@ -68,25 +69,30 @@ export default function HomePage() {
 
   const fetchData = async () => {
     try {
-      console.log('Fetching data...');
+      console.log('Fetching latest YouTube video...');
 
-      // Set hardcoded video from YouTube URL
-      const youtubeUrl = 'https://www.youtube.com/watch?v=StdEFn9Zt04';
-      const videoId = 'StdEFn9Zt04';
+      // Fetch latest video from YouTube API
+      const youtubeVideos = await fetchYouTubeVideos();
 
-      const transformedVideo: Video = {
-        video_id: videoId,
-        title: 'Latest Match Analysis',
-        description: 'Watch the latest football match analysis',
-        thumbnail_url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-        youtube_url: youtubeUrl,
-        published_at: new Date().toISOString()
-      };
+      if (youtubeVideos && youtubeVideos.length > 0) {
+        const latestYoutubeVideo = youtubeVideos[0];
 
-      setLatestVideo(transformedVideo);
-      console.log('Set latest video:', transformedVideo);
+        const transformedVideo: Video = {
+          video_id: latestYoutubeVideo.id,
+          title: latestYoutubeVideo.title,
+          description: latestYoutubeVideo.description,
+          thumbnail_url: latestYoutubeVideo.thumbnailUrl,
+          youtube_url: latestYoutubeVideo.videoUrl,
+          published_at: latestYoutubeVideo.publishedAt
+        };
+
+        setLatestVideo(transformedVideo);
+        console.log('Set latest video:', transformedVideo);
+      } else {
+        console.warn('No YouTube videos found');
+      }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching YouTube videos:', error);
     } finally {
       setLoading(false);
     }
