@@ -83,8 +83,8 @@ const Predict = () => {
         <div className="container mx-auto px-4 pt-3 pb-0.5 max-w-md">
           {/* Header */}
           <div className="text-center text-white">
-            <h1 className="text-2xl font-extrabold mb-2">Daten vs Stretford Paddock FC</h1>
-            <h2 className="text-lg font-bold mb-4">Culcheth Sports Club — Jan 24, 2:00pm</h2>
+            <h1 className="text-2xl font-extrabold mb-2">Newton-Le-Willows vs Stretford Paddock</h1>
+            <h2 className="text-lg font-bold mb-4">Northern Cup — Crow Lane East, Newton-Le-Willows - Sat.14 Feb 2:00pm</h2>
           </div>
         </div>
       </div>
