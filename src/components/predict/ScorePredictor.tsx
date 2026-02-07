@@ -64,7 +64,13 @@ export const ScorePredictor = ({
 
   // Compute current score key and get odds for the selected match
   const currentScoreKey = homeScore && awayScore ? `${homeScore}-${awayScore}` : '';
-  const currentOdds = currentScoreKey ? oddsMap[currentScoreKey] : null;
+
+  // Fallback odds for specific scorelineswhen not found in database
+  const defaultOdds: Record<string, string> = {
+    '3-1': '8/1',
+  };
+
+  const currentOdds = currentScoreKey ? (oddsMap[currentScoreKey] || defaultOdds[currentScoreKey]) : null;
   
   console.log('Score key:', currentScoreKey, 'Odds:', currentOdds, 'Bet:', betAmount);
 
