@@ -8,8 +8,8 @@ import { PossessionPredictor } from "@/components/predict/PossessionPredictor";
 import { ShotsPredictor } from "@/components/predict/ShotsPredictor";
 
 const Predict = () => {
-  const [homeScore, setHomeScore] = useState("");
-  const [awayScore, setAwayScore] = useState("");
+  const [homeScore, setHomeScore] = useState("0");
+  const [awayScore, setAwayScore] = useState("0");
   const [firstScorer, setFirstScorer] = useState("joao-de-andrade");
   const [motm, setMotm] = useState("joao-de-andrade");
   const [cleanSheet, setCleanSheet] = useState("yes");
