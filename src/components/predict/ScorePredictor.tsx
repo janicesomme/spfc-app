@@ -186,7 +186,7 @@ export const ScorePredictor = ({
           <div className="flex justify-center mt-3">
             {betAmount && parseFloat(betAmount) > 0 ? (
               <div className="bg-green-600 text-white border-black border-2 px-3 py-1 text-sm font-bold rounded">
-                You will win {currentOdds ? (parseFloat(betAmount) * convertFractionalToDecimal(currentOdds)).toFixed(2) : 'TBD'} pts
+                You will win {currentOdds ? (parseFloat(betAmount) * convertFractionalToDecimal(currentOdds)).toFixed(0) : 'TBD'} pts
               </div>
             ) : (
               <div className="border-blue-500 border text-blue-600 px-3 py-1 text-xs rounded">
